@@ -113,13 +113,13 @@ def main() -> None:
     chip_labels = [
         ("Codex + Claude", SKY, (183, 216, 250)),
         ("Gemini traces", MINT, (184, 230, 209)),
-        ("Optional Remotion MP4", CORAL, (246, 208, 194)),
+        ("Remotion video", CORAL, (246, 208, 194)),
     ]
 
-    chip_font_size = 20
+    chip_font_size = 18
     chip_font = load_font(chip_font_size, bold=True)
     chip_widths = [
-        measure_text(draw, label, chip_font) + 88 for label, _, _ in chip_labels
+        measure_text(draw, label, chip_font) + 80 for label, _, _ in chip_labels
     ]
     total_chip_width = sum(chip_widths) + chip_gap * (len(chip_widths) - 1)
 
@@ -127,7 +127,7 @@ def main() -> None:
         chip_font_size -= 1
         chip_font = load_font(chip_font_size, bold=True)
         chip_widths = [
-            measure_text(draw, label, chip_font) + 84 for label, _, _ in chip_labels
+            measure_text(draw, label, chip_font) + 76 for label, _, _ in chip_labels
         ]
         total_chip_width = sum(chip_widths) + chip_gap * (len(chip_widths) - 1)
 
