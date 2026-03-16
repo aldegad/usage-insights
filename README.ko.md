@@ -16,13 +16,13 @@
 
 ## 개요
 
-`usage-insights`는 로컬 AI 도구 사용 기록을 다음 형태로 정리하기 위한 저장소입니다.
+`usage-insights`는 설치 가능한 Codex 스킬입니다. 다른 사람이 이 스킬을 설치하면, 그 사람 머신의 로컬 AI 사용 기록을 읽어서 다음 결과물로 정리할 수 있습니다.
 
 - 사용 리포트
 - 재사용 가능한 타입 데이터 파일
 - 선택형 포스터 및 MP4
 
-이 저장소는 Codex, Claude, Gemini, Antigravity 사용 흐름을 프로젝트와 기간 단위로 다시 읽고 싶은 경우를 위한 재사용 템플릿입니다.
+이 저장소는 Codex, Claude, Gemini, Antigravity 사용 흐름을 프로젝트와 기간 단위로 다시 읽고 싶은 경우를 위한 재사용 가능한 스킬 패키지입니다.
 
 ## 설치
 
@@ -30,10 +30,23 @@
 
 `aldegad/usage-insights/usage-insights`
 
+실제 설치 가능한 스킬 폴더는 [`usage-insights/`](./usage-insights)이고, 현재 구조도 Codex skill 형식으로 이미 맞춰져 있습니다.
+
 설치 후 예시 프롬프트:
 
 - `Use $usage-insights to analyze my local AI usage and write a report.`
 - `Use $usage-insights to make a shareable AI usage profile and render a video.`
+
+## 이 스킬이 읽는 데이터
+
+스킬은 실행되는 현재 사용자 머신에서, 아래 로컬 경로를 읽어 분석합니다.
+
+- `~/.codex`
+- `~/.claude`
+- `~/.gemini/antigravity`
+- Antigravity 로컬 앱 로그
+
+즉, 다른 사람이 같은 스킬을 설치해도 코드 수정 없이 자기 로컬 데이터로 리포트와 영상을 만들 수 있습니다.
 
 ## 빠른 시작
 
@@ -45,6 +58,14 @@ npm run dev
 npm run render:poster
 npm run render:video
 ```
+
+보통은 이렇게 사용하면 됩니다.
+
+1. 스킬 설치
+2. Codex에게 `$usage-insights` 사용 요청
+3. 워크스페이스 생성 또는 기존 워크스페이스 재사용
+4. `npm run analyze`로 로컬 사용 기록 수집
+5. 필요할 때만 포스터나 MP4 렌더
 
 ## 예시 출력
 
@@ -74,6 +95,14 @@ Gemini와 Antigravity는 신뢰할 수 있는 토큰 원장이 없으면 토큰 
 - [`usage-insights/assets/remotion-template`](./usage-insights/assets/remotion-template): 분석기와 영상 템플릿
 - [`usage-insights/references`](./usage-insights/references): 데이터 소스 및 보안 참고 문서
 - [`scripts/generate_example_gif.py`](./scripts/generate_example_gif.py): MP4에서 예시 GIF를 다시 만드는 스크립트
+
+## 배포 메모
+
+이 저장소를 스킬로 배포할 때는:
+
+- Remotion 템플릿만이 아니라 `usage-insights` 서브폴더 전체를 배포하고
+- 생성물인 `INSIGHTS.md`, generated data, 렌더 결과물은 스킬 본문에 포함하지 말고
+- 각 사용자는 자기 머신에 로컬 provider 데이터가 있어야 의미 있는 결과가 나온다는 점을 함께 안내하는 편이 좋습니다.
 
 ## 공개 시 주의점
 

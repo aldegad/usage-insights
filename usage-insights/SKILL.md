@@ -1,13 +1,13 @@
 ---
 name: usage-insights
-description: Analyze local AI usage history across Codex, Claude, Gemini, and Antigravity; generate a report, summarize habits and project mix, and optionally render a Remotion poster or video. Use when a user wants a personal AI usage review, a shareable AI creator profile, or a reusable usage-insights workspace.
+description: Analyze the current user's local AI usage history across Codex, Claude, Gemini, and Antigravity; generate a report, summarize habits and project mix, and optionally render a Remotion poster or video. Use when a user wants a personal AI usage review, a shareable AI creator profile, or a reusable usage-insights workspace driven by machine-local data.
 ---
 
 # Usage Insights
 
 ## Overview
 
-Use this skill when the user wants to turn local AI tool history into a structured report and, optionally, a designed poster or MP4.
+Use this skill when the user wants to turn local AI tool history on the current machine into a structured report and, optionally, a designed poster or MP4.
 
 This skill is best for requests like:
 
@@ -49,6 +49,15 @@ This produces:
 - `INSIGHTS.md`
 - `src/data/usage-insights.generated.ts`
 
+The analyzer reads from the current user's local home directories when they exist:
+
+- `~/.codex`
+- `~/.claude`
+- `~/.gemini/antigravity`
+- local Antigravity app logs
+
+Do not ask the user to manually assemble those datasets first unless the local source format is missing or broken.
+
 ### 4. Review privacy before sharing
 
 Always inspect the generated report before publishing it. Project names, time ranges, work rhythms, and AI usage patterns may be sensitive.
@@ -82,6 +91,8 @@ npm run render:video
 ```
 
 The bundled template is designed to work as a draft. After analysis, update copy, tone, language, and visual emphasis to match the user's intended audience before final export.
+
+If the user only wants the report, stop after `npm run analyze`. If the user wants a visual artifact, continue into Remotion preview or render commands.
 
 The default project scene scroll is adaptive: it hides explicit scrollbar UI and adjusts scroll timing based on how many projects are present, so denser archives get a longer read-through.
 

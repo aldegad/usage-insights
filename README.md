@@ -23,13 +23,13 @@
 
 ## Overview
 
-`usage-insights` packages a reusable Codex skill plus a Remotion-based template project for turning local AI assistant history into:
+`usage-insights` is an installable Codex skill. When another user installs it, the agent can collect that user's own local AI activity from the current machine and turn it into:
 
 - a written usage report
 - a typed data file for reuse
 - an optional poster or MP4
 
-The repository is intended for people who want a repeatable workflow for reviewing how they use Codex, Claude, Gemini, and Antigravity across projects and time periods.
+The repository is intended for people who want a repeatable workflow for reviewing how they use Codex, Claude, Gemini, and Antigravity across projects and time periods without hand-assembling datasets.
 
 ## Install
 
@@ -37,14 +37,27 @@ Install the skill from this GitHub subpath:
 
 `aldegad/usage-insights/usage-insights`
 
+The installable skill lives in [`usage-insights/`](./usage-insights). It is already structured as a Codex skill and validates successfully with the `skill-creator` validator.
+
 Example prompt after installation:
 
 - `Use $usage-insights to analyze my local AI usage and write a report.`
 - `Use $usage-insights to make a shareable AI usage profile and render a video.`
 
+## What The Skill Reads
+
+On the machine where the skill is used, the analyzer reads the current user's local data when available:
+
+- `~/.codex`
+- `~/.claude`
+- `~/.gemini/antigravity`
+- local Antigravity app logs
+
+This means another person can install the same skill and generate a report or video from their own local history without editing the analyzer code first.
+
 ## Quick Start
 
-The repository includes a bootstrap script that creates a reusable workspace from the bundled template:
+The skill ships with a bootstrap script that creates a reusable workspace from the bundled template:
 
 ```bash
 python3 usage-insights/scripts/create_project.py --dest ~/usage-insights-project --install
@@ -54,6 +67,14 @@ npm run dev
 npm run render:poster
 npm run render:video
 ```
+
+Typical flow:
+
+1. Install the skill.
+2. Ask Codex to use `$usage-insights`.
+3. Let the skill create a workspace or reuse an existing one.
+4. Run `npm run analyze` to collect local usage into `INSIGHTS.md` and `src/data/usage-insights.generated.ts`.
+5. Render poster/video only when needed.
 
 ## Example Output
 
@@ -83,6 +104,14 @@ Gemini and Antigravity are intentionally kept out of token charts unless reliabl
 - [`usage-insights/assets/remotion-template`](./usage-insights/assets/remotion-template): analyzer and video template
 - [`usage-insights/references`](./usage-insights/references): data-source and security notes
 - [`scripts/generate_example_gif.py`](./scripts/generate_example_gif.py): helper for regenerating the example GIF from an MP4
+
+## Distribution Notes
+
+When distributing this repo as a skill:
+
+- share the `usage-insights` subpath, not just the Remotion template
+- keep private outputs like `INSIGHTS.md` and generated data outside the published skill payload
+- tell users they still need local provider data on their own machine for meaningful analysis
 
 ## Security
 
