@@ -17,10 +17,10 @@ export const PersonaBubble: React.FC<{ data: UsageInsightsData }> = ({ data }) =
   <GlassPanel
     style={{
       position: "relative",
-      padding: "24px 24px 22px",
+      padding: "26px 24px 24px",
       height: "100%",
       background:
-        "linear-gradient(180deg, rgba(255,255,255,0.9), rgba(250, 255, 252, 0.72))",
+        "linear-gradient(180deg, rgba(255,255,255,0.96), rgba(247, 252, 249, 0.92))",
       overflow: "hidden",
       display: "flex",
       flexDirection: "column",
@@ -29,35 +29,35 @@ export const PersonaBubble: React.FC<{ data: UsageInsightsData }> = ({ data }) =
     <div
       style={{
         position: "absolute",
-        width: 140,
-        height: 140,
-        right: -32,
-        top: -26,
+        width: 180,
+        height: 180,
+        right: -48,
+        top: -64,
         borderRadius: "50%",
         background:
-          "radial-gradient(circle at 30% 30%, rgba(183, 242, 221, 0.74), rgba(167, 221, 255, 0.2) 68%, transparent 80%)",
+          "radial-gradient(circle at 30% 30%, rgba(188, 230, 210, 0.36), rgba(167, 221, 255, 0.12) 68%, transparent 80%)",
       }}
     />
     <div
       style={{
         fontFamily: labelFont,
-        fontSize: 12,
-        letterSpacing: "0.12em",
+        fontSize: 11,
+        letterSpacing: "0.18em",
         fontWeight: LABEL_WEIGHT,
-        color: "#7c6e61",
+        color: "#816f60",
       }}
     >
       작업 성향
     </div>
     <div
       style={{
-        marginTop: 14,
+        marginTop: 16,
         fontFamily: displayFont,
         fontWeight: DISPLAY_WEIGHT,
-        fontSize: 34,
-        lineHeight: 1.02,
+        fontSize: 44,
+        lineHeight: 0.94,
         maxWidth: 320,
-        letterSpacing: "-0.035em",
+        letterSpacing: "-0.05em",
         color: "#1f1a16",
       }}
     >
@@ -66,9 +66,17 @@ export const PersonaBubble: React.FC<{ data: UsageInsightsData }> = ({ data }) =
     <div
       style={{
         marginTop: 16,
+        width: 36,
+        height: 2,
+        background: "#1f1a16",
+      }}
+    />
+    <div
+      style={{
+        marginTop: 14,
         fontFamily: bodyFont,
-        fontSize: 15,
-        lineHeight: 1.56,
+        fontSize: 16,
+        lineHeight: 1.64,
         color: "#5c5045",
       }}
     >
@@ -87,8 +95,8 @@ export const PersonaBubble: React.FC<{ data: UsageInsightsData }> = ({ data }) =
         <div
           style={{
             fontFamily: labelFont,
-            fontSize: 11,
-            letterSpacing: "0.12em",
+            fontSize: 10,
+            letterSpacing: "0.16em",
             fontWeight: LABEL_WEIGHT,
             color: "#8a7b6f",
           }}
@@ -107,8 +115,8 @@ export const PersonaBubble: React.FC<{ data: UsageInsightsData }> = ({ data }) =
         <div
           style={{
             fontFamily: bodyFont,
-            fontSize: 13,
-            lineHeight: 1.55,
+            fontSize: 14,
+            lineHeight: 1.6,
             color: "#6b5f54",
           }}
         >
@@ -122,6 +130,8 @@ export const PersonaBubble: React.FC<{ data: UsageInsightsData }> = ({ data }) =
             fontSize: 12,
             lineHeight: 1.5,
             color: "#8b7d70",
+            borderTop: "1px solid rgba(93, 80, 61, 0.08)",
+            paddingTop: 12,
           }}
         >
           Codex/Claude는 토큰 기준으로, Gemini/Antigravity는 로컬 활동 흔적으로만 반영했습니다.
@@ -146,13 +156,21 @@ export const InsightColumn: React.FC<{
         style={{
           fontFamily: displayFont,
           fontWeight: DISPLAY_WEIGHT,
-          fontSize: 28,
+          fontSize: 30,
           lineHeight: 1,
           color: "#1f1a16",
         }}
       >
         {title}
       </div>
+      <div
+        style={{
+          marginTop: 12,
+          width: 28,
+          height: 2,
+          background: currentTone.solid,
+        }}
+      />
       <div style={{ marginTop: 18, display: "grid", gap: 16 }}>
         {items.map((item, index) => {
           const reveal = spring({
@@ -186,8 +204,8 @@ export const InsightColumn: React.FC<{
               <div
                 style={{
                   fontFamily: bodyFont,
-                  fontSize: 16,
-                  lineHeight: 1.62,
+                  fontSize: 15,
+                  lineHeight: 1.68,
                   color: "#5d5145",
                 }}
               >

@@ -48,15 +48,15 @@ export const OpeningScene: React.FC<VideoProps> = ({ data }) => {
         <div>
           <GlassPanel
             style={{
-              padding: "22px 24px 18px",
+              padding: "26px 28px 24px",
               height: "100%",
               background:
-                "linear-gradient(145deg, rgba(255,255,255,0.92), rgba(255, 248, 244, 0.75))",
+                "linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255, 251, 247, 0.92))",
               display: "flex",
               flexDirection: "column",
             }}
           >
-            <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap", maxWidth: 720 }}>
               <SoftChip text="토큰 집계: Codex + Claude" tone="sky" />
               {data.activityTraces.length > 0 ? (
                 <SoftChip
@@ -78,10 +78,21 @@ export const OpeningScene: React.FC<VideoProps> = ({ data }) => {
               <div style={{ display: "grid", gap: 12 }}>
                 <div
                   style={{
+                    fontFamily: bodyFont,
+                    fontSize: 14,
+                    letterSpacing: "0.1em",
+                    textTransform: "uppercase",
+                    color: "#8f7d6d",
+                  }}
+                >
+                  Editorial archive of local AI work
+                </div>
+                <div
+                  style={{
                     fontFamily: displayFont,
                     fontWeight: DISPLAY_WEIGHT,
-                    fontSize: 42,
-                    lineHeight: 0.95,
+                    fontSize: 56,
+                    lineHeight: 0.9,
                     letterSpacing: "-0.05em",
                     color: "#16120f",
                     transform: `translateY(${(1 - titleRise) * 28}px)`,
@@ -90,23 +101,23 @@ export const OpeningScene: React.FC<VideoProps> = ({ data }) => {
                 >
                   로컬 AI 작업 기록을
                   <br />
-                  역할과 흐름으로
+                  역할, 리듬, 프로젝트로
                   <br />
                   정리했습니다.
                 </div>
                 <div
                   style={{
                     maxWidth: 640,
-                    minHeight: 68,
-                    maxHeight: 68,
+                    minHeight: 76,
+                    maxHeight: 76,
                     overflow: "hidden",
                   }}
                 >
                   <div
                     style={{
                       fontFamily: bodyFont,
-                      fontSize: 15,
-                      lineHeight: 1.62,
+                      fontSize: 16,
+                      lineHeight: 1.68,
                       color: "#5e5247",
                     }}
                   >
@@ -117,7 +128,7 @@ export const OpeningScene: React.FC<VideoProps> = ({ data }) => {
                   style={{
                     display: "grid",
                     gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
-                    gap: 6,
+                    gap: 10,
                     transform: `translateY(${metricsRise}px)`,
                     opacity: metricsOpacity,
                   }}

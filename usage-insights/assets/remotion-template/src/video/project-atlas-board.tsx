@@ -68,14 +68,15 @@ export const ProjectAtlasBoard: React.FC<{ data: UsageInsightsData }> = ({ data 
               display: "inline-flex",
               alignItems: "center",
               gap: 10,
-              padding: "10px 14px",
-              borderRadius: 999,
+              padding: "9px 12px",
+              borderRadius: 14,
               background: toneStyles[item.tone].soft,
               border: `1px solid ${toneStyles[item.tone].line}`,
-              fontFamily: bodyFont,
-              fontSize: 15,
+              fontFamily: labelFont,
+              fontSize: 13,
+              letterSpacing: "0.02em",
+              fontWeight: LABEL_WEIGHT,
               color: "#54483d",
-              boxShadow: `0 12px 28px ${toneStyles[item.tone].glow}`,
             }}
           >
             <span
@@ -96,12 +97,12 @@ export const ProjectAtlasBoard: React.FC<{ data: UsageInsightsData }> = ({ data 
             position: "relative",
             borderRadius: 32,
             background:
-              "linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,250,246,0.8))",
+              "linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,251,247,0.92))",
             border: "1px solid rgba(116, 103, 84, 0.08)",
             overflow: "hidden",
             height: viewportHeight,
             boxShadow:
-              "0 28px 72px rgba(131, 114, 95, 0.1), inset 0 1px 0 rgba(255,255,255,0.72)",
+              "0 18px 40px rgba(131, 114, 95, 0.06), inset 0 1px 0 rgba(255,255,255,0.72)",
           }}
         >
           <div
@@ -133,10 +134,10 @@ export const ProjectAtlasBoard: React.FC<{ data: UsageInsightsData }> = ({ data 
               <div
                 style={{
                   display: "grid",
-                  rowGap: rowGap,
-                  transform: `translateY(-${scrollY}px)`,
-                }}
-              >
+              rowGap: rowGap,
+              transform: `translateY(-${scrollY}px)`,
+            }}
+          >
                 {projects.map((project, index) => {
                   const toneKey = (["peach", "sky", "mint", "butter"] as const)[index % 4];
                   const tone = toneStyles[toneKey];
@@ -153,20 +154,33 @@ export const ProjectAtlasBoard: React.FC<{ data: UsageInsightsData }> = ({ data 
                     <div
                       key={project.label}
                       style={{
+                        position: "relative",
                         height: rowHeight,
                         boxSizing: "border-box",
-                        padding: "10px 14px",
-                        borderRadius: 22,
+                        padding: "10px 14px 10px 16px",
+                        borderRadius: 16,
                         background:
                           index < 3
                             ? tone.soft
-                            : "linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.76))",
+                            : "linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,255,255,0.92))",
                         border: `1px solid ${index < 3 ? tone.line : "rgba(116, 103, 84, 0.08)"}`,
-                        boxShadow: `0 10px 24px ${tone.glow}`,
+                        boxShadow: "0 8px 16px rgba(109, 89, 67, 0.03)",
                         transform: `translateY(${(1 - reveal) * 14}px)`,
                         opacity: reveal,
                       }}
-                    >
+                      >
+                      <div
+                        style={{
+                          position: "absolute",
+                          left: 0,
+                          top: 0,
+                          width: 4,
+                          height: rowHeight,
+                          borderRadius: "16px 0 0 16px",
+                          background: index < 3 ? tone.solid : "rgba(77, 63, 49, 0.12)",
+                          opacity: index < 3 ? 1 : 0.55,
+                        }}
+                      />
                       <div
                         style={{
                           display: "grid",
@@ -179,18 +193,18 @@ export const ProjectAtlasBoard: React.FC<{ data: UsageInsightsData }> = ({ data 
                           style={{
                             width: 40,
                             height: 40,
-                            borderRadius: 14,
+                            borderRadius: 10,
                             background:
                               index < 3
-                                ? `linear-gradient(145deg, ${tone.solid}, rgba(255,255,255,0.78))`
-                                : "rgba(255,255,255,0.84)",
+                                ? "rgba(255,255,255,0.72)"
+                                : "rgba(247, 242, 235, 0.92)",
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center",
                             fontFamily: displayFont,
                             fontWeight: DISPLAY_WEIGHT,
                             fontSize: 18,
-                            color: index < 3 ? "#ffffff" : "#1f1a16",
+                            color: index < 3 ? tone.solid : "#1f1a16",
                           }}
                         >
                           {String(index + 1).padStart(2, "0")}
@@ -229,7 +243,7 @@ export const ProjectAtlasBoard: React.FC<{ data: UsageInsightsData }> = ({ data 
                                     alignItems: "center",
                                     gap: 6,
                                     padding: "6px 9px",
-                                    borderRadius: 999,
+                                    borderRadius: 12,
                                     background: providerTone.background,
                                     border: `1px solid ${providerTone.border}`,
                                     fontFamily: labelFont,
@@ -256,7 +270,7 @@ export const ProjectAtlasBoard: React.FC<{ data: UsageInsightsData }> = ({ data 
                                 display: "inline-flex",
                                 alignItems: "center",
                                 padding: "6px 9px",
-                                borderRadius: 999,
+                                borderRadius: 12,
                                 background: "rgba(255,255,255,0.78)",
                                 border: "1px solid rgba(116, 103, 84, 0.08)",
                                 fontFamily: labelFont,
@@ -272,9 +286,9 @@ export const ProjectAtlasBoard: React.FC<{ data: UsageInsightsData }> = ({ data 
                           <div
                             style={{
                               marginTop: 8,
-                              height: 7,
+                              height: 5,
                               borderRadius: 999,
-                              background: "rgba(255,255,255,0.72)",
+                              background: "rgba(77, 63, 49, 0.08)",
                               overflow: "hidden",
                             }}
                           >
@@ -283,8 +297,7 @@ export const ProjectAtlasBoard: React.FC<{ data: UsageInsightsData }> = ({ data 
                                 width: `${Math.max(width, project.tokens > 0 ? 4 : 0)}%`,
                                 height: "100%",
                                 borderRadius: 999,
-                                background: `linear-gradient(90deg, ${tone.solid}, rgba(255,255,255,0.84))`,
-                                boxShadow: `0 8px 18px ${tone.glow}`,
+                                background: tone.solid,
                               }}
                             />
                           </div>
@@ -350,14 +363,13 @@ export const ProjectAtlasBoard: React.FC<{ data: UsageInsightsData }> = ({ data 
             >
               <div
                 style={{
-                  position: "absolute",
-                  inset: 1,
-                  borderRadius: 999,
-                  background:
-                    "linear-gradient(180deg, rgba(255,255,255,0.4), rgba(255,255,255,0.1))",
-                }}
-              />
-              <div
+                position: "absolute",
+                inset: 1,
+                borderRadius: 999,
+                background: "rgba(255,255,255,0.45)",
+              }}
+            />
+            <div
                 style={{
                   position: "absolute",
                   left: 1,
@@ -365,9 +377,7 @@ export const ProjectAtlasBoard: React.FC<{ data: UsageInsightsData }> = ({ data 
                   top: thumbTop,
                   height: thumbHeight,
                   borderRadius: 999,
-                  background:
-                    "linear-gradient(180deg, rgba(255, 141, 122, 0.9), rgba(115, 184, 255, 0.78))",
-                  boxShadow: "0 10px 22px rgba(255, 141, 122, 0.18)",
+                  background: "rgba(53, 44, 36, 0.58)",
                 }}
               />
             </div>

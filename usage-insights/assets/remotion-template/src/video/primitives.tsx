@@ -1,14 +1,12 @@
 import React from "react";
 import {
   AbsoluteFill,
-  Easing,
   interpolate,
   spring,
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
 import {
-  bodyFont,
   DISPLAY_WEIGHT,
   displayFont,
   LABEL_WEIGHT,
@@ -18,24 +16,14 @@ import {
 } from "./config";
 import { sceneOpacity, useRise } from "./utils";
 
-const ChromeDots: React.FC = () => (
-  <div style={{ display: "flex", gap: 8 }}>
-    {["#ff9d8f", "#ffd36e", "#82d7b8"].map((color) => (
-      <div
-        key={color}
-        style={{
-          width: 12,
-          height: 12,
-          borderRadius: 999,
-          background: color,
-          boxShadow: `0 0 0 4px ${color}22`,
-        }}
-      />
-    ))}
-  </div>
-);
+const sectionIndexByCurrent: Record<string, string> = {
+  overview: "01",
+  tempo: "02",
+  projects: "03",
+  read: "04",
+};
 
-const AppChrome: React.FC<{ current: string }> = ({ current }) => {
+const Masthead: React.FC<{ current: string }> = ({ current }) => {
   const navItems = ["overview", "tempo", "projects", "read"];
   const navLabels: Record<string, string> = {
     overview: "개요",
@@ -50,26 +38,36 @@ const AppChrome: React.FC<{ current: string }> = ({ current }) => {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        gap: 18,
-        padding: "20px 24px 18px",
-        borderBottom: "1px solid rgba(93, 80, 61, 0.08)",
+        gap: 24,
+        padding: "18px 28px 16px",
+        borderBottom: "1px solid rgba(53, 44, 36, 0.08)",
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-        <ChromeDots />
+      <div style={{ display: "grid", gap: 4 }}>
         <div
           style={{
             fontFamily: labelFont,
-            fontSize: 14,
-            letterSpacing: "0.12em",
+            fontSize: 10,
+            letterSpacing: "0.18em",
             fontWeight: LABEL_WEIGHT,
-            color: "#7d6f60",
+            color: "#8b7867",
+          }}
+        >
+          USAGE INSIGHTS
+        </div>
+        <div
+          style={{
+            fontFamily: displayFont,
+            fontSize: 18,
+            fontWeight: DISPLAY_WEIGHT,
+            letterSpacing: "-0.03em",
+            color: "#1b1612",
           }}
         >
           로컬 AI 작업 아카이브
         </div>
       </div>
-      <div style={{ display: "flex", gap: 10 }}>
+      <div style={{ display: "flex", gap: 20, alignItems: "center" }}>
         {navItems.map((item) => {
           const active = current === item;
 
@@ -77,20 +75,15 @@ const AppChrome: React.FC<{ current: string }> = ({ current }) => {
             <div
               key={item}
               style={{
-                padding: "10px 16px",
-                borderRadius: 999,
-                background: active
-                  ? "rgba(255, 255, 255, 0.86)"
-                  : "rgba(255, 255, 255, 0.48)",
-                border: active
-                  ? "1px solid rgba(125, 111, 96, 0.16)"
-                  : "1px solid rgba(125, 111, 96, 0.08)",
                 fontFamily: labelFont,
-                fontSize: 11,
-                letterSpacing: "0.12em",
+                fontSize: 12,
+                letterSpacing: "0.1em",
                 fontWeight: LABEL_WEIGHT,
-                color: active ? "#514538" : "#8e7f71",
-                boxShadow: active ? "0 8px 24px rgba(109, 91, 74, 0.08)" : "none",
+                color: active ? "#1f1914" : "#8f7d6d",
+                paddingBottom: 6,
+                borderBottom: active
+                  ? "2px solid rgba(31, 25, 20, 0.72)"
+                  : "2px solid transparent",
               }}
             >
               {navLabels[item]}
@@ -103,29 +96,28 @@ const AppChrome: React.FC<{ current: string }> = ({ current }) => {
           display: "flex",
           alignItems: "center",
           gap: 10,
-          padding: "10px 14px",
-          borderRadius: 999,
-          background: "rgba(255, 255, 255, 0.58)",
-          border: "1px solid rgba(125, 111, 96, 0.1)",
+          padding: "10px 0 10px 18px",
+          borderLeft: "1px solid rgba(53, 44, 36, 0.08)",
         }}
       >
         <div
           style={{
-            width: 8,
-            height: 8,
+            width: 9,
+            height: 9,
             borderRadius: 999,
-            background: "#66c9a2",
-            boxShadow: "0 0 0 6px rgba(102, 201, 162, 0.14)",
+            background: "#5da88c",
           }}
         />
         <div
           style={{
-            fontFamily: bodyFont,
-            fontSize: 14,
-            color: "#6f6256",
+            fontFamily: labelFont,
+            fontSize: 11,
+            letterSpacing: "0.1em",
+            fontWeight: LABEL_WEIGHT,
+            color: "#78695d",
           }}
         >
-          내 기록에서 동기화됨
+          LOCAL LOGS SYNCED
         </div>
       </div>
     </div>
@@ -143,17 +135,17 @@ export const Backdrop: React.FC = () => {
       style={{
         overflow: "hidden",
         background:
-          "linear-gradient(135deg, #fffaf4 0%, #fff6f8 42%, #f5fbff 68%, #f4fff8 100%)",
+          "linear-gradient(180deg, #fbf6ee 0%, #f8f1e6 46%, #f5efe6 100%)",
       }}
     >
       <div
         style={{
           position: "absolute",
-          inset: -160,
+          inset: -120,
           background:
-            "radial-gradient(circle at 18% 22%, rgba(255, 188, 176, 0.58), transparent 24%), radial-gradient(circle at 78% 18%, rgba(167, 221, 255, 0.55), transparent 24%), radial-gradient(circle at 72% 76%, rgba(183, 242, 221, 0.56), transparent 26%), radial-gradient(circle at 24% 84%, rgba(255, 238, 173, 0.44), transparent 20%)",
+            "radial-gradient(circle at 14% 14%, rgba(233, 182, 160, 0.24), transparent 28%), radial-gradient(circle at 84% 16%, rgba(157, 197, 230, 0.24), transparent 26%), radial-gradient(circle at 78% 82%, rgba(170, 210, 190, 0.2), transparent 24%)",
           transform: `translate(${driftX}px, ${driftY}px) rotate(${glowRotate}deg)`,
-          filter: "blur(18px)",
+          filter: "blur(34px)",
         }}
       />
       <div
@@ -161,9 +153,9 @@ export const Backdrop: React.FC = () => {
           position: "absolute",
           inset: 0,
           backgroundImage:
-            "linear-gradient(rgba(130, 111, 88, 0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(130, 111, 88, 0.045) 1px, transparent 1px)",
-          backgroundSize: "44px 44px",
-          opacity: 0.42,
+            "linear-gradient(rgba(90, 73, 56, 0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(90, 73, 56, 0.035) 1px, transparent 1px)",
+          backgroundSize: "56px 56px",
+          opacity: 0.22,
         }}
       />
       <div
@@ -171,7 +163,7 @@ export const Backdrop: React.FC = () => {
           position: "absolute",
           inset: 0,
           background:
-            "radial-gradient(circle at 50% 40%, transparent 0%, rgba(255, 255, 255, 0.22) 48%, rgba(221, 209, 194, 0.16) 100%)",
+            "linear-gradient(180deg, rgba(255,255,255,0.22), rgba(255,255,255,0) 28%, rgba(74, 58, 44, 0.02) 100%)",
         }}
       />
     </AbsoluteFill>
@@ -193,7 +185,7 @@ export const Stage: React.FC<{
     frame,
     fps,
     durationInFrames: entranceDuration,
-    config: { damping: 200 },
+    config: { damping: 180 },
   });
   const exit = spring({
     frame: frame - (durationInFrames - exitDuration),
@@ -202,25 +194,14 @@ export const Stage: React.FC<{
     config: { damping: 200 },
   });
   const sectionLift =
-    interpolate(entrance, [0, 1], [14, 0]) -
-    interpolate(exit, [0, 1], [0, 10]);
-  const sweepX = interpolate(frame, [0, entranceDuration], [-440, 1260], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-    easing: Easing.bezier(0.28, 0.12, 0.18, 1),
-  });
-  const sweepOpacity =
-    interpolate(frame, [0, Math.floor(fps * 0.18), Math.floor(fps * 0.88)], [0, 0.62, 0], {
-      extrapolateLeft: "clamp",
-      extrapolateRight: "clamp",
-      easing: Easing.out(Easing.cubic),
-    }) *
-    (1 - exit);
+    interpolate(entrance, [0, 1], [20, 0]) -
+    interpolate(exit, [0, 1], [0, 14]);
+  const sectionIndex = sectionIndexByCurrent[current] || "00";
 
   return (
     <AbsoluteFill
       style={{
-        padding: 28,
+        padding: 24,
         opacity,
       }}
     >
@@ -234,14 +215,13 @@ export const Stage: React.FC<{
         <div
           style={{
             position: "absolute",
-            inset: "auto 80px 18px",
-            height: 26,
-            borderRadius: 999,
+            inset: "12px 32px auto",
+            height: 4,
+            borderRadius: 9999,
             background:
-              "linear-gradient(90deg, rgba(255, 141, 122, 0.18), rgba(102, 201, 162, 0.12), rgba(115, 184, 255, 0.18))",
-            filter: "blur(22px)",
-            opacity: 0.8,
-            transform: `scaleX(${0.94 + entrance * 0.14})`,
+              "linear-gradient(90deg, rgba(191, 148, 80, 0.7), rgba(217, 109, 87, 0.65), rgba(76, 143, 210, 0.6))",
+            transform: `scaleX(${0.96 + entrance * 0.05})`,
+            transformOrigin: "center",
           }}
         />
         <div
@@ -249,66 +229,80 @@ export const Stage: React.FC<{
             position: "relative",
             width: "100%",
             height: "100%",
-            borderRadius: 42,
+            borderRadius: 34,
             overflow: "hidden",
-            border: "1px solid rgba(116, 103, 84, 0.12)",
-            background:
-              "linear-gradient(180deg, rgba(255, 255, 255, 0.74), rgba(255, 255, 255, 0.62))",
+            border: "1px solid rgba(77, 63, 49, 0.12)",
+            background: "linear-gradient(180deg, rgba(255,255,252,0.96), rgba(255,252,248,0.92))",
             boxShadow:
-              "0 40px 120px rgba(131, 114, 95, 0.14), inset 0 1px 0 rgba(255,255,255,0.8)",
-            backdropFilter: "blur(22px)",
+              "0 24px 70px rgba(110, 90, 70, 0.12), 0 2px 0 rgba(255,255,255,0.7) inset",
           }}
         >
           <div
             style={{
               position: "absolute",
-              inset: "-14% auto -14% -28%",
-              width: 360,
+              inset: "auto 24px 18px 24px",
+              height: 1,
               background:
-                "linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,0.9), rgba(255,255,255,0))",
-              transform: `translateX(${sweepX}px) rotate(18deg)`,
-              opacity: sweepOpacity,
-              filter: "blur(18px)",
-              mixBlendMode: "screen",
+                "linear-gradient(90deg, rgba(77, 63, 49, 0), rgba(77, 63, 49, 0.14), rgba(77, 63, 49, 0))",
               pointerEvents: "none",
             }}
           />
-          <AppChrome current={current} />
+          <Masthead current={current} />
           <div
             style={{
-              padding: "26px 28px 28px",
-              height: "calc(100% - 74px)",
+              padding: "24px 28px 28px",
+              height: "calc(100% - 70px)",
             }}
           >
             <div
               style={{
-                display: "inline-flex",
+                display: "flex",
+                justifyContent: "space-between",
                 alignItems: "center",
-                gap: 10,
-                padding: "10px 16px",
-                borderRadius: 999,
-                background: "rgba(255, 255, 255, 0.76)",
-                border: "1px solid rgba(116, 103, 84, 0.1)",
-                fontFamily: labelFont,
-                fontSize: 12,
-                letterSpacing: "0.12em",
-                fontWeight: LABEL_WEIGHT,
-                color: "#8a7a6a",
                 transform: `translateY(${sectionLift}px)`,
                 opacity: entrance,
               }}
             >
-              <span
+              <div
                 style={{
-                  width: 8,
-                  height: 8,
-                  borderRadius: 999,
-                  background: "#ff8d7a",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 12,
                 }}
-              />
-              {section}
+              >
+                <span
+                  style={{
+                    display: "block",
+                    width: 34,
+                    height: 2,
+                    background: "#1f1914",
+                  }}
+                />
+                <span
+                  style={{
+                    fontFamily: labelFont,
+                    fontSize: 12,
+                    letterSpacing: "0.16em",
+                    fontWeight: LABEL_WEIGHT,
+                    color: "#766759",
+                  }}
+                >
+                  {section}
+                </span>
+              </div>
+              <div
+                style={{
+                  fontFamily: displayFont,
+                  fontSize: 26,
+                  fontWeight: DISPLAY_WEIGHT,
+                  letterSpacing: "-0.06em",
+                  color: "rgba(31, 25, 20, 0.48)",
+                }}
+              >
+                {sectionIndex}
+              </div>
             </div>
-            <div style={{ marginTop: 22, height: "calc(100% - 56px)" }}>{children}</div>
+            <div style={{ marginTop: 18, height: "calc(100% - 52px)" }}>{children}</div>
           </div>
         </div>
       </div>
@@ -322,12 +316,10 @@ export const GlassPanel: React.FC<{
 }> = ({ children, style }) => (
   <div
     style={{
-      borderRadius: 34,
-      border: "1px solid rgba(116, 103, 84, 0.1)",
-      background:
-        "linear-gradient(180deg, rgba(255,255,255,0.86), rgba(255,255,255,0.68))",
-      boxShadow:
-        "0 22px 54px rgba(129, 109, 88, 0.08), inset 0 1px 0 rgba(255,255,255,0.85)",
+      borderRadius: 20,
+      border: "1px solid rgba(69, 56, 43, 0.1)",
+      background: "linear-gradient(180deg, rgba(255,255,255,0.94), rgba(255,252,248,0.92))",
+      boxShadow: "0 10px 26px rgba(109, 89, 67, 0.05), inset 0 1px 0 rgba(255,255,255,0.7)",
       ...style,
     }}
   >
@@ -346,21 +338,23 @@ export const SoftChip: React.FC<{ text: string; tone?: Tone }> = ({
       style={{
         display: "inline-flex",
         alignItems: "center",
-        gap: 10,
-        padding: "11px 16px",
-        borderRadius: 999,
+        gap: 9,
+        padding: "9px 12px",
+        borderRadius: 14,
         background: currentTone.soft,
-        boxShadow: `0 14px 32px ${currentTone.glow}`,
-        fontFamily: bodyFont,
-        fontSize: 16,
-        color: "#4f4338",
+        border: `1px solid ${currentTone.line}`,
+        fontFamily: labelFont,
+        fontSize: 13,
+        letterSpacing: "0.02em",
+        fontWeight: LABEL_WEIGHT,
+        color: "#4a3e34",
       }}
     >
       <span
         style={{
-          width: 10,
-          height: 10,
-          borderRadius: 999,
+          width: 8,
+          height: 8,
+          borderRadius: 9999,
           background: currentTone.solid,
         }}
       />
@@ -383,10 +377,11 @@ export const MetricCard: React.FC<{
   return (
     <GlassPanel
       style={{
-        padding: isCompact ? "14px 16px" : "18px 18px",
+        padding: isCompact ? "14px 16px 16px" : "20px 20px 22px",
         minHeight: isCompact ? 62 : 96,
         background: currentTone.soft,
         border: `1px solid ${currentTone.line}`,
+        boxShadow: "0 10px 22px rgba(109, 89, 67, 0.04)",
         transform: `translateY(${(1 - entrance) * 24}px)`,
         opacity: entrance,
       }}
@@ -395,21 +390,29 @@ export const MetricCard: React.FC<{
         style={{
           fontFamily: labelFont,
           fontSize: isCompact ? 10 : 11,
-          letterSpacing: "0.12em",
+          letterSpacing: "0.16em",
           fontWeight: LABEL_WEIGHT,
-          color: "#7c6e61",
+          color: "#7a695a",
         }}
       >
         {title}
       </div>
       <div
         style={{
-          marginTop: isCompact ? 8 : 10,
+          marginTop: 10,
+          width: 26,
+          height: 2,
+          background: currentTone.solid,
+        }}
+      />
+      <div
+        style={{
+          marginTop: isCompact ? 10 : 12,
           fontFamily: displayFont,
           fontWeight: DISPLAY_WEIGHT,
-          fontSize: isCompact ? 24 : 34,
-          lineHeight: isCompact ? 1 : 0.96,
-          letterSpacing: "-0.04em",
+          fontSize: isCompact ? 24 : 32,
+          lineHeight: 0.96,
+          letterSpacing: "-0.05em",
           color: "#1f1a16",
         }}
       >

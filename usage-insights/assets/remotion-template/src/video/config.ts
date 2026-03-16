@@ -52,27 +52,27 @@ export const toneStyles: Record<
   { solid: string; soft: string; line: string; glow: string }
 > = {
   peach: {
-    solid: "#ff8d7a",
-    soft: "linear-gradient(135deg, rgba(255, 204, 193, 0.95), rgba(255, 241, 235, 0.88))",
-    line: "rgba(255, 141, 122, 0.24)",
-    glow: "rgba(255, 141, 122, 0.18)",
+    solid: "#d96d57",
+    soft: "linear-gradient(180deg, rgba(255, 248, 244, 0.98), rgba(255, 251, 249, 0.96))",
+    line: "rgba(217, 109, 87, 0.24)",
+    glow: "rgba(217, 109, 87, 0.08)",
   },
   sky: {
-    solid: "#73b8ff",
-    soft: "linear-gradient(135deg, rgba(210, 234, 255, 0.96), rgba(241, 248, 255, 0.9))",
-    line: "rgba(115, 184, 255, 0.24)",
-    glow: "rgba(115, 184, 255, 0.18)",
+    solid: "#4c8fd2",
+    soft: "linear-gradient(180deg, rgba(246, 250, 255, 0.98), rgba(251, 253, 255, 0.96))",
+    line: "rgba(76, 143, 210, 0.24)",
+    glow: "rgba(76, 143, 210, 0.08)",
   },
   mint: {
-    solid: "#66c9a2",
-    soft: "linear-gradient(135deg, rgba(214, 247, 233, 0.96), rgba(241, 255, 249, 0.9))",
-    line: "rgba(102, 201, 162, 0.24)",
-    glow: "rgba(102, 201, 162, 0.18)",
+    solid: "#5da88c",
+    soft: "linear-gradient(180deg, rgba(245, 252, 248, 0.98), rgba(251, 255, 253, 0.96))",
+    line: "rgba(93, 168, 140, 0.24)",
+    glow: "rgba(93, 168, 140, 0.08)",
   },
   butter: {
-    solid: "#e1b94d",
-    soft: "linear-gradient(135deg, rgba(255, 241, 191, 0.96), rgba(255, 250, 232, 0.9))",
-    line: "rgba(225, 185, 77, 0.24)",
-    glow: "rgba(225, 185, 77, 0.18)",
+    solid: "#bf9450",
+    soft: "linear-gradient(180deg, rgba(255, 251, 242, 0.98), rgba(255, 253, 248, 0.96))",
+    line: "rgba(191, 148, 80, 0.24)",
+    glow: "rgba(191, 148, 80, 0.08)",
   },
 };
