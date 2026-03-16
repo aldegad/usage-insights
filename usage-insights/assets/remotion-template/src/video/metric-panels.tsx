@@ -32,7 +32,7 @@ export const BarBoard: React.FC<{
   const valueSize = compact ? 10 : 12;
   const itemGap = compact ? 5 : 8;
   const chartMarginTop = compact ? 12 : 20;
-  const resolvedMaxHeight = compact ? Math.min(maxHeight, 54) : maxHeight;
+  const resolvedMaxHeight = maxHeight;
 
   return (
     <GlassPanel
