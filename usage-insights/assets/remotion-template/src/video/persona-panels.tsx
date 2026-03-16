@@ -4,9 +4,11 @@ import type { UsageInsightsData } from "../data/usage-insights.generated";
 import {
   bodyFont,
   DISPLAY_WEIGHT,
+  DISPLAY_WEIGHT_MEDIUM,
   displayFont,
   LABEL_WEIGHT,
   labelFont,
+  colors,
   type Tone,
   toneStyles,
 } from "./config";
@@ -20,7 +22,7 @@ export const PersonaBubble: React.FC<{ data: UsageInsightsData }> = ({ data }) =
       padding: "26px 24px 24px",
       height: "100%",
       background:
-        "linear-gradient(180deg, rgba(255,255,255,0.96), rgba(247, 252, 249, 0.92))",
+        "linear-gradient(180deg, rgba(255,255,255,0.97), rgba(247, 250, 253, 0.94))",
       overflow: "hidden",
       display: "flex",
       flexDirection: "column",
@@ -35,7 +37,7 @@ export const PersonaBubble: React.FC<{ data: UsageInsightsData }> = ({ data }) =
         top: -64,
         borderRadius: "50%",
         background:
-          "radial-gradient(circle at 30% 30%, rgba(188, 230, 210, 0.36), rgba(167, 221, 255, 0.12) 68%, transparent 80%)",
+          "radial-gradient(circle at 30% 30%, rgba(13, 148, 136, 0.12), rgba(59, 130, 246, 0.06) 68%, transparent 80%)",
       }}
     />
     <div
@@ -44,7 +46,7 @@ export const PersonaBubble: React.FC<{ data: UsageInsightsData }> = ({ data }) =
         fontSize: 11,
         letterSpacing: "0.18em",
         fontWeight: LABEL_WEIGHT,
-        color: "#816f60",
+        color: colors.muted,
       }}
     >
       작업 성향
@@ -58,7 +60,7 @@ export const PersonaBubble: React.FC<{ data: UsageInsightsData }> = ({ data }) =
         lineHeight: 1,
         maxWidth: 320,
         letterSpacing: "-0.05em",
-        color: "#1f1a16",
+        color: colors.heading,
       }}
     >
       {data.persona.archetype}
@@ -68,7 +70,7 @@ export const PersonaBubble: React.FC<{ data: UsageInsightsData }> = ({ data }) =
         marginTop: 16,
         width: 36,
         height: 2,
-        background: "#1f1a16",
+        background: colors.heading,
       }}
     />
     <div
@@ -77,7 +79,7 @@ export const PersonaBubble: React.FC<{ data: UsageInsightsData }> = ({ data }) =
         fontFamily: bodyFont,
         fontSize: 16,
         lineHeight: 1.64,
-        color: "#5c5045",
+        color: colors.body,
       }}
     >
       {data.persona.worksBestAs}
@@ -87,7 +89,7 @@ export const PersonaBubble: React.FC<{ data: UsageInsightsData }> = ({ data }) =
         style={{
           marginTop: 18,
           paddingTop: 16,
-          borderTop: "1px solid rgba(93, 80, 61, 0.08)",
+          borderTop: `1px solid ${colors.faint}`,
           display: "grid",
           gap: 8,
         }}
@@ -98,7 +100,7 @@ export const PersonaBubble: React.FC<{ data: UsageInsightsData }> = ({ data }) =
             fontSize: 10,
             letterSpacing: "0.16em",
             fontWeight: LABEL_WEIGHT,
-            color: "#8a7b6f",
+            color: colors.label,
           }}
         >
           추가 활동 흔적
@@ -117,7 +119,7 @@ export const PersonaBubble: React.FC<{ data: UsageInsightsData }> = ({ data }) =
             fontFamily: bodyFont,
             fontSize: 14,
             lineHeight: 1.6,
-            color: "#6b5f54",
+            color: colors.muted,
           }}
         >
           {data.activityTraces
@@ -129,8 +131,8 @@ export const PersonaBubble: React.FC<{ data: UsageInsightsData }> = ({ data }) =
             fontFamily: bodyFont,
             fontSize: 12,
             lineHeight: 1.5,
-            color: "#8b7d70",
-            borderTop: "1px solid rgba(93, 80, 61, 0.08)",
+            color: colors.label,
+            borderTop: `1px solid ${colors.faint}`,
             paddingTop: 12,
           }}
         >
@@ -143,7 +145,7 @@ export const PersonaBubble: React.FC<{ data: UsageInsightsData }> = ({ data }) =
 
 export const InsightColumn: React.FC<{
   title: string;
-  items: string[];
+  items: readonly string[];
   tone: Tone;
 }> = ({ title, items, tone }) => {
   const frame = useCurrentFrame();
@@ -151,14 +153,14 @@ export const InsightColumn: React.FC<{
   const currentTone = toneStyles[tone];
 
   return (
-    <GlassPanel style={{ padding: 20, height: "100%" }}>
+    <GlassPanel style={{ padding: 20 }}>
       <div
         style={{
           fontFamily: displayFont,
-          fontWeight: DISPLAY_WEIGHT,
+          fontWeight: DISPLAY_WEIGHT_MEDIUM,
           fontSize: 30,
           lineHeight: 1,
-          color: "#1f1a16",
+          color: colors.heading,
         }}
       >
         {title}
@@ -206,7 +208,7 @@ export const InsightColumn: React.FC<{
                   fontFamily: bodyFont,
                   fontSize: 15,
                   lineHeight: 1.68,
-                  color: "#5d5145",
+                  color: colors.body,
                 }}
               >
                 {item}

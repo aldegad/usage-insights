@@ -11,6 +11,7 @@ import {
   displayFont,
   LABEL_WEIGHT,
   labelFont,
+  colors,
   type Tone,
   toneStyles,
 } from "./config";
@@ -40,7 +41,7 @@ const Masthead: React.FC<{ current: string }> = ({ current }) => {
         justifyContent: "space-between",
         gap: 20,
         padding: "14px 24px 12px",
-        borderBottom: "1px solid rgba(53, 44, 36, 0.08)",
+        borderBottom: "1px solid rgba(0, 0, 0, 0.06)",
       }}
     >
       <div style={{ display: "grid", gap: 4 }}>
@@ -50,7 +51,7 @@ const Masthead: React.FC<{ current: string }> = ({ current }) => {
             fontSize: 9,
             letterSpacing: "0.18em",
             fontWeight: LABEL_WEIGHT,
-            color: "#8b7867",
+            color: colors.label,
           }}
         >
           USAGE INSIGHTS
@@ -61,7 +62,7 @@ const Masthead: React.FC<{ current: string }> = ({ current }) => {
             fontSize: 17,
             fontWeight: DISPLAY_WEIGHT,
             letterSpacing: "-0.03em",
-            color: "#1b1612",
+            color: colors.heading,
           }}
         >
           로컬 AI 작업 아카이브
@@ -79,10 +80,10 @@ const Masthead: React.FC<{ current: string }> = ({ current }) => {
                 fontSize: 11,
                 letterSpacing: "0.1em",
                 fontWeight: LABEL_WEIGHT,
-                color: active ? "#1f1914" : "#8f7d6d",
+                color: active ? colors.heading : colors.label,
                 paddingBottom: 5,
                 borderBottom: active
-                  ? "2px solid rgba(31, 25, 20, 0.72)"
+                  ? `2px solid ${colors.heading}`
                   : "2px solid transparent",
               }}
             >
@@ -97,7 +98,7 @@ const Masthead: React.FC<{ current: string }> = ({ current }) => {
           alignItems: "center",
           gap: 10,
           padding: "8px 0 8px 16px",
-          borderLeft: "1px solid rgba(53, 44, 36, 0.08)",
+          borderLeft: "1px solid rgba(0, 0, 0, 0.06)",
         }}
       >
         <div
@@ -105,7 +106,7 @@ const Masthead: React.FC<{ current: string }> = ({ current }) => {
             width: 9,
             height: 9,
             borderRadius: 999,
-            background: "#5da88c",
+            background: "#0d9488",
           }}
         />
         <div
@@ -114,7 +115,7 @@ const Masthead: React.FC<{ current: string }> = ({ current }) => {
             fontSize: 10,
             letterSpacing: "0.1em",
             fontWeight: LABEL_WEIGHT,
-            color: "#78695d",
+            color: colors.muted,
           }}
         >
           LOCAL LOGS SYNCED
@@ -135,7 +136,7 @@ export const Backdrop: React.FC = () => {
       style={{
         overflow: "hidden",
         background:
-          "linear-gradient(180deg, #fbf6ee 0%, #f8f1e6 46%, #f5efe6 100%)",
+          "linear-gradient(180deg, #f8f9fc 0%, #f0f2f8 46%, #ebeef5 100%)",
       }}
     >
       <div
@@ -143,7 +144,7 @@ export const Backdrop: React.FC = () => {
           position: "absolute",
           inset: -120,
           background:
-            "radial-gradient(circle at 14% 14%, rgba(233, 182, 160, 0.24), transparent 28%), radial-gradient(circle at 84% 16%, rgba(157, 197, 230, 0.24), transparent 26%), radial-gradient(circle at 78% 82%, rgba(170, 210, 190, 0.2), transparent 24%)",
+            "radial-gradient(circle at 14% 14%, rgba(139, 92, 246, 0.08), transparent 28%), radial-gradient(circle at 84% 16%, rgba(59, 130, 246, 0.10), transparent 26%), radial-gradient(circle at 78% 82%, rgba(13, 148, 136, 0.08), transparent 24%)",
           transform: `translate(${driftX}px, ${driftY}px) rotate(${glowRotate}deg)`,
           filter: "blur(34px)",
         }}
@@ -153,7 +154,7 @@ export const Backdrop: React.FC = () => {
           position: "absolute",
           inset: 0,
           backgroundImage:
-            "linear-gradient(rgba(90, 73, 56, 0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(90, 73, 56, 0.035) 1px, transparent 1px)",
+            "linear-gradient(rgba(0, 0, 0, 0.028) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 0, 0, 0.028) 1px, transparent 1px)",
           backgroundSize: "56px 56px",
           opacity: 0.22,
         }}
@@ -163,7 +164,7 @@ export const Backdrop: React.FC = () => {
           position: "absolute",
           inset: 0,
           background:
-            "linear-gradient(180deg, rgba(255,255,255,0.22), rgba(255,255,255,0) 28%, rgba(74, 58, 44, 0.02) 100%)",
+            "linear-gradient(180deg, rgba(255,255,255,0.3), rgba(255,255,255,0) 28%, rgba(0, 0, 0, 0.01) 100%)",
         }}
       />
     </AbsoluteFill>
@@ -219,7 +220,7 @@ export const Stage: React.FC<{
             height: 4,
             borderRadius: 9999,
             background:
-              "linear-gradient(90deg, rgba(191, 148, 80, 0.7), rgba(217, 109, 87, 0.65), rgba(76, 143, 210, 0.6))",
+              "linear-gradient(90deg, rgba(139, 92, 246, 0.45), rgba(59, 130, 246, 0.4), rgba(13, 148, 136, 0.35))",
             transform: `scaleX(${0.96 + entrance * 0.05})`,
             transformOrigin: "center",
           }}
@@ -231,10 +232,10 @@ export const Stage: React.FC<{
             height: "100%",
             borderRadius: 34,
             overflow: "hidden",
-            border: "1px solid rgba(77, 63, 49, 0.12)",
-            background: "linear-gradient(180deg, rgba(255,255,252,0.96), rgba(255,252,248,0.92))",
+            border: "1px solid rgba(0, 0, 0, 0.08)",
+            background: "linear-gradient(180deg, rgba(255,255,255,0.97), rgba(249,250,252,0.95))",
             boxShadow:
-              "0 24px 70px rgba(110, 90, 70, 0.12), 0 2px 0 rgba(255,255,255,0.7) inset",
+              "0 24px 70px rgba(0, 0, 0, 0.06), 0 2px 0 rgba(255,255,255,0.8) inset",
             display: "flex",
             flexDirection: "column",
           }}
@@ -245,7 +246,7 @@ export const Stage: React.FC<{
               inset: "auto 24px 18px 24px",
               height: 1,
               background:
-                "linear-gradient(90deg, rgba(77, 63, 49, 0), rgba(77, 63, 49, 0.14), rgba(77, 63, 49, 0))",
+                "linear-gradient(90deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0))",
               pointerEvents: "none",
             }}
           />
@@ -281,7 +282,7 @@ export const Stage: React.FC<{
                     display: "block",
                     width: 34,
                     height: 2,
-                    background: "#1f1914",
+                    background: colors.heading,
                   }}
                 />
                 <span
@@ -290,7 +291,7 @@ export const Stage: React.FC<{
                     fontSize: 11,
                     letterSpacing: "0.16em",
                     fontWeight: LABEL_WEIGHT,
-                    color: "#766759",
+                    color: colors.muted,
                   }}
                 >
                   {section}
@@ -302,7 +303,7 @@ export const Stage: React.FC<{
                   fontSize: 22,
                   fontWeight: DISPLAY_WEIGHT,
                   letterSpacing: "-0.06em",
-                  color: "rgba(31, 25, 20, 0.48)",
+                  color: "rgba(26, 29, 35, 0.36)",
                 }}
               >
                 {sectionIndex}
@@ -331,9 +332,9 @@ export const GlassPanel: React.FC<{
   <div
     style={{
       borderRadius: 20,
-      border: "1px solid rgba(69, 56, 43, 0.1)",
-      background: "linear-gradient(180deg, rgba(255,255,255,0.94), rgba(255,252,248,0.92))",
-      boxShadow: "0 10px 26px rgba(109, 89, 67, 0.05), inset 0 1px 0 rgba(255,255,255,0.7)",
+      border: "1px solid rgba(0, 0, 0, 0.06)",
+      background: "linear-gradient(180deg, rgba(255,255,255,0.96), rgba(249,250,252,0.94))",
+      boxShadow: "0 10px 26px rgba(0, 0, 0, 0.03), inset 0 1px 0 rgba(255,255,255,0.8)",
       ...style,
     }}
   >
@@ -361,7 +362,7 @@ export const SoftChip: React.FC<{ text: string; tone?: Tone }> = ({
         fontSize: 12,
         letterSpacing: "0.02em",
         fontWeight: LABEL_WEIGHT,
-        color: "#4a3e34",
+        color: colors.body,
       }}
     >
       <span
@@ -395,7 +396,7 @@ export const MetricCard: React.FC<{
         minHeight: isCompact ? 60 : 92,
         background: currentTone.soft,
         border: `1px solid ${currentTone.line}`,
-        boxShadow: "0 10px 22px rgba(109, 89, 67, 0.04)",
+        boxShadow: "0 10px 22px rgba(0, 0, 0, 0.03)",
         transform: `translateY(${(1 - entrance) * 24}px)`,
         opacity: entrance,
       }}
@@ -406,7 +407,7 @@ export const MetricCard: React.FC<{
           fontSize: isCompact ? 10 : 11,
           letterSpacing: "0.16em",
           fontWeight: LABEL_WEIGHT,
-          color: "#7a695a",
+          color: colors.muted,
         }}
       >
         {title}
@@ -427,7 +428,7 @@ export const MetricCard: React.FC<{
           fontSize: isCompact ? 24 : 32,
           lineHeight: 0.96,
           letterSpacing: "-0.05em",
-          color: "#1f1a16",
+          color: colors.heading,
         }}
       >
         {value}

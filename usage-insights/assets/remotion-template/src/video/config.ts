@@ -15,14 +15,23 @@ export { bodyFont };
 
 export const displayFont = bodyFont;
 export const labelFont = bodyFont;
-export const DISPLAY_WEIGHT = 700;
-export const LABEL_WEIGHT = 600;
+export const DISPLAY_WEIGHT = 300;
+export const DISPLAY_WEIGHT_MEDIUM = 500;
+export const LABEL_WEIGHT = 500;
+
+export const colors = {
+  heading: "#1a1d23",
+  body: "#4b5563",
+  muted: "#6b7280",
+  label: "#9ca3af",
+  faint: "rgba(0, 0, 0, 0.04)",
+} as const;
 
 export const OPENING_DURATION = 150;
 export const SYSTEM_DURATION = 190;
 export const RHYTHM_DURATION = 180;
 export const PROJECTS_DURATION = 360;
-export const PERSONA_DURATION = 210;
+export const PERSONA_DURATION = 300;
 export const CLOSING_DURATION = 210;
 export const SCENE_TRANSITION_DURATION = 20;
 
@@ -52,27 +61,27 @@ export const toneStyles: Record<
   { solid: string; soft: string; line: string; glow: string }
 > = {
   peach: {
-    solid: "#d96d57",
-    soft: "linear-gradient(180deg, rgba(255, 248, 244, 0.98), rgba(255, 251, 249, 0.96))",
-    line: "rgba(217, 109, 87, 0.24)",
-    glow: "rgba(217, 109, 87, 0.08)",
+    solid: "#e05a45",
+    soft: "linear-gradient(180deg, rgba(255, 249, 248, 0.98), rgba(255, 252, 251, 0.96))",
+    line: "rgba(224, 90, 69, 0.18)",
+    glow: "rgba(224, 90, 69, 0.06)",
   },
   sky: {
-    solid: "#4c8fd2",
-    soft: "linear-gradient(180deg, rgba(246, 250, 255, 0.98), rgba(251, 253, 255, 0.96))",
-    line: "rgba(76, 143, 210, 0.24)",
-    glow: "rgba(76, 143, 210, 0.08)",
+    solid: "#3b82f6",
+    soft: "linear-gradient(180deg, rgba(247, 250, 255, 0.98), rgba(251, 253, 255, 0.96))",
+    line: "rgba(59, 130, 246, 0.18)",
+    glow: "rgba(59, 130, 246, 0.06)",
   },
   mint: {
-    solid: "#5da88c",
-    soft: "linear-gradient(180deg, rgba(245, 252, 248, 0.98), rgba(251, 255, 253, 0.96))",
-    line: "rgba(93, 168, 140, 0.24)",
-    glow: "rgba(93, 168, 140, 0.08)",
+    solid: "#0d9488",
+    soft: "linear-gradient(180deg, rgba(245, 253, 252, 0.98), rgba(250, 255, 254, 0.96))",
+    line: "rgba(13, 148, 136, 0.18)",
+    glow: "rgba(13, 148, 136, 0.06)",
   },
   butter: {
-    solid: "#bf9450",
-    soft: "linear-gradient(180deg, rgba(255, 251, 242, 0.98), rgba(255, 253, 248, 0.96))",
-    line: "rgba(191, 148, 80, 0.24)",
-    glow: "rgba(191, 148, 80, 0.08)",
+    solid: "#8b5cf6",
+    soft: "linear-gradient(180deg, rgba(249, 247, 255, 0.98), rgba(252, 251, 255, 0.96))",
+    line: "rgba(139, 92, 246, 0.18)",
+    glow: "rgba(139, 92, 246, 0.06)",
   },
 };

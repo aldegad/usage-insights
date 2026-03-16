@@ -1,13 +1,13 @@
 :root {
-  --paper: #f7f1e4;
-  --paper-strong: #efe6d3;
-  --ink: #181411;
-  --muted: #6e6458;
-  --accent: #c95f3d;
-  --teal: #0f7676;
-  --gold: #c9a95c;
-  --line: rgba(24, 20, 17, 0.12);
-  --card: rgba(255, 250, 241, 0.84);
+  --paper: #f8f9fb;
+  --paper-strong: #eef0f4;
+  --ink: #1a1d23;
+  --muted: #6b7280;
+  --accent: #3b82f6;
+  --teal: #0d9488;
+  --gold: #8b5cf6;
+  --line: rgba(0, 0, 0, 0.06);
+  --card: rgba(255, 255, 255, 0.88);
 }
 
 * {
@@ -22,5 +22,5 @@ body,
   height: 100%;
   background: var(--paper);
   color: var(--ink);
-  font-family: "Pretendard", "Pretendard Variable", "Segoe UI", sans-serif;
+  font-family: "Pretendard", "Pretendard Variable", -apple-system, "Segoe UI", sans-serif;
 }
