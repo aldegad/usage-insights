@@ -8,7 +8,6 @@ import { formatCompact, formatNumber, formatPercent, useRise } from "../utils";
 
 export const OpeningScene: React.FC<VideoProps> = ({ data }) => {
   const heroRise = useRise(2, 28);
-  const metricsRise = useRise(18, 26);
   const activeRate = formatPercent(data.period.activeDays / data.period.totalDays);
   const providerLine = data.providers
     .slice(0, 2)
@@ -32,17 +31,6 @@ export const OpeningScene: React.FC<VideoProps> = ({ data }) => {
     extrapolateRight: "clamp",
     easing: Easing.out(Easing.quad),
   });
-  const metricsOffset = interpolate(metricsRise, [0, 1], [20, 0], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-    easing: Easing.out(Easing.cubic),
-  });
-  const metricsOpacity = interpolate(metricsRise, [0, 1], [0.76, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-    easing: Easing.out(Easing.quad),
-  });
-
   return (
     <Stage
       current="overview"
@@ -139,8 +127,6 @@ export const OpeningScene: React.FC<VideoProps> = ({ data }) => {
                 display: "grid",
                 gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
                 gap: 8,
-                transform: `translateY(${metricsOffset}px)`,
-                opacity: metricsOpacity,
               }}
             >
               <MetricCard
