@@ -8,7 +8,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 
 WIDTH = 1280
-HEIGHT = 420
+HEIGHT = 460
 
 BG = (249, 243, 231)
 PANEL = (255, 251, 246)
@@ -22,6 +22,7 @@ LINE_LEFT = (255, 216, 143)
 LINE_MID = (255, 168, 150)
 LINE_RIGHT = (135, 200, 255)
 PANEL_STROKE = (232, 223, 211)
+BRAND_PANEL = (255, 244, 235)
 
 
 def load_font(size: int, bold: bool = False) -> ImageFont.FreeTypeFont | ImageFont.ImageFont:
@@ -79,37 +80,54 @@ def draw_chip(
 def main() -> None:
     repo_root = Path(__file__).resolve().parent.parent
     media_dir = repo_root / "media"
-    logo = Image.open(media_dir / "logo.png").convert("RGBA").resize((182, 182))
+    logo = Image.open(media_dir / "logo.png").convert("RGBA").resize((150, 150))
 
     image = Image.new("RGBA", (WIDTH, HEIGHT), BG)
     draw = ImageDraw.Draw(image)
 
-    draw.rounded_rectangle((36, 22, WIDTH - 36, HEIGHT - 22), radius=42, fill=(244, 235, 216))
-    draw.rounded_rectangle((90, 58, WIDTH - 90, HEIGHT - 58), radius=34, fill=PANEL, outline=PANEL_STROKE, width=2)
+    outer = (36, 24, WIDTH - 36, HEIGHT - 24)
+    inner = (96, 62, WIDTH - 96, HEIGHT - 62)
+    brand = (126, 94, 348, HEIGHT - 94)
+    content_x = 398
+
+    draw.rounded_rectangle(outer, radius=44, fill=(244, 235, 216))
+    draw.rounded_rectangle(inner, radius=36, fill=PANEL, outline=PANEL_STROKE, width=2)
+    draw.rounded_rectangle(brand, radius=30, fill=BRAND_PANEL)
 
     line = gradient_line(1020, 10)
-    image.alpha_composite(line, (128, 114))
+    image.alpha_composite(line, (130, 114))
 
     for i, color in enumerate((CORAL, BUTTER, MINT)):
-        draw.ellipse((142 + i * 30, 174, 162 + i * 30, 194), fill=color)
+        draw.ellipse((148 + i * 34, 188, 170 + i * 34, 210), fill=color)
 
-    image.alpha_composite(logo, (150, 215))
+    eyebrow_font = load_font(22, bold=True)
+    draw.text((146, 136), "Usage Insights", font=eyebrow_font, fill=(137, 113, 92))
+    draw.text((146, 166), "Codex skill", font=load_font(18), fill=(160, 142, 125))
+    image.alpha_composite(logo, (160, 218))
 
-    title_font = load_font(64, bold=True)
+    title_font = load_font(62, bold=True)
     subtitle_font = load_font(24)
+    meta_font = load_font(18, bold=True)
 
-    draw.text((438, 176), "usage-insights", font=title_font, fill=INK)
+    draw.text((content_x, 136), "Analyze local AI usage", font=meta_font, fill=(135, 113, 92))
+    draw.text((content_x, 182), "usage-insights", font=title_font, fill=INK)
     draw.text(
-        (438, 270),
-        "Analyze local AI usage, generate reports, and render videos.",
+        (content_x, 274),
+        "Generate reports, summarize project patterns,",
+        font=subtitle_font,
+        fill=MUTED,
+    )
+    draw.text(
+        (content_x, 306),
+        "and render shareable videos from local history.",
         font=subtitle_font,
         fill=MUTED,
     )
 
-    chip_y = 322
-    chip_gap = 18
-    chip_area_x = 350
-    chip_area_width = 770
+    chip_y = 356
+    chip_gap = 16
+    chip_area_x = content_x
+    chip_area_width = inner[2] - content_x - 54
     chip_labels = [
         ("Codex + Claude", SKY, (183, 216, 250)),
         ("Gemini traces", MINT, (184, 230, 209)),
@@ -119,19 +137,19 @@ def main() -> None:
     chip_font_size = 18
     chip_font = load_font(chip_font_size, bold=True)
     chip_widths = [
-        measure_text(draw, label, chip_font) + 80 for label, _, _ in chip_labels
+        measure_text(draw, label, chip_font) + 74 for label, _, _ in chip_labels
     ]
     total_chip_width = sum(chip_widths) + chip_gap * (len(chip_widths) - 1)
 
-    while total_chip_width > chip_area_width and chip_font_size > 16:
+    while total_chip_width > chip_area_width and chip_font_size > 15:
         chip_font_size -= 1
         chip_font = load_font(chip_font_size, bold=True)
         chip_widths = [
-            measure_text(draw, label, chip_font) + 76 for label, _, _ in chip_labels
+            measure_text(draw, label, chip_font) + 70 for label, _, _ in chip_labels
         ]
         total_chip_width = sum(chip_widths) + chip_gap * (len(chip_widths) - 1)
 
-    chip_x = chip_area_x + max(0, (chip_area_width - total_chip_width) // 2)
+    chip_x = chip_area_x
     for (label, dot, outline), width in zip(chip_labels, chip_widths):
         draw_chip(draw, chip_x, chip_y, width, label, dot, outline, chip_font)
         chip_x += width + chip_gap
