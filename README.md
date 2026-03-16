@@ -1,5 +1,11 @@
 <p align="center">
-  <img src="./media/banner.png" alt="Usage Insights banner" width="100%" />
+  <img src="./media/logo.png" alt="Usage Insights logo" width="120" />
+</p>
+
+<h1 align="center">usage-insights</h1>
+
+<p align="center">
+  Codex skill for analyzing local AI usage and generating reports or optional Remotion videos.
 </p>
 
 <p align="center">
@@ -15,26 +21,15 @@
   <img src="https://img.shields.io/badge/remotion-video-67c8a1?style=flat-square" alt="Remotion video" />
 </p>
 
-`usage-insights` is a public Codex skill for turning local AI assistant history into a written report and an optional Remotion poster or MP4.
+## Overview
 
-It is designed for people who want to answer questions like:
+`usage-insights` packages a reusable Codex skill plus a Remotion-based template project for turning local AI assistant history into:
 
-- How much did I use Codex, Claude, Gemini, or Antigravity?
-- Which projects absorbed most of my AI time?
-- What kind of AI operator am I becoming?
-- Can I turn this into a shareable creator profile?
+- a written usage report
+- a typed data file for reuse
+- an optional poster or MP4
 
-## Example Output
-
-![Usage Insights example output](./media/example-output.gif)
-
-## What It Does
-
-- Collects token-aware usage from local Codex and Claude artifacts
-- Collects activity traces from Gemini and Antigravity when token ledgers are unavailable
-- Groups work by project, time range, day rhythm, and provider mix
-- Generates `INSIGHTS.md` plus a typed data module for rendering
-- Exports a polished Remotion poster or MP4 from the same analysis
+The repository is intended for people who want a repeatable workflow for reviewing how they use Codex, Claude, Gemini, and Antigravity across projects and time periods.
 
 ## Install
 
@@ -42,14 +37,14 @@ Install the skill from this GitHub subpath:
 
 `aldegad/usage-insights/usage-insights`
 
-Then prompt Codex with something like:
+Example prompt after installation:
 
 - `Use $usage-insights to analyze my local AI usage and write a report.`
 - `Use $usage-insights to make a shareable AI usage profile and render a video.`
 
 ## Quick Start
 
-The bundled skill can bootstrap a reusable workspace:
+The repository includes a bootstrap script that creates a reusable workspace from the bundled template:
 
 ```bash
 python3 usage-insights/scripts/create_project.py --dest ~/usage-insights-project --install
@@ -60,42 +55,47 @@ npm run render:poster
 npm run render:video
 ```
 
-## Repository Layout
+## Example Output
 
-- [`usage-insights`](./usage-insights): installable Codex skill
-- [`usage-insights/scripts/create_project.py`](./usage-insights/scripts/create_project.py): workspace bootstrap script
-- [`usage-insights/assets/remotion-template`](./usage-insights/assets/remotion-template): reusable analyzer + Remotion template
-- [`usage-insights/references`](./usage-insights/references): security and data-source notes
+![Usage Insights example output](./media/example-output.gif)
+
+## Outputs
+
+The generated workspace produces:
+
+- `INSIGHTS.md`
+- `src/data/usage-insights.generated.ts`
+- optional poster and MP4 exports under `out/`
 
 ## Data Coverage
 
 - `Codex`: token totals, session counts, project grouping
-- `Claude`: token totals when raw local logs exist, plus activity metadata
+- `Claude`: token totals when raw local logs are available, plus activity metadata
 - `Gemini`: activity traces and project labels
 - `Antigravity`: activity traces from local app logs
 
-Gemini and Antigravity are intentionally separated from token charts unless reliable token ledgers exist. The skill avoids inventing totals for providers that only expose activity traces.
+Gemini and Antigravity are intentionally kept out of token charts unless reliable token ledgers are available.
+
+## Repository Layout
+
+- [`usage-insights`](./usage-insights): installable Codex skill
+- [`usage-insights/scripts/create_project.py`](./usage-insights/scripts/create_project.py): workspace bootstrap script
+- [`usage-insights/assets/remotion-template`](./usage-insights/assets/remotion-template): analyzer and video template
+- [`usage-insights/references`](./usage-insights/references): data-source and security notes
+- [`scripts/generate_example_gif.py`](./scripts/generate_example_gif.py): helper for regenerating the example GIF from an MP4
 
 ## Security
 
-The repository itself is safe to publish because it contains generic code, templates, references, and sample data.
+This repository is safe to publish because it contains generic code, templates, documentation, and sample media.
 
-Generated outputs are not automatically safe to publish. Review these before sharing:
+Generated outputs should still be reviewed before sharing. They may contain:
 
-- `INSIGHTS.md`
-- `src/data/usage-insights.generated.ts`
-- exported posters and MP4s
+- project names
+- working dates and rhythms
+- provider mix and token intensity
+- interpretive summaries about habits or workflow
 
-They may expose project names, working periods, usage intensity, and habits. If the final artifact is public-facing, ask Codex to redact or rename sensitive projects first.
-
-## Yes, It Can Render Video
-
-Yes. The template supports:
-
-- report generation
-- Remotion studio preview
-- poster export
-- MP4 export
+If the final artifact is public-facing, sensitive project names and date ranges should be redacted or generalized first.
 
 ## License
 
