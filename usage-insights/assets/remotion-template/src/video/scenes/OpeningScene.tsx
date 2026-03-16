@@ -9,6 +9,7 @@ import { formatCompact, formatNumber, formatPercent, useRise } from "../utils";
 export const OpeningScene: React.FC<VideoProps> = ({ data }) => {
   const heroRise = useRise(2, 28);
   const metricsRise = useRise(18, 26);
+  const activeRate = formatPercent(data.period.activeDays / data.period.totalDays);
   const providerLine = data.providers
     .slice(0, 2)
     .map((provider) => `${provider.label} ${formatPercent(provider.share)}`)
@@ -150,7 +151,7 @@ export const OpeningScene: React.FC<VideoProps> = ({ data }) => {
               />
               <MetricCard
                 title="활성 일수"
-                value={`${data.period.activeDays}/${data.period.totalDays}`}
+                value={`${data.period.activeDays}/${data.period.totalDays} · ${activeRate}`}
                 tone="sky"
                 delay={4}
                 size="compact"
@@ -163,7 +164,7 @@ export const OpeningScene: React.FC<VideoProps> = ({ data }) => {
                 size="compact"
               />
               <MetricCard
-                title="기록 수"
+                title="스레드 수"
                 value={formatNumber(data.totals.threads)}
                 tone="butter"
                 delay={12}

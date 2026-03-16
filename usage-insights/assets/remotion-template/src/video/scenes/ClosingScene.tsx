@@ -53,6 +53,7 @@ export const ClosingScene: React.FC<VideoProps> = ({ data }) => {
   const topProjects = data.projects.slice(0, 3);
   const topProjectShare =
     topProjects.reduce((sum, project) => sum + project.tokens, 0) / data.totals.tokens;
+  const activeRate = formatPercent(data.period.activeDays / data.period.totalDays);
   const closingSummary = `전체 ${formatCompact(data.totals.tokens)} 토큰을 지나며 가장 뚜렷하게 보인 패턴은, AI를 하나의 도구가 아니라 역할이 다른 팀으로 운영할 때 결과가 가장 안정적으로 나왔다는 점입니다. ${data.providers[0]?.label || "Codex"}는 볼륨과 추진력을, ${data.providers[1]?.label || "Claude"}는 실험과 탐색의 완충 역할을 맡으며 작업을 밀어 올렸습니다.`;
   const closingChars = Math.floor(
     interpolate(useCurrentFrame(), [8, 92], [0, closingSummary.length], {
@@ -222,7 +223,7 @@ export const ClosingScene: React.FC<VideoProps> = ({ data }) => {
               />
               <MetricCard
                 title="활성 일수"
-                value={`${data.period.activeDays}일`}
+                value={`${data.period.activeDays}일 · ${activeRate}`}
                 tone="mint"
                 delay={4}
                 size="compact"
