@@ -20,19 +20,35 @@ export const BarBoard: React.FC<{
   items: Item[];
   tone: Tone;
   maxHeight?: number;
-}> = ({ title, subtitle, items, tone, maxHeight = 174 }) => {
+  compact?: boolean;
+}> = ({ title, subtitle, items, tone, maxHeight = 174, compact = false }) => {
   const currentTone = toneStyles[tone];
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const max = Math.max(1, ...items.map((item) => item.tokens));
+  const titleSize = compact ? 20 : 34;
+  const subtitleSize = compact ? 13 : 15;
+  const labelSize = compact ? 8 : 10;
+  const valueSize = compact ? 10 : 12;
+  const itemGap = compact ? 5 : 8;
+  const chartMarginTop = compact ? 12 : 20;
+  const resolvedMaxHeight = compact ? Math.min(maxHeight, 54) : maxHeight;
 
   return (
-    <GlassPanel style={{ padding: 24, height: "100%" }}>
+    <GlassPanel
+      style={{
+        padding: 24,
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        minHeight: 0,
+      }}
+    >
       <div
         style={{
           fontFamily: displayFont,
           fontWeight: DISPLAY_WEIGHT,
-          fontSize: 34,
+          fontSize: titleSize,
           lineHeight: 1,
           color: "#1f1a16",
         }}
@@ -43,8 +59,8 @@ export const BarBoard: React.FC<{
         style={{
           marginTop: 10,
           fontFamily: bodyFont,
-          fontSize: 16,
-          lineHeight: 1.55,
+          fontSize: subtitleSize,
+          lineHeight: 1.58,
           color: "#6e6257",
         }}
       >
@@ -54,9 +70,10 @@ export const BarBoard: React.FC<{
         style={{
           display: "flex",
           gap: 12,
-          alignItems: "flex-end",
-          height: maxHeight + 56,
-          marginTop: 26,
+          alignItems: "stretch",
+          flex: 1,
+          minHeight: 0,
+          marginTop: chartMarginTop,
         }}
       >
         {items.map((item, index) => {
@@ -67,7 +84,7 @@ export const BarBoard: React.FC<{
             durationInFrames: 24,
             config: { damping: 200 },
           });
-          const height = scaleValue(item.tokens, max, maxHeight) * progress;
+          const height = scaleValue(item.tokens, max, resolvedMaxHeight) * progress;
 
           return (
             <div
@@ -77,22 +94,33 @@ export const BarBoard: React.FC<{
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "flex-end",
-                gap: 10,
+                gap: itemGap,
                 minWidth: 0,
+                minHeight: 0,
               }}
             >
               <div
                 style={{
-                  height,
-                  borderRadius: 22,
-                  background: `linear-gradient(180deg, ${currentTone.solid}, rgba(255,255,255,0.78))`,
-                  boxShadow: `0 14px 30px ${currentTone.glow}`,
+                  flex: 1,
+                  minHeight: 0,
+                  display: "flex",
+                  alignItems: "flex-end",
                 }}
-              />
+              >
+                <div
+                  style={{
+                    width: "100%",
+                    height: Math.max(height, item.tokens > 0 ? 4 : 0),
+                    borderRadius: 22,
+                    background: `linear-gradient(180deg, ${currentTone.solid}, rgba(255,255,255,0.78))`,
+                    boxShadow: `0 14px 30px ${currentTone.glow}`,
+                  }}
+                />
+              </div>
               <div
                 style={{
                   fontFamily: labelFont,
-                  fontSize: 11,
+                  fontSize: labelSize,
                   letterSpacing: "0.1em",
                   color: "#7a6c5f",
                   textTransform: "uppercase",
@@ -106,7 +134,7 @@ export const BarBoard: React.FC<{
               <div
                 style={{
                   fontFamily: bodyFont,
-                  fontSize: 13,
+                  fontSize: valueSize,
                   color: "#63574b",
                 }}
               >

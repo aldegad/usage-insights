@@ -35,7 +35,8 @@ export const SystemScene: React.FC<VideoProps> = ({ data }) => {
           subtitle="최근 사용은 늘 켜두는 느낌보다는, 필요할 때 깊게 몰입하는 파동형 패턴에 가깝습니다."
           items={recent}
           tone="mint"
-          maxHeight={120}
+          maxHeight={86}
+          compact
         />
       </div>
     </Stage>

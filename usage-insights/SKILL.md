@@ -83,6 +83,8 @@ npm run render:video
 
 The bundled template is designed to work as a draft. After analysis, update copy, tone, language, and visual emphasis to match the user's intended audience before final export.
 
+The default project scene scroll is adaptive: it hides explicit scrollbar UI and adjusts scroll timing based on how many projects are present, so denser archives get a longer read-through.
+
 ## Data Coverage
 
 Supported sources are summarized in [`references/data-sources.md`](./references/data-sources.md).

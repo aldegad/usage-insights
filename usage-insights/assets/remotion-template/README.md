@@ -62,4 +62,5 @@ npm run build:all
 - Token charts are currently strongest for Codex and Claude.
 - Gemini and Antigravity are included as activity traces unless token ledgers are available.
 - The persona and habit sections are inference, not exact truth.
+- The project archive scene scrolls automatically without a visible scrollbar, and its scroll timing adapts to project count.
 - If provider storage formats change later, `scripts/generate-insights.mjs` may need an update.

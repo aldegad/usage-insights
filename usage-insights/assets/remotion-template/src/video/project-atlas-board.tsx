@@ -34,25 +34,29 @@ export const ProjectAtlasBoard: React.FC<{ data: UsageInsightsData }> = ({ data 
     Math.max(projects.length - 1, 0) * rowGap +
     contentInsetY * 2;
   const maxScroll = Math.max(0, listHeight - viewportHeight);
-  const scrollbarWidth = 8;
-  const scrollbarInsetY = 12;
-  const scrollbarInsetRight = 10;
-  const scrollbarGap = 10;
+  const extraRows = Math.max(0, projects.length - visibleRows);
+  const scrollDensity = Math.min(1, extraRows / 18);
+  const scrollStartFrame = interpolate(scrollDensity, [0, 1], [110, 70], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  const scrollEndFrame = interpolate(
+    scrollDensity,
+    [0, 1],
+    [PROJECTS_DURATION - 108, PROJECTS_DURATION - 44],
+    {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+    },
+  );
   const contentInsetLeft = 10;
-  const contentInsetRight = scrollbarWidth + scrollbarInsetRight + scrollbarGap;
-  const trackHeight = viewportHeight - scrollbarInsetY * 2;
-  const scrollProgress = interpolate(frame, [80, PROJECTS_DURATION - 64], [0, 1], {
+  const contentInsetRight = 10;
+  const adaptiveScrollProgress = interpolate(frame, [scrollStartFrame, scrollEndFrame], [0, 1], {
     easing: Easing.bezier(0.22, 1, 0.36, 1),
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
-  const scrollY = maxScroll * scrollProgress;
-  const thumbHeight = Math.max(
-    64,
-    trackHeight * (viewportHeight / Math.max(listHeight, viewportHeight)),
-  );
-  const thumbTravel = Math.max(0, trackHeight - thumbHeight);
-  const thumbTop = thumbTravel * scrollProgress;
+  const scrollY = maxScroll * adaptiveScrollProgress;
 
   return (
     <div style={{ display: "grid", gap: 10, height: "100%" }}>
@@ -134,10 +138,10 @@ export const ProjectAtlasBoard: React.FC<{ data: UsageInsightsData }> = ({ data 
               <div
                 style={{
                   display: "grid",
-              rowGap: rowGap,
-              transform: `translateY(-${scrollY}px)`,
-            }}
-          >
+                  rowGap: rowGap,
+                  transform: `translateY(-${scrollY}px)`,
+                }}
+              >
                 {projects.map((project, index) => {
                   const toneKey = (["peach", "sky", "mint", "butter"] as const)[index % 4];
                   const tone = toneStyles[toneKey];
@@ -157,7 +161,7 @@ export const ProjectAtlasBoard: React.FC<{ data: UsageInsightsData }> = ({ data 
                         position: "relative",
                         height: rowHeight,
                         boxSizing: "border-box",
-                        padding: "10px 14px 10px 16px",
+                        padding: "10px 14px",
                         borderRadius: 16,
                         background:
                           index < 3
@@ -168,19 +172,7 @@ export const ProjectAtlasBoard: React.FC<{ data: UsageInsightsData }> = ({ data 
                         transform: `translateY(${(1 - reveal) * 14}px)`,
                         opacity: reveal,
                       }}
-                      >
-                      <div
-                        style={{
-                          position: "absolute",
-                          left: 0,
-                          top: 0,
-                          width: 4,
-                          height: rowHeight,
-                          borderRadius: "16px 0 0 16px",
-                          background: index < 3 ? tone.solid : "rgba(77, 63, 49, 0.12)",
-                          opacity: index < 3 ? 1 : 0.55,
-                        }}
-                      />
+                    >
                       <div
                         style={{
                           display: "grid",
@@ -347,39 +339,6 @@ export const ProjectAtlasBoard: React.FC<{ data: UsageInsightsData }> = ({ data 
                   );
                 })}
               </div>
-            </div>
-            <div
-              style={{
-                position: "absolute",
-                top: scrollbarInsetY,
-                bottom: scrollbarInsetY,
-                right: scrollbarInsetRight,
-                width: scrollbarWidth,
-                borderRadius: 999,
-                background: "rgba(255,255,255,0.78)",
-                border: "1px solid rgba(116, 103, 84, 0.08)",
-                overflow: "hidden",
-              }}
-            >
-              <div
-                style={{
-                position: "absolute",
-                inset: 1,
-                borderRadius: 999,
-                background: "rgba(255,255,255,0.45)",
-              }}
-            />
-            <div
-                style={{
-                  position: "absolute",
-                  left: 1,
-                  right: 1,
-                  top: thumbTop,
-                  height: thumbHeight,
-                  borderRadius: 999,
-                  background: "rgba(53, 44, 36, 0.58)",
-                }}
-              />
             </div>
           </div>
         </div>
