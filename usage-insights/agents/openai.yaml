@@ -1,4 +1,4 @@
 interface:
   display_name: "Usage Insights"
   short_description: "Analyze local AI usage into reports and optional videos."
-  default_prompt: "Use $usage-insights to analyze my local AI usage, summarize project patterns, and optionally render a video."
+  default_prompt: "Use $usage-insights to generate my local AI usage report, poster, and video from this machine's history."

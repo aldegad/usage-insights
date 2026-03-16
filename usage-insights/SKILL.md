@@ -16,11 +16,52 @@ This skill is best for requests like:
 - "Turn my usage logs into a shareable report and video."
 - "Build a reusable usage-insights project I can rerun later."
 
+## Default behavior
+
+When the user invokes `$usage-insights` without narrowing the request, do not stop to offer setup options first. Run the bundled entry script immediately:
+
+```bash
+python3 /path/to/usage-insights/scripts/run_usage_insights.py
+```
+
+Default script behavior:
+
+- creates or reuses `.usage-insights-workspace` in the current working directory
+- reuses the current directory when it is already a generated usage-insights workspace
+- runs `npm install` when dependencies are missing
+- generates `INSIGHTS.md` plus the generated TypeScript data file
+- renders both the poster and MP4 by default
+
+After the script finishes, summarize the generated outputs and call out the workspace path. Review the privacy notes before suggesting the user share any artifact publicly.
+
 ## Workflow
 
-### 1. Create or reuse a workspace
+### 1. Run the automatic pipeline
 
-If the user does not already have a dedicated usage-insights project, bootstrap one with:
+Use the entry script for the common case:
+
+```bash
+python3 /path/to/usage-insights/scripts/run_usage_insights.py
+```
+
+This is the preferred path for:
+
+- analyze + poster + video in one run
+- users who do not care about workspace setup details
+- repeated calls from arbitrary repositories or folders
+
+Useful variants:
+
+```bash
+python3 /path/to/usage-insights/scripts/run_usage_insights.py --mode report
+python3 /path/to/usage-insights/scripts/run_usage_insights.py --mode poster
+python3 /path/to/usage-insights/scripts/run_usage_insights.py --mode video
+python3 /path/to/usage-insights/scripts/run_usage_insights.py --mode dev
+```
+
+### 2. Create or reuse a dedicated workspace
+
+If the user explicitly wants a standalone reusable project, bootstrap one with:
 
 ```bash
 python3 /path/to/usage-insights/scripts/create_project.py --dest /desired/workspace/path
@@ -28,7 +69,7 @@ python3 /path/to/usage-insights/scripts/create_project.py --dest /desired/worksp
 
 The bootstrap script copies the bundled Remotion template from [`assets/remotion-template/`](./assets/remotion-template).
 
-### 2. Install dependencies
+### 3. Install dependencies
 
 Inside the generated workspace:
 
@@ -36,7 +77,9 @@ Inside the generated workspace:
 npm install
 ```
 
-### 3. Generate the analysis
+The automatic runner handles this step on its own unless `node_modules` is already present.
+
+### 4. Generate the analysis
 
 Run:
 
@@ -58,7 +101,7 @@ The analyzer reads from the current user's local home directories when they exis
 
 Do not ask the user to manually assemble those datasets first unless the local source format is missing or broken.
 
-### 4. Review privacy before sharing
+### 5. Review privacy before sharing
 
 Always inspect the generated report before publishing it. Project names, time ranges, work rhythms, and AI usage patterns may be sensitive.
 
@@ -70,7 +113,7 @@ If the user wants a public-facing artifact:
 
 More detail is in [`references/security.md`](./references/security.md).
 
-### 5. Render poster or video when requested
+### 6. Render poster or video when requested
 
 Open the Remotion studio:
 
@@ -92,7 +135,7 @@ npm run render:video
 
 The bundled template is designed to work as a draft. After analysis, update copy, tone, language, and visual emphasis to match the user's intended audience before final export.
 
-If the user only wants the report, stop after `npm run analyze`. If the user wants a visual artifact, continue into Remotion preview or render commands.
+If the user only wants the report, use `--mode report` or stop after `npm run analyze`. If the user wants a visual artifact, continue into Remotion preview or render commands.
 
 The default project scene scroll is adaptive: it hides explicit scrollbar UI and adjusts scroll timing based on how many projects are present, so denser archives get a longer read-through.
 
@@ -113,6 +156,7 @@ Do not fabricate token counts for providers that only expose activity traces.
 
 ### scripts/
 
+- [`run_usage_insights.py`](./scripts/run_usage_insights.py): one-command entry point that creates or reuses a workspace and runs the requested pipeline
 - [`create_project.py`](./scripts/create_project.py): copies the reusable template into a workspace
 
 ### references/

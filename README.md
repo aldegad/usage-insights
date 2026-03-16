@@ -42,7 +42,7 @@ The installable skill lives in [`usage-insights/`](./usage-insights). It is alre
 Example prompt after installation:
 
 - `Use $usage-insights to analyze my local AI usage and write a report.`
-- `Use $usage-insights to make a shareable AI usage profile and render a video.`
+- `Use $usage-insights to generate my usage report, poster, and video.`
 
 ## What The Skill Reads
 
@@ -57,7 +57,20 @@ This means another person can install the same skill and generate a report or vi
 
 ## Quick Start
 
-The skill ships with a bootstrap script that creates a reusable workspace from the bundled template:
+For the common case, the skill now ships with a one-command runner:
+
+```bash
+python3 usage-insights/scripts/run_usage_insights.py
+```
+
+That command will:
+
+- create or reuse `.usage-insights-workspace` in the current directory
+- install dependencies when needed
+- generate `INSIGHTS.md` and `src/data/usage-insights.generated.ts`
+- render both the poster and MP4 by default
+
+If you want a dedicated reusable workspace instead, use the bootstrap flow:
 
 ```bash
 python3 usage-insights/scripts/create_project.py --dest ~/usage-insights-project --install
@@ -72,9 +85,9 @@ Typical flow:
 
 1. Install the skill.
 2. Ask Codex to use `$usage-insights`.
-3. Let the skill create a workspace or reuse an existing one.
-4. Run `npm run analyze` to collect local usage into `INSIGHTS.md` and `src/data/usage-insights.generated.ts`.
-5. Render poster/video only when needed.
+3. Let the skill run `run_usage_insights.py` in the current directory.
+4. Review the generated `INSIGHTS.md`, poster, and MP4 outputs.
+5. Use the dedicated workspace flow only when you want a long-lived project to tweak manually.
 
 ## Example Output
 
@@ -100,6 +113,7 @@ Gemini and Antigravity are intentionally kept out of token charts unless reliabl
 ## Repository Layout
 
 - [`usage-insights`](./usage-insights): installable Codex skill
+- [`usage-insights/scripts/run_usage_insights.py`](./usage-insights/scripts/run_usage_insights.py): one-command runner for report + poster + video
 - [`usage-insights/scripts/create_project.py`](./usage-insights/scripts/create_project.py): workspace bootstrap script
 - [`usage-insights/assets/remotion-template`](./usage-insights/assets/remotion-template): analyzer and video template
 - [`usage-insights/references`](./usage-insights/references): data-source and security notes

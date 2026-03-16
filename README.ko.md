@@ -35,7 +35,7 @@
 설치 후 예시 프롬프트:
 
 - `Use $usage-insights to analyze my local AI usage and write a report.`
-- `Use $usage-insights to make a shareable AI usage profile and render a video.`
+- `Use $usage-insights to generate my usage report, poster, and video.`
 
 ## 이 스킬이 읽는 데이터
 
@@ -50,6 +50,21 @@
 
 ## 빠른 시작
 
+이제는 보통 아래 한 줄이 기본 사용법입니다.
+
+```bash
+python3 usage-insights/scripts/run_usage_insights.py
+```
+
+이 명령은 현재 디렉터리 기준으로:
+
+- `.usage-insights-workspace`를 자동 생성하거나 재사용하고
+- 필요한 경우 `npm install`을 실행하고
+- `INSIGHTS.md`와 generated data를 만들고
+- 포스터와 MP4까지 기본으로 렌더합니다
+
+전용 워크스페이스를 따로 만들고 싶을 때만 기존 bootstrap 흐름을 쓰면 됩니다.
+
 ```bash
 python3 usage-insights/scripts/create_project.py --dest ~/usage-insights-project --install
 cd ~/usage-insights-project
@@ -63,9 +78,9 @@ npm run render:video
 
 1. 스킬 설치
 2. Codex에게 `$usage-insights` 사용 요청
-3. 워크스페이스 생성 또는 기존 워크스페이스 재사용
-4. `npm run analyze`로 로컬 사용 기록 수집
-5. 필요할 때만 포스터나 MP4 렌더
+3. 스킬이 `run_usage_insights.py`를 바로 실행
+4. 생성된 리포트, 포스터, MP4 확인
+5. 수동 편집이 필요할 때만 전용 워크스페이스 흐름 사용
 
 ## 예시 출력
 
@@ -91,6 +106,7 @@ Gemini와 Antigravity는 신뢰할 수 있는 토큰 원장이 없으면 토큰 
 ## 저장소 구성
 
 - [`usage-insights`](./usage-insights): 설치 가능한 Codex 스킬
+- [`usage-insights/scripts/run_usage_insights.py`](./usage-insights/scripts/run_usage_insights.py): 리포트와 포스터/영상을 한 번에 만드는 실행 스크립트
 - [`usage-insights/scripts/create_project.py`](./usage-insights/scripts/create_project.py): 워크스페이스 생성 스크립트
 - [`usage-insights/assets/remotion-template`](./usage-insights/assets/remotion-template): 분석기와 영상 템플릿
 - [`usage-insights/references`](./usage-insights/references): 데이터 소스 및 보안 참고 문서
