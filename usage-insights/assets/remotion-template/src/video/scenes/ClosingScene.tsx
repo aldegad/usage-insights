@@ -1,14 +1,61 @@
 import React from "react";
 import { interpolate, useCurrentFrame } from "remotion";
 import type { VideoProps } from "../config";
-import { CLOSING_DURATION, DISPLAY_WEIGHT, displayFont } from "../config";
+import {
+  bodyFont,
+  CLOSING_DURATION,
+  DISPLAY_WEIGHT,
+  displayFont,
+  LABEL_WEIGHT,
+  labelFont,
+} from "../config";
 import { GlassPanel, MetricCard, SoftChip, Stage } from "../primitives";
 import { formatCompact, formatNumber, formatPercent } from "../utils";
 
+const ClosingNote: React.FC<{
+  label: string;
+  body: string;
+}> = ({ label, body }) => (
+  <div
+    style={{
+      display: "grid",
+      gridTemplateColumns: "120px 1fr",
+      gap: 16,
+      paddingTop: 14,
+      borderTop: "1px solid rgba(88, 72, 57, 0.08)",
+    }}
+  >
+    <div
+      style={{
+        fontFamily: labelFont,
+        fontSize: 11,
+        letterSpacing: "0.14em",
+        fontWeight: LABEL_WEIGHT,
+        color: "#8a7869",
+      }}
+    >
+      {label}
+    </div>
+    <div
+      style={{
+        fontFamily: bodyFont,
+        fontSize: 15,
+        lineHeight: 1.62,
+        color: "#5b5045",
+      }}
+    >
+      {body}
+    </div>
+  </div>
+);
+
 export const ClosingScene: React.FC<VideoProps> = ({ data }) => {
   const topProjects = data.projects.slice(0, 3);
+  const topProjectShare =
+    topProjects.reduce((sum, project) => sum + project.tokens, 0) / data.totals.tokens;
+  const closingSummary = `전체 ${formatCompact(data.totals.tokens)} 토큰을 지나며 가장 뚜렷하게 보인 패턴은, AI를 하나의 도구가 아니라 역할이 다른 팀으로 운영할 때 결과가 가장 안정적으로 나왔다는 점입니다. ${data.providers[0]?.label || "Codex"}는 볼륨과 추진력을, ${data.providers[1]?.label || "Claude"}는 실험과 탐색의 완충 역할을 맡으며 작업을 밀어 올렸습니다.`;
   const closingChars = Math.floor(
-    interpolate(useCurrentFrame(), [8, 92], [0, data.persona.worksBestAs.length], {
+    interpolate(useCurrentFrame(), [8, 92], [0, closingSummary.length], {
       extrapolateLeft: "clamp",
       extrapolateRight: "clamp",
     }),
@@ -62,6 +109,7 @@ export const ClosingScene: React.FC<VideoProps> = ({ data }) => {
                 lineHeight: 1.08,
                 letterSpacing: "-0.04em",
                 color: "#171310",
+                maxWidth: 620,
               }}
             >
               역할을 나눠 쓸수록
@@ -71,14 +119,56 @@ export const ClosingScene: React.FC<VideoProps> = ({ data }) => {
           </div>
           <div
             style={{
+              fontFamily: bodyFont,
               fontSize: 16,
-              lineHeight: 1.62,
+              lineHeight: 1.68,
               color: "#5c5045",
               maxWidth: 760,
-              minHeight: 72,
+              minHeight: 104,
             }}
           >
-            {data.persona.worksBestAs.slice(0, closingChars)}
+            {closingSummary.slice(0, closingChars)}
+          </div>
+          <div
+            style={{
+              marginTop: "auto",
+              display: "grid",
+              gap: 14,
+            }}
+          >
+            <div
+              style={{
+                fontFamily: labelFont,
+                fontSize: 11,
+                letterSpacing: "0.18em",
+                fontWeight: LABEL_WEIGHT,
+                color: "#837263",
+              }}
+            >
+              읽힌 패턴
+            </div>
+            <ClosingNote
+              label="도구 배치"
+              body={`${data.providers[0]?.label || "Codex"} ${formatPercent(
+                data.providers[0]?.share || 0,
+              )}, ${data.providers[1]?.label || "Claude"} ${formatPercent(
+                data.providers[1]?.share || 0,
+              )}. 한쪽으로 몰아붙이기보다 시기마다 도구의 역할을 나눠 쓰는 방식이 가장 안정적이었습니다.`}
+            />
+            <ClosingNote
+              label="집중 방식"
+              body={`${formatNumber(
+                data.totals.deepWorkThreads,
+              )}개의 깊은 작업 스레드와 ${formatNumber(
+                data.totals.megaThreads,
+              )}개의 50만+ 토큰 기록을 보면, 늘 켜두는 사용보다 필요할 때 길게 몰입하는 작업 리듬이 더 강하게 드러납니다.`}
+            />
+            <ClosingNote
+              label="프로젝트 축"
+              body={`상위 3개 프로젝트가 전체 토큰의 ${formatPercent(
+                topProjectShare,
+              )}를 차지했습니다. 특히 ${topProjects[0]?.label || "대표 프로젝트"}가 작업 중심축 역할을 하며, 다른 프로젝트들은 그 주변에서 실험과 파생 작업으로 확장됐습니다.`}
+            />
           </div>
         </GlassPanel>
         <div style={{ display: "grid", gap: 18 }}>
