@@ -1,5 +1,5 @@
 import React from "react";
-import { interpolate, useCurrentFrame } from "remotion";
+import { Easing, interpolate, useCurrentFrame } from "remotion";
 import type { VideoProps } from "../config";
 import {
   bodyFont,
@@ -62,11 +62,12 @@ export const ClosingScene: React.FC<VideoProps> = ({ data }) => {
       extrapolateRight: "clamp",
     }),
   );
-  const patternScroll = interpolate(
+  const leftColumnScroll = interpolate(
     closingFrame,
-    [90, CLOSING_DURATION - 22],
-    [0, 168],
+    [92, 140],
+    [0, 144],
     {
+      easing: Easing.inOut(Easing.cubic),
       extrapolateLeft: "clamp",
       extrapolateRight: "clamp",
     },
@@ -85,78 +86,67 @@ export const ClosingScene: React.FC<VideoProps> = ({ data }) => {
         <GlassPanel
           style={{
             padding: "24px 26px 22px",
-            display: "flex",
-            flexDirection: "column",
             background:
               "linear-gradient(145deg, rgba(255,255,255,0.94), rgba(246, 251, 255, 0.76))",
             overflow: "hidden",
           }}
         >
-          <div>
-            <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-              <SoftChip
-                text={`${data.providers[0]?.label || "Codex"} ${formatPercent(
-                  data.providers[0]?.share || 0,
-                )}`}
-                tone="mint"
-              />
-              <SoftChip
-                text={`${data.providers[1]?.label || "Claude"} ${formatPercent(
-                  data.providers[1]?.share || 0,
-                )}`}
-                tone="sky"
-              />
-              <SoftChip
-                text={`${formatNumber(data.totals.deepWorkThreads)} 깊은 작업 스레드`}
-                tone="peach"
-              />
+          <div
+            style={{
+              display: "grid",
+              gap: 18,
+              transform: `translateY(-${leftColumnScroll}px)`,
+            }}
+          >
+            <div>
+              <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+                <SoftChip
+                  text={`${data.providers[0]?.label || "Codex"} ${formatPercent(
+                    data.providers[0]?.share || 0,
+                  )}`}
+                  tone="mint"
+                />
+                <SoftChip
+                  text={`${data.providers[1]?.label || "Claude"} ${formatPercent(
+                    data.providers[1]?.share || 0,
+                  )}`}
+                  tone="sky"
+                />
+                <SoftChip
+                  text={`${formatNumber(data.totals.deepWorkThreads)} 깊은 작업 스레드`}
+                  tone="peach"
+                />
+              </div>
+              <div
+                style={{
+                  marginTop: 20,
+                  fontFamily: displayFont,
+                  fontWeight: DISPLAY_WEIGHT,
+                  fontSize: 40,
+                  lineHeight: 1.08,
+                  letterSpacing: "-0.04em",
+                  color: "#171310",
+                  maxWidth: 620,
+                }}
+              >
+                역할을 나눠 쓸수록
+                <br />
+                더 선명하게 완주합니다.
+              </div>
             </div>
             <div
               style={{
-                marginTop: 20,
-                fontFamily: displayFont,
-                fontWeight: DISPLAY_WEIGHT,
-                fontSize: 40,
-                lineHeight: 1.08,
-                letterSpacing: "-0.04em",
-                color: "#171310",
-                maxWidth: 620,
+                fontFamily: bodyFont,
+                fontSize: 16,
+                lineHeight: 1.68,
+                color: "#5c5045",
+                maxWidth: 760,
+                minHeight: 104,
               }}
             >
-              역할을 나눠 쓸수록
-              <br />
-              더 선명하게 완주합니다.
+              {closingSummary.slice(0, closingChars)}
             </div>
-          </div>
-          <div
-            style={{
-              marginTop: 18,
-              fontFamily: bodyFont,
-              fontSize: 16,
-              lineHeight: 1.68,
-              color: "#5c5045",
-              maxWidth: 760,
-              minHeight: 104,
-            }}
-          >
-            {closingSummary.slice(0, closingChars)}
-          </div>
-          <div
-            style={{
-              marginTop: 18,
-              flex: 1,
-              minHeight: 0,
-              overflow: "hidden",
-              position: "relative",
-            }}
-          >
-            <div
-              style={{
-                display: "grid",
-                gap: 14,
-                transform: `translateY(-${patternScroll}px)`,
-              }}
-            >
+            <div style={{ display: "grid", gap: 14 }}>
               <div
                 style={{
                   fontFamily: labelFont,
@@ -191,26 +181,6 @@ export const ClosingScene: React.FC<VideoProps> = ({ data }) => {
                 )}를 차지했습니다. 특히 ${topProjects[0]?.label || "대표 프로젝트"}가 작업 중심축 역할을 하며, 다른 프로젝트들은 그 주변에서 실험과 파생 작업으로 확장됐습니다.`}
               />
             </div>
-            <div
-              style={{
-                position: "absolute",
-                inset: "auto 0 0",
-                height: 28,
-                background:
-                  "linear-gradient(180deg, rgba(246,251,255,0), rgba(246,251,255,0.96) 78%)",
-                pointerEvents: "none",
-              }}
-            />
-            <div
-              style={{
-                position: "absolute",
-                inset: "0 0 auto",
-                height: 20,
-                background:
-                  "linear-gradient(180deg, rgba(255,255,255,0.94), rgba(255,255,255,0))",
-                pointerEvents: "none",
-              }}
-            />
           </div>
         </GlassPanel>
         <div style={{ display: "grid", gap: 18 }}>

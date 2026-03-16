@@ -19,11 +19,11 @@ export const DISPLAY_WEIGHT = 700;
 export const LABEL_WEIGHT = 600;
 
 export const OPENING_DURATION = 150;
-export const SYSTEM_DURATION = 180;
+export const SYSTEM_DURATION = 190;
 export const RHYTHM_DURATION = 180;
 export const PROJECTS_DURATION = 360;
 export const PERSONA_DURATION = 210;
-export const CLOSING_DURATION = 180;
+export const CLOSING_DURATION = 210;
 export const SCENE_TRANSITION_DURATION = 20;
 
 export const USAGE_PROFILE_DURATION =

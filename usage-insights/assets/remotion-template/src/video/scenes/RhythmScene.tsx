@@ -1,5 +1,5 @@
 import React from "react";
-import { spring, useCurrentFrame, useVideoConfig } from "remotion";
+import { Easing, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import type { VideoProps } from "../config";
 import {
   bodyFont,
@@ -22,6 +22,11 @@ export const RhythmScene: React.FC<VideoProps> = ({ data }) => {
     .slice(0, 3)
     .sort((a, b) => a.label.localeCompare(b.label));
   const topWeekdays = [...data.weekdays].sort((a, b) => b.tokens - a.tokens).slice(0, 3);
+  const rightColumnScroll = interpolate(frame, [42, RHYTHM_DURATION - 20], [0, 116], {
+    easing: Easing.bezier(0.28, 0.02, 0.18, 1),
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
 
   return (
     <Stage current="tempo" durationInFrames={RHYTHM_DURATION} section="시간대 리듬">
@@ -114,76 +119,90 @@ export const RhythmScene: React.FC<VideoProps> = ({ data }) => {
             })}
           </div>
         </GlassPanel>
-        <div style={{ display: "grid", gap: 18 }}>
-          <GlassPanel style={{ padding: 24 }}>
-            <div
-              style={{
-                fontFamily: displayFont,
-                fontWeight: DISPLAY_WEIGHT,
-                fontSize: 28,
-                lineHeight: 1,
-                color: "#1f1a16",
-              }}
-            >
-              피크 시간대
-            </div>
-            <div style={{ marginTop: 18, display: "grid", gap: 12 }}>
-              {topHours.map((hour, index) => (
-                <SoftChip
-                  key={hour.label}
-                  text={`${hour.label}시 · ${formatCompact(hour.tokens)}`}
-                  tone={index === 0 ? "peach" : index === 1 ? "mint" : "sky"}
-                />
-              ))}
-            </div>
-          </GlassPanel>
-          <GlassPanel style={{ padding: 24 }}>
-            <div
-              style={{
-                fontFamily: displayFont,
-                fontWeight: DISPLAY_WEIGHT,
-                fontSize: 28,
-                lineHeight: 1,
-                color: "#1f1a16",
-              }}
-            >
-              강한 요일
-            </div>
-            <div style={{ marginTop: 18, display: "grid", gap: 12 }}>
-              {topWeekdays.map((day, index) => (
-                <SoftChip
-                  key={day.label}
-                  text={`${localizeWeekday(day.label)}요일 · ${formatCompact(day.tokens)}`}
-                  tone={index === 0 ? "butter" : index === 1 ? "sky" : "mint"}
-                />
-              ))}
-            </div>
-          </GlassPanel>
-          <GlassPanel style={{ padding: 24 }}>
-            <div
-              style={{
-                fontFamily: labelFont,
-                fontSize: 11,
-                letterSpacing: "0.12em",
-                fontWeight: LABEL_WEIGHT,
-                color: "#8a7a6c",
-              }}
-            >
-              해석
-            </div>
-            <div
-              style={{
-                marginTop: 14,
-                fontFamily: bodyFont,
-                fontSize: 19,
-                lineHeight: 1.68,
-                color: "#5e5247",
-              }}
-            >
-              AI를 배경 채팅처럼 틀어두는 방식은 아닙니다. 필요가 생기면 강하게 들어오고,
-              한 번 들어오면 구조가 잡히고 결과가 날 때까지 깊게 파는 쪽에 가깝습니다.
-            </div>
-          </GlassPanel>
+        <div
+          style={{
+            position: "relative",
+            minHeight: 0,
+            overflow: "hidden",
+          }}
+        >
+          <div
+            style={{
+              display: "grid",
+              gap: 18,
+              transform: `translateY(-${rightColumnScroll}px)`,
+            }}
+          >
+            <GlassPanel style={{ padding: 24 }}>
+              <div
+                style={{
+                  fontFamily: displayFont,
+                  fontWeight: DISPLAY_WEIGHT,
+                  fontSize: 28,
+                  lineHeight: 1,
+                  color: "#1f1a16",
+                }}
+              >
+                피크 시간대
+              </div>
+              <div style={{ marginTop: 18, display: "grid", gap: 12 }}>
+                {topHours.map((hour, index) => (
+                  <SoftChip
+                    key={hour.label}
+                    text={`${hour.label}시 · ${formatCompact(hour.tokens)}`}
+                    tone={index === 0 ? "peach" : index === 1 ? "mint" : "sky"}
+                  />
+                ))}
+              </div>
+            </GlassPanel>
+            <GlassPanel style={{ padding: 24 }}>
+              <div
+                style={{
+                  fontFamily: displayFont,
+                  fontWeight: DISPLAY_WEIGHT,
+                  fontSize: 28,
+                  lineHeight: 1,
+                  color: "#1f1a16",
+                }}
+              >
+                강한 요일
+              </div>
+              <div style={{ marginTop: 18, display: "grid", gap: 12 }}>
+                {topWeekdays.map((day, index) => (
+                  <SoftChip
+                    key={day.label}
+                    text={`${localizeWeekday(day.label)}요일 · ${formatCompact(day.tokens)}`}
+                    tone={index === 0 ? "butter" : index === 1 ? "sky" : "mint"}
+                  />
+                ))}
+              </div>
+            </GlassPanel>
+            <GlassPanel style={{ padding: 24 }}>
+              <div
+                style={{
+                  fontFamily: labelFont,
+                  fontSize: 11,
+                  letterSpacing: "0.12em",
+                  fontWeight: LABEL_WEIGHT,
+                  color: "#8a7a6c",
+                }}
+              >
+                해석
+              </div>
+              <div
+                style={{
+                  marginTop: 14,
+                  fontFamily: bodyFont,
+                  fontSize: 19,
+                  lineHeight: 1.68,
+                  color: "#5e5247",
+                }}
+              >
+                AI를 배경 채팅처럼 틀어두는 방식은 아닙니다. 필요가 생기면 강하게 들어오고,
+                한 번 들어오면 구조가 잡히고 결과가 날 때까지 깊게 파는 쪽에 가깝습니다.
+              </div>
+            </GlassPanel>
+          </div>
         </div>
       </div>
     </Stage>

@@ -16,7 +16,7 @@ export const SystemScene: React.FC<VideoProps> = ({ data }) => {
     claudeLead && codexLead
       ? `${claudeLead.label}엔 Claude가, ${codexLead.label}엔 Codex가 더 강했습니다. 막대 전체는 월별 총 토큰이고 색으로 도구 비중을 나눠 보여줍니다.`
       : "한 도구만 오래 끄는 패턴이 아니라, 시기와 맥락에 따라 사용 무게가 바뀝니다. 막대 전체는 월별 총 토큰입니다.";
-  const rightColumnScroll = interpolate(frame, [40, SYSTEM_DURATION - 16], [0, 84], {
+  const rightColumnScroll = interpolate(frame, [40, 140], [0, 132], {
     easing: Easing.bezier(0.28, 0.02, 0.18, 1),
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
@@ -49,7 +49,7 @@ export const SystemScene: React.FC<VideoProps> = ({ data }) => {
               transform: `translateY(-${rightColumnScroll}px)`,
             }}
           >
-            <div style={{ height: 308 }}>
+            <div style={{ height: 336 }}>
               <ProviderSplitCard data={data} />
             </div>
             <div style={{ height: 336 }}>

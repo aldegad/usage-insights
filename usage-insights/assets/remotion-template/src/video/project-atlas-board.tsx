@@ -43,7 +43,7 @@ export const ProjectAtlasBoard: React.FC<{ data: UsageInsightsData }> = ({ data 
   const scrollEndFrame = interpolate(
     scrollDensity,
     [0, 1],
-    [PROJECTS_DURATION - 20, PROJECTS_DURATION - 8],
+    [PROJECTS_DURATION - 120, PROJECTS_DURATION - 100],
     {
       extrapolateLeft: "clamp",
       extrapolateRight: "clamp",
@@ -52,7 +52,7 @@ export const ProjectAtlasBoard: React.FC<{ data: UsageInsightsData }> = ({ data 
   const contentInsetLeft = 10;
   const contentInsetRight = 10;
   const adaptiveScrollProgress = interpolate(frame, [scrollStartFrame, scrollEndFrame], [0, 1], {
-    easing: Easing.linear,
+    easing: Easing.inOut(Easing.cubic),
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
