@@ -50,16 +50,26 @@ const ClosingNote: React.FC<{
 );
 
 export const ClosingScene: React.FC<VideoProps> = ({ data }) => {
+  const closingFrame = useCurrentFrame();
   const topProjects = data.projects.slice(0, 3);
   const topProjectShare =
     topProjects.reduce((sum, project) => sum + project.tokens, 0) / data.totals.tokens;
   const activeRate = formatPercent(data.period.activeDays / data.period.totalDays);
   const closingSummary = `전체 ${formatCompact(data.totals.tokens)} 토큰을 지나며 가장 뚜렷하게 보인 패턴은, AI를 하나의 도구가 아니라 역할이 다른 팀으로 운영할 때 결과가 가장 안정적으로 나왔다는 점입니다. ${data.providers[0]?.label || "Codex"}는 볼륨과 추진력을, ${data.providers[1]?.label || "Claude"}는 실험과 탐색의 완충 역할을 맡으며 작업을 밀어 올렸습니다.`;
   const closingChars = Math.floor(
-    interpolate(useCurrentFrame(), [8, 92], [0, closingSummary.length], {
+    interpolate(closingFrame, [8, 92], [0, closingSummary.length], {
       extrapolateLeft: "clamp",
       extrapolateRight: "clamp",
     }),
+  );
+  const patternScroll = interpolate(
+    closingFrame,
+    [90, CLOSING_DURATION - 22],
+    [0, 168],
+    {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+    },
   );
 
   return (
@@ -77,9 +87,9 @@ export const ClosingScene: React.FC<VideoProps> = ({ data }) => {
             padding: "24px 26px 22px",
             display: "flex",
             flexDirection: "column",
-            gap: 18,
             background:
               "linear-gradient(145deg, rgba(255,255,255,0.94), rgba(246, 251, 255, 0.76))",
+            overflow: "hidden",
           }}
         >
           <div>
@@ -120,6 +130,7 @@ export const ClosingScene: React.FC<VideoProps> = ({ data }) => {
           </div>
           <div
             style={{
+              marginTop: 18,
               fontFamily: bodyFont,
               fontSize: 16,
               lineHeight: 1.68,
@@ -132,43 +143,73 @@ export const ClosingScene: React.FC<VideoProps> = ({ data }) => {
           </div>
           <div
             style={{
-              marginTop: "auto",
-              display: "grid",
-              gap: 14,
+              marginTop: 18,
+              flex: 1,
+              minHeight: 0,
+              overflow: "hidden",
+              position: "relative",
             }}
           >
             <div
               style={{
-                fontFamily: labelFont,
-                fontSize: 11,
-                letterSpacing: "0.18em",
-                fontWeight: LABEL_WEIGHT,
-                color: "#837263",
+                display: "grid",
+                gap: 14,
+                transform: `translateY(-${patternScroll}px)`,
               }}
             >
-              읽힌 패턴
+              <div
+                style={{
+                  fontFamily: labelFont,
+                  fontSize: 11,
+                  letterSpacing: "0.18em",
+                  fontWeight: LABEL_WEIGHT,
+                  color: "#837263",
+                }}
+              >
+                읽힌 패턴
+              </div>
+              <ClosingNote
+                label="도구 배치"
+                body={`${data.providers[0]?.label || "Codex"} ${formatPercent(
+                  data.providers[0]?.share || 0,
+                )}, ${data.providers[1]?.label || "Claude"} ${formatPercent(
+                  data.providers[1]?.share || 0,
+                )}. 한쪽으로 몰아붙이기보다 시기마다 도구의 역할을 나눠 쓰는 방식이 가장 안정적이었습니다.`}
+              />
+              <ClosingNote
+                label="집중 방식"
+                body={`${formatNumber(
+                  data.totals.deepWorkThreads,
+                )}개의 깊은 작업 스레드와 ${formatNumber(
+                  data.totals.megaThreads,
+                )}개의 50만+ 토큰 기록을 보면, 늘 켜두는 사용보다 필요할 때 길게 몰입하는 작업 리듬이 더 강하게 드러납니다.`}
+              />
+              <ClosingNote
+                label="프로젝트 축"
+                body={`상위 3개 프로젝트가 전체 토큰의 ${formatPercent(
+                  topProjectShare,
+                )}를 차지했습니다. 특히 ${topProjects[0]?.label || "대표 프로젝트"}가 작업 중심축 역할을 하며, 다른 프로젝트들은 그 주변에서 실험과 파생 작업으로 확장됐습니다.`}
+              />
             </div>
-            <ClosingNote
-              label="도구 배치"
-              body={`${data.providers[0]?.label || "Codex"} ${formatPercent(
-                data.providers[0]?.share || 0,
-              )}, ${data.providers[1]?.label || "Claude"} ${formatPercent(
-                data.providers[1]?.share || 0,
-              )}. 한쪽으로 몰아붙이기보다 시기마다 도구의 역할을 나눠 쓰는 방식이 가장 안정적이었습니다.`}
+            <div
+              style={{
+                position: "absolute",
+                inset: "auto 0 0",
+                height: 28,
+                background:
+                  "linear-gradient(180deg, rgba(246,251,255,0), rgba(246,251,255,0.96) 78%)",
+                pointerEvents: "none",
+              }}
             />
-            <ClosingNote
-              label="집중 방식"
-              body={`${formatNumber(
-                data.totals.deepWorkThreads,
-              )}개의 깊은 작업 스레드와 ${formatNumber(
-                data.totals.megaThreads,
-              )}개의 50만+ 토큰 기록을 보면, 늘 켜두는 사용보다 필요할 때 길게 몰입하는 작업 리듬이 더 강하게 드러납니다.`}
-            />
-            <ClosingNote
-              label="프로젝트 축"
-              body={`상위 3개 프로젝트가 전체 토큰의 ${formatPercent(
-                topProjectShare,
-              )}를 차지했습니다. 특히 ${topProjects[0]?.label || "대표 프로젝트"}가 작업 중심축 역할을 하며, 다른 프로젝트들은 그 주변에서 실험과 파생 작업으로 확장됐습니다.`}
+            <div
+              style={{
+                position: "absolute",
+                inset: "0 0 auto",
+                height: 20,
+                background:
+                  "linear-gradient(180deg, rgba(255,255,255,0.94), rgba(255,255,255,0))",
+                pointerEvents: "none",
+              }}
             />
           </div>
         </GlassPanel>
