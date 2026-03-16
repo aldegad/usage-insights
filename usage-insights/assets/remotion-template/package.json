@@ -1,0 +1,38 @@
+{
+  "name": "usage-insights-template",
+  "version": "1.0.0",
+  "description": "Local AI usage analysis report and Remotion video template",
+  "license": "MIT",
+  "dependencies": {
+    "@remotion/cli": "4.0.435",
+    "@remotion/fonts": "^4.0.435",
+    "@remotion/google-fonts": "^4.0.435",
+    "@remotion/tailwind-v4": "4.0.435",
+    "@remotion/transitions": "^4.0.435",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "remotion": "4.0.435",
+    "tailwindcss": "4.0.0"
+  },
+  "devDependencies": {
+    "@remotion/eslint-config-flat": "4.0.435",
+    "@types/react": "19.2.7",
+    "@types/web": "0.0.166",
+    "eslint": "9.19.0",
+    "prettier": "3.8.1",
+    "typescript": "5.9.3"
+  },
+  "scripts": {
+    "analyze": "node scripts/generate-insights.mjs",
+    "dev": "remotion studio",
+    "build": "remotion bundle",
+    "render:video": "remotion render UsageProfile out/usage-insights-profile.mp4",
+    "render:poster": "remotion still UsageProfile out/usage-insights-poster.jpg --frame=96",
+    "build:all": "npm run analyze && npm run render:video && npm run render:poster",
+    "upgrade": "remotion upgrade",
+    "lint": "eslint src && tsc"
+  },
+  "sideEffects": [
+    "*.css"
+  ]
+}
