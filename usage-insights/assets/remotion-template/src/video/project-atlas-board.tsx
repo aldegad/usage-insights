@@ -36,14 +36,14 @@ export const ProjectAtlasBoard: React.FC<{ data: UsageInsightsData }> = ({ data 
   const maxScroll = Math.max(0, listHeight - viewportHeight);
   const extraRows = Math.max(0, projects.length - visibleRows);
   const scrollDensity = Math.min(1, extraRows / 18);
-  const scrollStartFrame = interpolate(scrollDensity, [0, 1], [110, 70], {
+  const scrollStartFrame = interpolate(scrollDensity, [0, 1], [88, 46], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
   const scrollEndFrame = interpolate(
     scrollDensity,
     [0, 1],
-    [PROJECTS_DURATION - 108, PROJECTS_DURATION - 44],
+    [PROJECTS_DURATION - 20, PROJECTS_DURATION - 8],
     {
       extrapolateLeft: "clamp",
       extrapolateRight: "clamp",
@@ -52,7 +52,7 @@ export const ProjectAtlasBoard: React.FC<{ data: UsageInsightsData }> = ({ data 
   const contentInsetLeft = 10;
   const contentInsetRight = 10;
   const adaptiveScrollProgress = interpolate(frame, [scrollStartFrame, scrollEndFrame], [0, 1], {
-    easing: Easing.bezier(0.22, 1, 0.36, 1),
+    easing: Easing.linear,
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
