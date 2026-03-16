@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./media/banner.svg" alt="Usage Insights banner" width="100%" />
+  <img src="./media/banner.png" alt="Usage Insights banner" width="100%" />
 </p>
 
 <p align="center">
