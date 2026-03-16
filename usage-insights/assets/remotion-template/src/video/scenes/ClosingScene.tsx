@@ -58,8 +58,8 @@ export const ClosingScene: React.FC<VideoProps> = ({ data }) => {
                 marginTop: 20,
                 fontFamily: displayFont,
                 fontWeight: DISPLAY_WEIGHT,
-                fontSize: 44,
-                lineHeight: 1.06,
+                fontSize: 40,
+                lineHeight: 1.08,
                 letterSpacing: "-0.04em",
                 color: "#171310",
               }}

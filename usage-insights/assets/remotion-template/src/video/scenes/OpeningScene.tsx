@@ -7,7 +7,8 @@ import { PersonaBubble } from "../persona-panels";
 import { formatCompact, formatNumber, formatPercent, useRise } from "../utils";
 
 export const OpeningScene: React.FC<VideoProps> = ({ data }) => {
-  const titleRise = useRise(4, 26);
+  const heroRise = useRise(2, 28);
+  const metricsRise = useRise(18, 26);
   const providerLine = data.providers
     .slice(0, 2)
     .map((provider) => `${provider.label} ${formatPercent(provider.share)}`)
@@ -15,17 +16,27 @@ export const OpeningScene: React.FC<VideoProps> = ({ data }) => {
   const openingSummary = `${data.period.from}부터 ${data.period.to}까지의 로컬 기록을 보면, AI를 하나의 비서보다 역할이 다른 팀처럼 운영합니다. 구조와 탐색은 Claude가 받치고, 구현과 실행은 Codex가 밀어 올립니다.`;
   const openingFrame = useCurrentFrame();
   const summaryChars = Math.floor(
-    interpolate(openingFrame, [12, 58], [0, openingSummary.length], {
+    interpolate(openingFrame, [16, 62], [0, openingSummary.length], {
       extrapolateLeft: "clamp",
       extrapolateRight: "clamp",
     }),
   );
-  const metricsRise = interpolate(openingFrame, [52, 110], [18, 0], {
+  const heroOffset = interpolate(heroRise, [0, 1], [22, 0], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
     easing: Easing.out(Easing.cubic),
   });
-  const metricsOpacity = interpolate(openingFrame, [48, 96], [0.2, 1], {
+  const heroOpacity = interpolate(heroRise, [0, 1], [0.84, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+    easing: Easing.out(Easing.quad),
+  });
+  const metricsOffset = interpolate(metricsRise, [0, 1], [20, 0], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+    easing: Easing.out(Easing.cubic),
+  });
+  const metricsOpacity = interpolate(metricsRise, [0, 1], [0.76, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
     easing: Easing.out(Easing.quad),
@@ -48,7 +59,7 @@ export const OpeningScene: React.FC<VideoProps> = ({ data }) => {
         <div>
           <GlassPanel
             style={{
-              padding: "26px 28px 24px",
+              padding: "20px 22px 18px",
               height: "100%",
               background:
                 "linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255, 251, 247, 0.92))",
@@ -56,30 +67,28 @@ export const OpeningScene: React.FC<VideoProps> = ({ data }) => {
               flexDirection: "column",
             }}
           >
-            <div style={{ display: "flex", gap: 10, flexWrap: "wrap", maxWidth: 720 }}>
-              <SoftChip text="토큰 집계: Codex + Claude" tone="sky" />
-              {data.activityTraces.length > 0 ? (
-                <SoftChip
-                  text={`활동 흔적: ${data.activityTraces.map((trace) => trace.label).join(" + ")}`}
-                  tone="mint"
-                />
-              ) : null}
-              <SoftChip text={`${data.period.from} ~ ${data.period.to}`} tone="peach" />
-              <SoftChip text={providerLine} tone="butter" />
-            </div>
             <div
               style={{
-                marginTop: 16,
-                flex: 1,
-                minHeight: 0,
-                overflow: "hidden",
+                transform: `translateY(${heroOffset}px)`,
+                opacity: heroOpacity,
               }}
             >
-              <div style={{ display: "grid", gap: 12 }}>
+              <div style={{ display: "flex", gap: 8, flexWrap: "wrap", maxWidth: 720 }}>
+                <SoftChip text="토큰 집계: Codex + Claude" tone="sky" />
+                {data.activityTraces.length > 0 ? (
+                  <SoftChip
+                    text={`활동 흔적: ${data.activityTraces.map((trace) => trace.label).join(" + ")}`}
+                    tone="mint"
+                  />
+                ) : null}
+                <SoftChip text={`${data.period.from} ~ ${data.period.to}`} tone="peach" />
+                <SoftChip text={providerLine} tone="butter" />
+              </div>
+              <div style={{ display: "grid", gap: 12, marginTop: 16 }}>
                 <div
                   style={{
                     fontFamily: bodyFont,
-                    fontSize: 14,
+                    fontSize: 12,
                     letterSpacing: "0.1em",
                     textTransform: "uppercase",
                     color: "#8f7d6d",
@@ -91,77 +100,75 @@ export const OpeningScene: React.FC<VideoProps> = ({ data }) => {
                   style={{
                     fontFamily: displayFont,
                     fontWeight: DISPLAY_WEIGHT,
-                    fontSize: 56,
-                    lineHeight: 0.9,
-                    letterSpacing: "-0.05em",
+                    fontSize: 44,
+                    lineHeight: 1.04,
+                    letterSpacing: "-0.045em",
                     color: "#16120f",
-                    transform: `translateY(${(1 - titleRise) * 28}px)`,
-                    opacity: titleRise,
+                    maxWidth: 760,
                   }}
                 >
                   로컬 AI 작업 기록을
                   <br />
-                  역할, 리듬, 프로젝트로
-                  <br />
-                  정리했습니다.
+                  역할, 리듬, 프로젝트로 읽었습니다.
                 </div>
                 <div
                   style={{
                     maxWidth: 640,
-                    minHeight: 76,
-                    maxHeight: 76,
+                    minHeight: 64,
+                    maxHeight: 64,
                     overflow: "hidden",
                   }}
                 >
                   <div
                     style={{
                       fontFamily: bodyFont,
-                      fontSize: 16,
-                      lineHeight: 1.68,
+                      fontSize: 15,
+                      lineHeight: 1.66,
                       color: "#5e5247",
                     }}
                   >
                     {openingSummary.slice(0, summaryChars)}
                   </div>
                 </div>
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
-                    gap: 10,
-                    transform: `translateY(${metricsRise}px)`,
-                    opacity: metricsOpacity,
-                  }}
-                >
-                  <MetricCard
-                    title="총 토큰"
-                    value={formatCompact(data.totals.tokens)}
-                    tone="peach"
-                    size="compact"
-                  />
-                  <MetricCard
-                    title="활성 일수"
-                    value={`${data.period.activeDays}/${data.period.totalDays}`}
-                    tone="sky"
-                    delay={4}
-                    size="compact"
-                  />
-                  <MetricCard
-                    title="최장 연속"
-                    value={`${data.period.longestStreak}d`}
-                    tone="mint"
-                    delay={8}
-                    size="compact"
-                  />
-                  <MetricCard
-                    title="기록 수"
-                    value={formatNumber(data.totals.threads)}
-                    tone="butter"
-                    delay={12}
-                    size="compact"
-                  />
-                </div>
               </div>
+            </div>
+            <div
+              style={{
+                marginTop: "auto",
+                display: "grid",
+                gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+                gap: 8,
+                transform: `translateY(${metricsOffset}px)`,
+                opacity: metricsOpacity,
+              }}
+            >
+              <MetricCard
+                title="총 토큰"
+                value={formatCompact(data.totals.tokens)}
+                tone="peach"
+                size="compact"
+              />
+              <MetricCard
+                title="활성 일수"
+                value={`${data.period.activeDays}/${data.period.totalDays}`}
+                tone="sky"
+                delay={4}
+                size="compact"
+              />
+              <MetricCard
+                title="최장 연속"
+                value={`${data.period.longestStreak}d`}
+                tone="mint"
+                delay={8}
+                size="compact"
+              />
+              <MetricCard
+                title="기록 수"
+                value={formatNumber(data.totals.threads)}
+                tone="butter"
+                delay={12}
+                size="compact"
+              />
             </div>
           </GlassPanel>
         </div>

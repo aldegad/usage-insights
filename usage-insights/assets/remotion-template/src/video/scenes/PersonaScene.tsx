@@ -43,8 +43,8 @@ export const PersonaScene: React.FC<VideoProps> = ({ data }) => (
             marginTop: 18,
             fontFamily: displayFont,
             fontWeight: DISPLAY_WEIGHT,
-            fontSize: 52,
-            lineHeight: 0.95,
+            fontSize: 48,
+            lineHeight: 1.02,
             letterSpacing: "-0.05em",
             color: "#171310",
           }}

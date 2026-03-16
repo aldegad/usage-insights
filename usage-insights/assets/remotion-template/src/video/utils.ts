@@ -77,18 +77,13 @@ export const projectProviderTone = (provider: string) => {
 };
 
 export const sceneOpacity = (frame: number, durationInFrames: number) => {
-  const fadeIn = interpolate(frame, [0, 14], [0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-    easing: Easing.out(Easing.quad),
-  });
   const fadeOut = interpolate(frame, [durationInFrames - 18, durationInFrames], [1, 0], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
     easing: Easing.in(Easing.quad),
   });
 
-  return fadeIn * fadeOut;
+  return fadeOut;
 };
 
 export const useRise = (delay = 0, durationInFrames = 20) => {

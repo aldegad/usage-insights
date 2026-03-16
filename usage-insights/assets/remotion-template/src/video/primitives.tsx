@@ -38,8 +38,8 @@ const Masthead: React.FC<{ current: string }> = ({ current }) => {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        gap: 24,
-        padding: "18px 28px 16px",
+        gap: 20,
+        padding: "14px 24px 12px",
         borderBottom: "1px solid rgba(53, 44, 36, 0.08)",
       }}
     >
@@ -47,7 +47,7 @@ const Masthead: React.FC<{ current: string }> = ({ current }) => {
         <div
           style={{
             fontFamily: labelFont,
-            fontSize: 10,
+            fontSize: 9,
             letterSpacing: "0.18em",
             fontWeight: LABEL_WEIGHT,
             color: "#8b7867",
@@ -58,7 +58,7 @@ const Masthead: React.FC<{ current: string }> = ({ current }) => {
         <div
           style={{
             fontFamily: displayFont,
-            fontSize: 18,
+            fontSize: 17,
             fontWeight: DISPLAY_WEIGHT,
             letterSpacing: "-0.03em",
             color: "#1b1612",
@@ -67,7 +67,7 @@ const Masthead: React.FC<{ current: string }> = ({ current }) => {
           로컬 AI 작업 아카이브
         </div>
       </div>
-      <div style={{ display: "flex", gap: 20, alignItems: "center" }}>
+      <div style={{ display: "flex", gap: 18, alignItems: "center" }}>
         {navItems.map((item) => {
           const active = current === item;
 
@@ -76,11 +76,11 @@ const Masthead: React.FC<{ current: string }> = ({ current }) => {
               key={item}
               style={{
                 fontFamily: labelFont,
-                fontSize: 12,
+                fontSize: 11,
                 letterSpacing: "0.1em",
                 fontWeight: LABEL_WEIGHT,
                 color: active ? "#1f1914" : "#8f7d6d",
-                paddingBottom: 6,
+                paddingBottom: 5,
                 borderBottom: active
                   ? "2px solid rgba(31, 25, 20, 0.72)"
                   : "2px solid transparent",
@@ -96,7 +96,7 @@ const Masthead: React.FC<{ current: string }> = ({ current }) => {
           display: "flex",
           alignItems: "center",
           gap: 10,
-          padding: "10px 0 10px 18px",
+          padding: "8px 0 8px 16px",
           borderLeft: "1px solid rgba(53, 44, 36, 0.08)",
         }}
       >
@@ -111,7 +111,7 @@ const Masthead: React.FC<{ current: string }> = ({ current }) => {
         <div
           style={{
             fontFamily: labelFont,
-            fontSize: 11,
+            fontSize: 10,
             letterSpacing: "0.1em",
             fontWeight: LABEL_WEIGHT,
             color: "#78695d",
@@ -201,7 +201,7 @@ export const Stage: React.FC<{
   return (
     <AbsoluteFill
       style={{
-        padding: 24,
+        padding: 20,
         opacity,
       }}
     >
@@ -235,6 +235,8 @@ export const Stage: React.FC<{
             background: "linear-gradient(180deg, rgba(255,255,252,0.96), rgba(255,252,248,0.92))",
             boxShadow:
               "0 24px 70px rgba(110, 90, 70, 0.12), 0 2px 0 rgba(255,255,255,0.7) inset",
+            display: "flex",
+            flexDirection: "column",
           }}
         >
           <div
@@ -250,8 +252,11 @@ export const Stage: React.FC<{
           <Masthead current={current} />
           <div
             style={{
-              padding: "24px 28px 28px",
-              height: "calc(100% - 70px)",
+              padding: "18px 24px 22px",
+              flex: 1,
+              minHeight: 0,
+              display: "flex",
+              flexDirection: "column",
             }}
           >
             <div
@@ -261,6 +266,7 @@ export const Stage: React.FC<{
                 alignItems: "center",
                 transform: `translateY(${sectionLift}px)`,
                 opacity: entrance,
+                flexShrink: 0,
               }}
             >
               <div
@@ -281,7 +287,7 @@ export const Stage: React.FC<{
                 <span
                   style={{
                     fontFamily: labelFont,
-                    fontSize: 12,
+                    fontSize: 11,
                     letterSpacing: "0.16em",
                     fontWeight: LABEL_WEIGHT,
                     color: "#766759",
@@ -293,7 +299,7 @@ export const Stage: React.FC<{
               <div
                 style={{
                   fontFamily: displayFont,
-                  fontSize: 26,
+                  fontSize: 22,
                   fontWeight: DISPLAY_WEIGHT,
                   letterSpacing: "-0.06em",
                   color: "rgba(31, 25, 20, 0.48)",
@@ -302,7 +308,15 @@ export const Stage: React.FC<{
                 {sectionIndex}
               </div>
             </div>
-            <div style={{ marginTop: 18, height: "calc(100% - 52px)" }}>{children}</div>
+            <div
+              style={{
+                marginTop: 12,
+                flex: 1,
+                minHeight: 0,
+              }}
+            >
+              {children}
+            </div>
           </div>
         </div>
       </div>
@@ -339,12 +353,12 @@ export const SoftChip: React.FC<{ text: string; tone?: Tone }> = ({
         display: "inline-flex",
         alignItems: "center",
         gap: 9,
-        padding: "9px 12px",
+        padding: "8px 11px",
         borderRadius: 14,
         background: currentTone.soft,
         border: `1px solid ${currentTone.line}`,
         fontFamily: labelFont,
-        fontSize: 13,
+        fontSize: 12,
         letterSpacing: "0.02em",
         fontWeight: LABEL_WEIGHT,
         color: "#4a3e34",
@@ -377,8 +391,8 @@ export const MetricCard: React.FC<{
   return (
     <GlassPanel
       style={{
-        padding: isCompact ? "14px 16px 16px" : "20px 20px 22px",
-        minHeight: isCompact ? 62 : 96,
+        padding: isCompact ? "14px 16px 16px" : "18px 18px 20px",
+        minHeight: isCompact ? 60 : 92,
         background: currentTone.soft,
         border: `1px solid ${currentTone.line}`,
         boxShadow: "0 10px 22px rgba(109, 89, 67, 0.04)",
