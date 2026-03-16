@@ -19,79 +19,29 @@ This skill is best for requests like:
 
 ## Default behavior
 
-When the user invokes this skill without narrowing the request, do not stop to offer setup options first. Run the bundled entry script immediately:
-
-```bash
-python3 ${CLAUDE_SKILL_DIR}/scripts/run_usage_insights.py
-```
-
-Default script behavior:
-
-- creates or reuses `.usage-insights-workspace` in the current working directory
-- reuses the current directory when it is already a generated usage-insights workspace
-- runs `npm install` when dependencies are missing
-- generates `INSIGHTS.md` plus the generated TypeScript data file
-- renders both the poster and MP4 by default
-
-After the script finishes, summarize the generated outputs and call out the workspace path. Review the privacy notes before suggesting the user share any artifact publicly.
+When the user invokes this skill without narrowing the request, run the full three-phase pipeline immediately without asking for setup options.
 
 ## Workflow
 
-### 1. Run the automatic pipeline
+### Phase 1. Collect data
 
-Use the entry script for the common case:
+Run the entry script to create or reuse a workspace and collect raw usage data:
 
 ```bash
 python3 ${CLAUDE_SKILL_DIR}/scripts/run_usage_insights.py
-```
-
-This is the preferred path for:
-
-- analyze + poster + video in one run
-- users who do not care about workspace setup details
-- repeated calls from arbitrary repositories or folders
-
-Useful variants:
-
-```bash
-python3 ${CLAUDE_SKILL_DIR}/scripts/run_usage_insights.py --mode report
-python3 ${CLAUDE_SKILL_DIR}/scripts/run_usage_insights.py --mode poster
-python3 ${CLAUDE_SKILL_DIR}/scripts/run_usage_insights.py --mode video
-python3 ${CLAUDE_SKILL_DIR}/scripts/run_usage_insights.py --mode dev
-```
-
-### 2. Create or reuse a dedicated workspace
-
-If the user explicitly wants a standalone reusable project, bootstrap one with:
-
-```bash
-python3 ${CLAUDE_SKILL_DIR}/scripts/create_project.py --dest /desired/workspace/path
-```
-
-The bootstrap script copies the bundled Remotion template from [`assets/remotion-template/`](./assets/remotion-template).
-
-### 3. Install dependencies
-
-Inside the generated workspace:
-
-```bash
-npm install
-```
-
-The automatic runner handles this step on its own unless `node_modules` is already present.
-
-### 4. Generate the analysis
-
-Run:
-
-```bash
-npm run analyze
 ```
 
 This produces:
 
-- `INSIGHTS.md`
-- `src/data/usage-insights.generated.ts`
+- `src/data/insights-data.json` — raw statistics with empty narrative fields
+- `src/data/usage-insights.generated.ts` — TypeScript data file (narrative fields empty)
+- `INSIGHTS.md` — markdown report (narrative sections empty)
+
+The script automatically:
+
+- creates or reuses `.usage-insights-workspace` in the current working directory
+- reuses the current directory when it is already a generated usage-insights workspace
+- runs `npm install` when dependencies are missing
 
 The analyzer reads from the current user's local home directories when they exist:
 
@@ -102,7 +52,57 @@ The analyzer reads from the current user's local home directories when they exis
 
 Do not ask the user to manually assemble those datasets first unless the local source format is missing or broken.
 
-### 5. Review privacy before sharing
+### Phase 2. Write narrative analysis
+
+After Phase 1 completes, read `src/data/insights-data.json` from the workspace. This JSON contains the full usage statistics. Based on this data, **you must write the narrative analysis yourself**.
+
+Write the following fields in the **user's conversation language** (match the language the user is speaking):
+
+| Field | Type | Guidelines |
+|-------|------|------------|
+| `persona.archetype` | string | A short label (2-5 words) capturing the user's AI usage style. |
+| `persona.summary` | string | 2-3 sentences summarizing overall usage patterns, referencing specific data points (period, top projects, provider mix, token volumes). |
+| `persona.worksBestAs` | string | 1 sentence recommending the optimal way to use AI tools based on observed patterns. |
+| `habits` | string[] | 3-4 observed usage habits. Each 1-2 sentences. Ground every claim in specific data from the JSON (provider split, monthly trends, project count, session patterns). |
+| `strengths` | string[] | 4-5 strengths. Each 1-2 sentences. Reference concrete metrics (completion rates, deep work threads, category focus, project depth). |
+| `cautions` | string[] | 2-3 potential risks or areas to watch. Each 1-2 sentences. Base on data patterns (mega thread ratio, simultaneous project count, tool role overlap). |
+
+**Narrative writing rules:**
+
+- Every claim must be grounded in actual data from the JSON. Do not invent or assume patterns that are not supported by the numbers.
+- Be specific: reference actual project names, provider names, token counts, date ranges, and percentages from the data.
+- Write in a professional but personable tone, as if giving a colleague a constructive usage review.
+- Do not use generic filler phrases. Each sentence should carry a concrete observation.
+
+**How to apply the narrative:**
+
+1. Read `src/data/insights-data.json` from the workspace.
+2. Compose the narrative fields based on the data.
+3. Edit `src/data/usage-insights.generated.ts`:
+   - Find the empty `"habits": []` array and replace with your habits array.
+   - Find the empty `"strengths": []` array and replace with your strengths array.
+   - Find the empty `"cautions": []` array and replace with your cautions array.
+   - Find the empty `"persona"` object and replace with your archetype, summary, and worksBestAs.
+4. Edit `INSIGHTS.md`:
+   - Under `## 내 해석`, fill in archetype, summary, and worksBestAs.
+   - Under `## 대표 작업 성향`, add habits as bullet points.
+   - Under `## 잘한 점`, add strengths as bullet points.
+   - Under `## 조심할 점`, add cautions as bullet points.
+
+### Phase 3. Render outputs
+
+After narrative is written, render the requested outputs inside the workspace:
+
+```bash
+npm run render:poster    # poster image
+npm run render:video     # MP4 video
+```
+
+If the user only wants the report, skip this phase. If the user wants both poster and video, run both commands.
+
+The bundled template is designed to work as a draft. The project scene scroll is adaptive: it hides explicit scrollbar UI and adjusts scroll timing based on how many projects are present, so denser archives get a longer read-through.
+
+### Privacy review
 
 Always inspect the generated report before publishing it. Project names, time ranges, work rhythms, and AI usage patterns may be sensitive.
 
@@ -114,31 +114,15 @@ If the user wants a public-facing artifact:
 
 More detail is in [`references/security.md`](./references/security.md).
 
-### 6. Render poster or video when requested
+## Dedicated workspace
 
-Open the Remotion studio:
-
-```bash
-npm run dev
-```
-
-Render a poster:
+If the user explicitly wants a standalone reusable project, bootstrap one with:
 
 ```bash
-npm run render:poster
+python3 ${CLAUDE_SKILL_DIR}/scripts/create_project.py --dest /desired/workspace/path
 ```
 
-Render an MP4:
-
-```bash
-npm run render:video
-```
-
-The bundled template is designed to work as a draft. After analysis, update copy, tone, language, and visual emphasis to match the user's intended audience before final export.
-
-If the user only wants the report, use `--mode report` or stop after `npm run analyze`. If the user wants a visual artifact, continue into Remotion preview or render commands.
-
-The default project scene scroll is adaptive: it hides explicit scrollbar UI and adjusts scroll timing based on how many projects are present, so denser archives get a longer read-through.
+The bootstrap script copies the bundled Remotion template from [`assets/remotion-template/`](./assets/remotion-template).
 
 ## Data Coverage
 
@@ -157,7 +141,7 @@ Do not fabricate token counts for providers that only expose activity traces.
 
 ### scripts/
 
-- [`run_usage_insights.py`](./scripts/run_usage_insights.py): one-command entry point that creates or reuses a workspace and runs the requested pipeline
+- [`run_usage_insights.py`](./scripts/run_usage_insights.py): one-command entry point that creates or reuses a workspace and runs data collection
 - [`create_project.py`](./scripts/create_project.py): copies the reusable template into a workspace
 
 ### references/

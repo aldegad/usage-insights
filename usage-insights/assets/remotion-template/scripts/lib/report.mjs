@@ -169,4 +169,7 @@ export const writeOutputs = (insights) => {
   const tsModule = `export const usageInsights = ${JSON.stringify(insights, null, 2)} as const;\n\nexport type UsageInsightsData = typeof usageInsights;\n`;
   writeFileSync(OUTPUT_FILE, tsModule);
   writeFileSync(REPORT_FILE, renderReport(insights));
+
+  const jsonPath = path.join(path.dirname(OUTPUT_FILE), "insights-data.json");
+  writeFileSync(jsonPath, JSON.stringify(insights, null, 2));
 };

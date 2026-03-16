@@ -100,16 +100,7 @@ def run_npm_script(path: Path, script: str) -> None:
 
 
 def build_steps_for_mode(mode: str) -> list[str]:
-    steps = ["analyze"]
-    if mode == "poster":
-        steps.append("render:poster")
-    elif mode == "video":
-        steps.append("render:video")
-    elif mode == "all":
-        steps.extend(("render:video", "render:poster"))
-    elif mode == "dev":
-        steps.append("dev")
-    return steps
+    return ["analyze"]
 
 
 def print_summary(path: Path, *, created: bool, installed: bool, mode: str) -> None:
@@ -121,14 +112,15 @@ def print_summary(path: Path, *, created: bool, installed: bool, mode: str) -> N
     print(f"{install_status} dependencies")
     print(f"Template source: {get_template_root()}")
     print("Outputs:")
+    print(f"  data:   {path / 'src/data/insights-data.json'}")
     print(f"  report: {path / 'INSIGHTS.md'}")
-    print(f"  data:   {path / 'src/data/usage-insights.generated.ts'}")
-    if mode in {"poster", "all"}:
-        print(f"  poster: {path / 'out/usage-insights-poster.jpg'}")
-    if mode in {"video", "all"}:
-        print(f"  video:  {path / 'out/usage-insights-profile.mp4'}")
-    if mode == "dev":
-        print("  studio: running Remotion dev server")
+    print(f"  ts:     {path / 'src/data/usage-insights.generated.ts'}")
+    print("")
+    print("Narrative fields are empty. The agent should now:")
+    print("  1. Read src/data/insights-data.json")
+    print("  2. Write narrative (persona, habits, strengths, cautions)")
+    print("  3. Update usage-insights.generated.ts and INSIGHTS.md")
+    print("  4. Run render commands: npm run render:poster / npm run render:video")
 
 
 def main() -> int:
