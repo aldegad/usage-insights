@@ -5,7 +5,7 @@
 <h1 align="center">usage-insights</h1>
 
 <p align="center">
-  Codex skill for analyzing local AI usage and generating reports or optional Remotion videos.
+  Codex &amp; Claude Code skill for analyzing local AI usage and generating reports or optional Remotion videos.
 </p>
 
 <p align="center">
@@ -18,12 +18,13 @@
   <a href="https://github.com/aldegad/usage-insights/releases"><img src="https://img.shields.io/github/v/release/aldegad/usage-insights?style=flat-square" alt="Latest release" /></a>
   <img src="https://img.shields.io/badge/license-MIT-1f7a52?style=flat-square" alt="MIT License" />
   <img src="https://img.shields.io/badge/codex-skill-ff8d7a?style=flat-square" alt="Codex skill" />
+  <img src="https://img.shields.io/badge/claude_code-skill-7c3aed?style=flat-square" alt="Claude Code skill" />
   <img src="https://img.shields.io/badge/remotion-video-67c8a1?style=flat-square" alt="Remotion video" />
 </p>
 
 ## Overview
 
-`usage-insights` is an installable Codex skill. When another user installs it, the agent can collect that user's own local AI activity from the current machine and turn it into:
+`usage-insights` is an installable skill for Codex and Claude Code. When another user installs it, the agent can collect that user's own local AI activity from the current machine and turn it into:
 
 - a written usage report
 - a typed data file for reuse
@@ -33,16 +34,33 @@ The repository is intended for people who want a repeatable workflow for reviewi
 
 ## Install
 
+### Codex
+
 Install the skill from this GitHub subpath:
 
 `aldegad/usage-insights/usage-insights`
-
-The installable skill lives in [`usage-insights/`](./usage-insights). It is already structured as a Codex skill and validates successfully with the `skill-creator` validator.
 
 Example prompt after installation:
 
 - `Use $usage-insights to analyze my local AI usage and write a report.`
 - `Use $usage-insights to generate my usage report, poster, and video.`
+
+### Claude Code
+
+Copy the `usage-insights/` directory into your Claude Code skills folder:
+
+```bash
+# Personal (all projects)
+cp -r usage-insights ~/.claude/skills/usage-insights
+
+# Project-specific
+cp -r usage-insights .claude/skills/usage-insights
+```
+
+Example prompt after installation:
+
+- `/usage-insights`
+- `Use /usage-insights to generate my usage report, poster, and video.`
 
 ## What The Skill Reads
 
@@ -84,7 +102,7 @@ npm run render:video
 Typical flow:
 
 1. Install the skill.
-2. Ask Codex to use `$usage-insights`.
+2. Ask the agent to use the skill (`$usage-insights` in Codex, `/usage-insights` in Claude Code).
 3. Let the skill run `run_usage_insights.py` in the current directory.
 4. Review the generated `INSIGHTS.md`, poster, and MP4 outputs.
 5. Use the dedicated workspace flow only when you want a long-lived project to tweak manually.
@@ -112,7 +130,7 @@ Gemini and Antigravity are intentionally kept out of token charts unless reliabl
 
 ## Repository Layout
 
-- [`usage-insights`](./usage-insights): installable Codex skill
+- [`usage-insights`](./usage-insights): installable Codex / Claude Code skill
 - [`usage-insights/scripts/run_usage_insights.py`](./usage-insights/scripts/run_usage_insights.py): one-command runner for report + poster + video
 - [`usage-insights/scripts/create_project.py`](./usage-insights/scripts/create_project.py): workspace bootstrap script
 - [`usage-insights/assets/remotion-template`](./usage-insights/assets/remotion-template): analyzer and video template

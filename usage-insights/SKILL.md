@@ -1,6 +1,7 @@
 ---
 name: usage-insights
 description: Analyze the current user's local AI usage history across Codex, Claude, Gemini, and Antigravity; generate a report, summarize habits and project mix, and optionally render a Remotion poster or video. Use when a user wants a personal AI usage review, a shareable AI creator profile, or a reusable usage-insights workspace driven by machine-local data.
+allowed-tools: Bash, Read, Write, Edit, Glob, Grep
 ---
 
 # Usage Insights
@@ -18,10 +19,10 @@ This skill is best for requests like:
 
 ## Default behavior
 
-When the user invokes `$usage-insights` without narrowing the request, do not stop to offer setup options first. Run the bundled entry script immediately:
+When the user invokes this skill without narrowing the request, do not stop to offer setup options first. Run the bundled entry script immediately:
 
 ```bash
-python3 /path/to/usage-insights/scripts/run_usage_insights.py
+python3 ${CLAUDE_SKILL_DIR}/scripts/run_usage_insights.py
 ```
 
 Default script behavior:
@@ -41,7 +42,7 @@ After the script finishes, summarize the generated outputs and call out the work
 Use the entry script for the common case:
 
 ```bash
-python3 /path/to/usage-insights/scripts/run_usage_insights.py
+python3 ${CLAUDE_SKILL_DIR}/scripts/run_usage_insights.py
 ```
 
 This is the preferred path for:
@@ -53,10 +54,10 @@ This is the preferred path for:
 Useful variants:
 
 ```bash
-python3 /path/to/usage-insights/scripts/run_usage_insights.py --mode report
-python3 /path/to/usage-insights/scripts/run_usage_insights.py --mode poster
-python3 /path/to/usage-insights/scripts/run_usage_insights.py --mode video
-python3 /path/to/usage-insights/scripts/run_usage_insights.py --mode dev
+python3 ${CLAUDE_SKILL_DIR}/scripts/run_usage_insights.py --mode report
+python3 ${CLAUDE_SKILL_DIR}/scripts/run_usage_insights.py --mode poster
+python3 ${CLAUDE_SKILL_DIR}/scripts/run_usage_insights.py --mode video
+python3 ${CLAUDE_SKILL_DIR}/scripts/run_usage_insights.py --mode dev
 ```
 
 ### 2. Create or reuse a dedicated workspace
@@ -64,7 +65,7 @@ python3 /path/to/usage-insights/scripts/run_usage_insights.py --mode dev
 If the user explicitly wants a standalone reusable project, bootstrap one with:
 
 ```bash
-python3 /path/to/usage-insights/scripts/create_project.py --dest /desired/workspace/path
+python3 ${CLAUDE_SKILL_DIR}/scripts/create_project.py --dest /desired/workspace/path
 ```
 
 The bootstrap script copies the bundled Remotion template from [`assets/remotion-template/`](./assets/remotion-template).

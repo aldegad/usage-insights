@@ -5,7 +5,7 @@
 <h1 align="center">usage-insights</h1>
 
 <p align="center">
-  로컬 AI 사용 기록을 분석해서 리포트와 선택형 Remotion 영상까지 만드는 Codex 스킬입니다.
+  로컬 AI 사용 기록을 분석해서 리포트와 선택형 Remotion 영상까지 만드는 Codex &amp; Claude Code 스킬입니다.
 </p>
 
 <p align="center">
@@ -16,7 +16,7 @@
 
 ## 개요
 
-`usage-insights`는 설치 가능한 Codex 스킬입니다. 다른 사람이 이 스킬을 설치하면, 그 사람 머신의 로컬 AI 사용 기록을 읽어서 다음 결과물로 정리할 수 있습니다.
+`usage-insights`는 Codex와 Claude Code에서 사용할 수 있는 설치형 스킬입니다. 다른 사람이 이 스킬을 설치하면, 그 사람 머신의 로컬 AI 사용 기록을 읽어서 다음 결과물로 정리할 수 있습니다.
 
 - 사용 리포트
 - 재사용 가능한 타입 데이터 파일
@@ -26,16 +26,33 @@
 
 ## 설치
 
+### Codex
+
 설치 경로:
 
 `aldegad/usage-insights/usage-insights`
-
-실제 설치 가능한 스킬 폴더는 [`usage-insights/`](./usage-insights)이고, 현재 구조도 Codex skill 형식으로 이미 맞춰져 있습니다.
 
 설치 후 예시 프롬프트:
 
 - `Use $usage-insights to analyze my local AI usage and write a report.`
 - `Use $usage-insights to generate my usage report, poster, and video.`
+
+### Claude Code
+
+`usage-insights/` 디렉터리를 Claude Code 스킬 폴더에 복사합니다:
+
+```bash
+# 개인 전역 (모든 프로젝트에서 사용)
+cp -r usage-insights ~/.claude/skills/usage-insights
+
+# 프로젝트 전용
+cp -r usage-insights .claude/skills/usage-insights
+```
+
+설치 후 예시 프롬프트:
+
+- `/usage-insights`
+- `Use /usage-insights to generate my usage report, poster, and video.`
 
 ## 이 스킬이 읽는 데이터
 
@@ -77,7 +94,7 @@ npm run render:video
 보통은 이렇게 사용하면 됩니다.
 
 1. 스킬 설치
-2. Codex에게 `$usage-insights` 사용 요청
+2. 에이전트에게 스킬 사용 요청 (Codex: `$usage-insights`, Claude Code: `/usage-insights`)
 3. 스킬이 `run_usage_insights.py`를 바로 실행
 4. 생성된 리포트, 포스터, MP4 확인
 5. 수동 편집이 필요할 때만 전용 워크스페이스 흐름 사용
@@ -105,7 +122,7 @@ Gemini와 Antigravity는 신뢰할 수 있는 토큰 원장이 없으면 토큰 
 
 ## 저장소 구성
 
-- [`usage-insights`](./usage-insights): 설치 가능한 Codex 스킬
+- [`usage-insights`](./usage-insights): 설치 가능한 Codex / Claude Code 스킬
 - [`usage-insights/scripts/run_usage_insights.py`](./usage-insights/scripts/run_usage_insights.py): 리포트와 포스터/영상을 한 번에 만드는 실행 스크립트
 - [`usage-insights/scripts/create_project.py`](./usage-insights/scripts/create_project.py): 워크스페이스 생성 스크립트
 - [`usage-insights/assets/remotion-template`](./usage-insights/assets/remotion-template): 분석기와 영상 템플릿
