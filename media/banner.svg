@@ -31,21 +31,21 @@
     <rect x="239" y="190" width="38" height="126" rx="14" fill="#55AEEF"/>
     <rect x="282" y="206" width="34" height="110" rx="12" fill="#FF7F82"/>
   </g>
-  <text x="344" y="190" fill="#1D1714" font-size="72" font-weight="700" font-family="Inter, Segoe UI, sans-serif">usage-insights</text>
-  <text x="344" y="238" fill="#6A6258" font-size="28" font-weight="500" font-family="Inter, Segoe UI, sans-serif">Analyze local AI usage, generate reports, and render shareable videos.</text>
+  <text x="344" y="188" fill="#1D1714" font-size="70" font-weight="700" font-family="Inter, Segoe UI, sans-serif">usage-insights</text>
+  <text x="344" y="236" fill="#6A6258" font-size="28" font-weight="500" font-family="Inter, Segoe UI, sans-serif">Analyze local AI usage, generate reports, and render shareable videos.</text>
   <g>
-    <rect x="346" y="280" width="176" height="44" rx="22" fill="#E3F2FF" stroke="#B7D8FA"/>
+    <rect x="344" y="278" width="232" height="52" rx="26" fill="#E3F2FF" stroke="#B7D8FA"/>
     <circle cx="374" cy="302" r="8" fill="#58AEFF"/>
-    <text x="394" y="310" fill="#3D4F60" font-size="22" font-weight="600" font-family="Inter, Segoe UI, sans-serif">Codex + Claude</text>
+    <text x="400" y="310" fill="#3D4F60" font-size="22" font-weight="600" font-family="Inter, Segoe UI, sans-serif">Codex + Claude</text>
   </g>
   <g>
-    <rect x="540" y="280" width="148" height="44" rx="22" fill="#E8FAF1" stroke="#B8E6D1"/>
-    <circle cx="568" cy="302" r="8" fill="#67C8A1"/>
-    <text x="588" y="310" fill="#3E5C4B" font-size="22" font-weight="600" font-family="Inter, Segoe UI, sans-serif">Gemini traces</text>
+    <rect x="594" y="278" width="218" height="52" rx="26" fill="#E8FAF1" stroke="#B8E6D1"/>
+    <circle cx="624" cy="304" r="8" fill="#67C8A1"/>
+    <text x="650" y="312" fill="#3E5C4B" font-size="22" font-weight="600" font-family="Inter, Segoe UI, sans-serif">Gemini traces</text>
   </g>
   <g>
-    <rect x="708" y="280" width="198" height="44" rx="22" fill="#FFF1E9" stroke="#F6D0C2"/>
-    <circle cx="736" cy="302" r="8" fill="#FF8C7A"/>
-    <text x="756" y="310" fill="#634843" font-size="22" font-weight="600" font-family="Inter, Segoe UI, sans-serif">Optional Remotion MP4</text>
+    <rect x="830" y="278" width="310" height="52" rx="26" fill="#FFF1E9" stroke="#F6D0C2"/>
+    <circle cx="860" cy="304" r="8" fill="#FF8C7A"/>
+    <text x="886" y="312" fill="#634843" font-size="22" font-weight="600" font-family="Inter, Segoe UI, sans-serif">Optional Remotion MP4</text>
   </g>
 </svg>
