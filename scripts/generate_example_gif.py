@@ -16,7 +16,18 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--input", required=True, help="Source MP4 path.")
     parser.add_argument("--output", required=True, help="Destination GIF path.")
     parser.add_argument("--width", type=int, default=920, help="Output width in pixels.")
-    parser.add_argument("--fps", type=float, default=5.0, help="Target GIF frame rate.")
+    parser.add_argument(
+        "--fps",
+        type=float,
+        default=5.0,
+        help="Frame sampling rate from the source video.",
+    )
+    parser.add_argument(
+        "--speed",
+        type=float,
+        default=1.0,
+        help="Playback speed multiplier for the exported GIF.",
+    )
     parser.add_argument(
         "--start-seconds",
         type=float,
@@ -46,7 +57,9 @@ def main() -> int:
 
     input_fps = capture.get(cv2.CAP_PROP_FPS) or 30.0
     total_frames = int(capture.get(cv2.CAP_PROP_FRAME_COUNT) or 0)
-    step = max(1, round(input_fps / max(args.fps, 0.1)))
+    sample_fps = max(args.fps, 0.1)
+    speed = max(args.speed, 0.1)
+    sample_interval = input_fps / sample_fps
     start_frame = max(0, int(args.start_seconds * input_fps))
     max_frames = int(args.max_seconds * input_fps)
     stop_frame = start_frame + max_frames
@@ -55,6 +68,7 @@ def main() -> int:
 
     frames: list[Image.Image] = []
     frame_index = 0
+    next_capture_frame = float(start_frame)
     capture.set(cv2.CAP_PROP_POS_FRAMES, start_frame)
 
     while True:
@@ -66,12 +80,13 @@ def main() -> int:
         if absolute_frame_index >= stop_frame:
             break
 
-        if frame_index % step == 0:
+        if absolute_frame_index + 0.5 >= next_capture_frame:
             rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             image = Image.fromarray(rgb)
             scale = args.width / image.width
             resized = image.resize((args.width, int(image.height * scale)), Image.Resampling.LANCZOS)
             frames.append(resized.convert("P", palette=Image.Palette.ADAPTIVE))
+            next_capture_frame += sample_interval
 
         frame_index += 1
 
@@ -81,7 +96,8 @@ def main() -> int:
         raise RuntimeError("No frames were captured for the GIF.")
 
     dst.parent.mkdir(parents=True, exist_ok=True)
-    duration_ms = int(1000 / max(args.fps, 0.1))
+    playback_fps = sample_fps * speed
+    duration_ms = max(20, int(round(1000 / playback_fps)))
     frames[0].save(
         dst,
         save_all=True,
