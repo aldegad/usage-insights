@@ -56,10 +56,23 @@ def gradient_line(width: int, height: int) -> Image.Image:
     return image
 
 
-def draw_chip(draw: ImageDraw.ImageDraw, x: int, y: int, width: int, label: str, dot, outline) -> None:
+def measure_text(draw: ImageDraw.ImageDraw, text: str, font) -> int:
+    left, _, right, _ = draw.textbbox((0, 0), text, font=font)
+    return right - left
+
+
+def draw_chip(
+    draw: ImageDraw.ImageDraw,
+    x: int,
+    y: int,
+    width: int,
+    label: str,
+    dot,
+    outline,
+    font,
+) -> None:
     draw.rounded_rectangle((x, y, x + width, y + 52), radius=26, fill=(255, 255, 255), outline=outline, width=2)
     draw.ellipse((x + 24, y + 18, x + 44, y + 38), fill=dot)
-    font = load_font(22, bold=True)
     draw.text((x + 60, y + 12), label, font=font, fill=(63, 76, 89))
 
 
@@ -93,9 +106,35 @@ def main() -> None:
         fill=MUTED,
     )
 
-    draw_chip(draw, 438, 332, 232, "Codex + Claude", SKY, (183, 216, 250))
-    draw_chip(draw, 688, 332, 220, "Gemini traces", MINT, (184, 230, 209))
-    draw_chip(draw, 926, 332, 310, "Optional Remotion MP4", CORAL, (246, 208, 194))
+    chip_y = 322
+    chip_gap = 18
+    chip_area_x = 350
+    chip_area_width = 770
+    chip_labels = [
+        ("Codex + Claude", SKY, (183, 216, 250)),
+        ("Gemini traces", MINT, (184, 230, 209)),
+        ("Optional Remotion MP4", CORAL, (246, 208, 194)),
+    ]
+
+    chip_font_size = 20
+    chip_font = load_font(chip_font_size, bold=True)
+    chip_widths = [
+        measure_text(draw, label, chip_font) + 88 for label, _, _ in chip_labels
+    ]
+    total_chip_width = sum(chip_widths) + chip_gap * (len(chip_widths) - 1)
+
+    while total_chip_width > chip_area_width and chip_font_size > 16:
+        chip_font_size -= 1
+        chip_font = load_font(chip_font_size, bold=True)
+        chip_widths = [
+            measure_text(draw, label, chip_font) + 84 for label, _, _ in chip_labels
+        ]
+        total_chip_width = sum(chip_widths) + chip_gap * (len(chip_widths) - 1)
+
+    chip_x = chip_area_x + max(0, (chip_area_width - total_chip_width) // 2)
+    for (label, dot, outline), width in zip(chip_labels, chip_widths):
+        draw_chip(draw, chip_x, chip_y, width, label, dot, outline, chip_font)
+        chip_x += width + chip_gap
 
     image.save(media_dir / "banner.png")
 

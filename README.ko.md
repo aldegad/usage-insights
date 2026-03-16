@@ -10,9 +10,9 @@
 
 `usage-insights`는 로컬 AI 사용 기록을 분석해서 리포트와 선택형 Remotion 영상을 만드는 공개 Codex 스킬입니다.
 
-## 미리보기
+## 예시 출력
 
-![Usage Insights install demo](./media/install-demo.gif)
+![Usage Insights example output](./media/example-output.gif)
 
 ## 할 수 있는 것
 

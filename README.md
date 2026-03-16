@@ -24,9 +24,9 @@ It is designed for people who want to answer questions like:
 - What kind of AI operator am I becoming?
 - Can I turn this into a shareable creator profile?
 
-## Preview
+## Example Output
 
-![Usage Insights install demo](./media/install-demo.gif)
+![Usage Insights example output](./media/example-output.gif)
 
 ## What It Does
 
