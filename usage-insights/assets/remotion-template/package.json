@@ -6,7 +6,6 @@
   "dependencies": {
     "@remotion/cli": "4.0.435",
     "@remotion/fonts": "^4.0.435",
-    "@remotion/google-fonts": "^4.0.435",
     "@remotion/tailwind-v4": "4.0.435",
     "@remotion/transitions": "^4.0.435",
     "react": "19.2.3",
