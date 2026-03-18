@@ -2,3 +2,5 @@
 Thumbs.db
 .playwright-cli/
 output/
+.usage-insights-workspace/
+.usage-insights-workspace-*/
