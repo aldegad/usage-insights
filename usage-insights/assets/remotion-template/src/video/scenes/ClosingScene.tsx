@@ -9,6 +9,7 @@ import {
   LABEL_WEIGHT,
   labelFont,
 } from "../config";
+import { getVideoCopy } from "../copy";
 import { GlassPanel, MetricCard, SoftChip, Stage } from "../primitives";
 import { formatCompact, formatNumber, formatPercent } from "../utils";
 
@@ -50,12 +51,13 @@ const ClosingNote: React.FC<{
 );
 
 export const ClosingScene: React.FC<VideoProps> = ({ data }) => {
+  const copy = getVideoCopy(data.locale);
   const closingFrame = useCurrentFrame();
   const topProjects = data.projects.slice(0, 3);
   const topProjectShare =
     topProjects.reduce((sum, project) => sum + project.tokens, 0) / data.totals.tokens;
   const activeRate = formatPercent(data.period.activeDays / data.period.totalDays);
-  const closingSummary = `전체 ${formatCompact(data.totals.tokens)} 토큰을 지나며 가장 뚜렷하게 보인 패턴은, AI를 하나의 도구가 아니라 역할이 다른 팀으로 운영할 때 결과가 가장 안정적으로 나왔다는 점입니다. ${data.providers[0]?.label || "Codex"}는 볼륨과 추진력을, ${data.providers[1]?.label || "Claude"}는 실험과 탐색의 완충 역할을 맡으며 작업을 밀어 올렸습니다.`;
+  const closingSummary = copy.closing.summary(data, formatCompact(data.totals.tokens));
   const closingChars = Math.floor(
     interpolate(closingFrame, [8, 92], [0, closingSummary.length], {
       extrapolateLeft: "clamp",
@@ -74,7 +76,12 @@ export const ClosingScene: React.FC<VideoProps> = ({ data }) => {
   );
 
   return (
-    <Stage current="read" durationInFrames={CLOSING_DURATION} section="마무리">
+    <Stage
+      current="read"
+      durationInFrames={CLOSING_DURATION}
+      section={copy.closing.section}
+      locale={data.locale}
+    >
       <div
         style={{
           display: "grid",
@@ -113,7 +120,9 @@ export const ClosingScene: React.FC<VideoProps> = ({ data }) => {
                   tone="sky"
                 />
                 <SoftChip
-                  text={`${formatNumber(data.totals.deepWorkThreads)} 깊은 작업 스레드`}
+                  text={copy.closing.deepWorkChip(
+                    formatNumber(data.totals.deepWorkThreads),
+                  )}
                   tone="peach"
                 />
               </div>
@@ -129,9 +138,9 @@ export const ClosingScene: React.FC<VideoProps> = ({ data }) => {
                   maxWidth: 620,
                 }}
               >
-                역할을 나눠 쓸수록
+                {copy.closing.headlineLines[0]}
                 <br />
-                더 선명하게 완주합니다.
+                {copy.closing.headlineLines[1]}
               </div>
             </div>
             <div
@@ -156,29 +165,22 @@ export const ClosingScene: React.FC<VideoProps> = ({ data }) => {
                   color: "#837263",
                 }}
               >
-                읽힌 패턴
+                {copy.closing.readPattern}
               </div>
               <ClosingNote
-                label="도구 배치"
-                body={`${data.providers[0]?.label || "Codex"} ${formatPercent(
-                  data.providers[0]?.share || 0,
-                )}, ${data.providers[1]?.label || "Claude"} ${formatPercent(
-                  data.providers[1]?.share || 0,
-                )}. 한쪽으로 몰아붙이기보다 시기마다 도구의 역할을 나눠 쓰는 방식이 가장 안정적이었습니다.`}
+                label={copy.closing.toolPlacement}
+                body={copy.closing.toolPlacementBody(data)}
               />
               <ClosingNote
-                label="집중 방식"
-                body={`${formatNumber(
-                  data.totals.deepWorkThreads,
-                )}개의 깊은 작업 스레드와 ${formatNumber(
-                  data.totals.megaThreads,
-                )}개의 50만+ 토큰 기록을 보면, 늘 켜두는 사용보다 필요할 때 길게 몰입하는 작업 리듬이 더 강하게 드러납니다.`}
+                label={copy.closing.focusMode}
+                body={copy.closing.focusModeBody(data)}
               />
               <ClosingNote
-                label="프로젝트 축"
-                body={`상위 3개 프로젝트가 전체 토큰의 ${formatPercent(
-                  topProjectShare,
-                )}를 차지했습니다. 특히 ${topProjects[0]?.label || "대표 프로젝트"}가 작업 중심축 역할을 하며, 다른 프로젝트들은 그 주변에서 실험과 파생 작업으로 확장됐습니다.`}
+                label={copy.closing.projectAxis}
+                body={copy.closing.projectAxisBody(
+                  formatPercent(topProjectShare),
+                  topProjects[0]?.label || copy.closing.leadProjectFallback,
+                )}
               />
             </div>
           </div>
@@ -194,7 +196,7 @@ export const ClosingScene: React.FC<VideoProps> = ({ data }) => {
                 color: "#1f1a16",
               }}
             >
-              상위 프로젝트
+              {copy.closing.topProjectsTitle}
             </div>
             <div style={{ marginTop: 20, display: "grid", gap: 14 }}>
               {topProjects.map((project, index) => (
@@ -216,7 +218,7 @@ export const ClosingScene: React.FC<VideoProps> = ({ data }) => {
                 color: "#1f1a16",
               }}
             >
-              집중 지표
+              {copy.closing.focusMetricsTitle}
             </div>
             <div
               style={{
@@ -227,27 +229,27 @@ export const ClosingScene: React.FC<VideoProps> = ({ data }) => {
               }}
             >
               <MetricCard
-                title="최장 연속"
+                title={copy.closing.metricTitles.longestStreak}
                 value={`${data.period.longestStreak}d`}
                 tone="butter"
                 size="compact"
               />
               <MetricCard
-                title="활성 일수"
-                value={`${data.period.activeDays}일 · ${activeRate}`}
+                title={copy.closing.metricTitles.activeDays}
+                value={copy.closing.activeDaysValue(data.period.activeDays, activeRate)}
                 tone="mint"
                 delay={4}
                 size="compact"
               />
               <MetricCard
-                title="프로젝트"
-                value={`${data.projects.length}개`}
+                title={copy.closing.metricTitles.projects}
+                value={copy.closing.projectsValue(data.projects.length)}
                 tone="sky"
                 delay={8}
                 size="compact"
               />
               <MetricCard
-                title="50만+ 토큰"
+                title={copy.closing.metricTitles.megaThreads}
                 value={formatNumber(data.totals.megaThreads)}
                 tone="peach"
                 delay={12}

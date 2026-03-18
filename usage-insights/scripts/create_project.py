@@ -8,8 +8,19 @@ import subprocess
 import sys
 from pathlib import Path
 
-GENERATED_RULES = ("INSIGHTS.md", "src/data/usage-insights.generated.ts")
-IGNORE_PATTERNS = ("node_modules", "out", "INSIGHTS.md", ".DS_Store")
+GENERATED_RULES = (
+    "INSIGHTS.md",
+    "src/data/usage-insights.generated.ts",
+    "src/data/insights-data.json",
+)
+IGNORE_PATTERNS = (
+    "node_modules",
+    "out",
+    "INSIGHTS.md",
+    "usage-insights.generated.ts",
+    "insights-data.json",
+    ".DS_Store",
+)
 
 
 def parse_args() -> argparse.Namespace:

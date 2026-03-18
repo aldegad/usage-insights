@@ -1,6 +1,12 @@
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  CATEGORY_LABELS,
+  HELPFULNESS_LABELS,
+  LOCALE,
+  OUTCOME_LABELS,
+} from "./labels.mjs";
 
 export const PROJECT_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 export const CODEX_HOME = process.env.CODEX_HOME || path.join(os.homedir(), ".codex");
@@ -15,6 +21,7 @@ export const ANTIGRAVITY_APP_HOME = path.join(
 );
 export const OUTPUT_FILE = path.join(PROJECT_ROOT, "src/data/usage-insights.generated.ts");
 export const REPORT_FILE = path.join(PROJECT_ROOT, "INSIGHTS.md");
+export { CATEGORY_LABELS, HELPFULNESS_LABELS, LOCALE, OUTCOME_LABELS };
 export const TIMEZONE =
   process.env.USAGE_INSIGHTS_TIMEZONE ||
   Intl.DateTimeFormat().resolvedOptions().timeZone ||
@@ -22,7 +29,7 @@ export const TIMEZONE =
 
 export const CATEGORY_RULES = [
   {
-    name: "구조·리뷰",
+    name: CATEGORY_LABELS.structureReview,
     patterns: [
       /구조/u,
       /설계/u,
@@ -49,7 +56,7 @@ export const CATEGORY_RULES = [
     ],
   },
   {
-    name: "구현·수정",
+    name: CATEGORY_LABELS.implementation,
     patterns: [
       /수정/u,
       /고쳐/u,
@@ -81,7 +88,7 @@ export const CATEGORY_RULES = [
     ],
   },
   {
-    name: "디자인·프론트",
+    name: CATEGORY_LABELS.designFront,
     patterns: [
       /디자인/u,
       /컬러/u,
@@ -103,7 +110,7 @@ export const CATEGORY_RULES = [
     ],
   },
   {
-    name: "연동·자동화",
+    name: CATEGORY_LABELS.integration,
     patterns: [
       /연결/u,
       /연동/u,
@@ -122,7 +129,7 @@ export const CATEGORY_RULES = [
     ],
   },
   {
-    name: "전략·콘텐츠",
+    name: CATEGORY_LABELS.strategyContent,
     patterns: [/전략/u, /기획/u, /아이디어/u, /추천/u, /문구/u, /콘텐츠/u, /브랜딩/u],
   },
 ];
@@ -207,23 +214,6 @@ export const ALLOWED_ENGLISH_KEYWORDS = new Set([
   "design",
   "build",
 ]);
-
-export const OUTCOME_LABELS = {
-  fully_achieved: "완료",
-  mostly_achieved: "거의 완료",
-  partially_achieved: "부분 완료",
-  not_achieved: "미완료",
-  unknown: "기록 없음",
-};
-
-export const HELPFULNESS_LABELS = {
-  essential: "핵심 기여",
-  very_helpful: "매우 도움됨",
-  moderately_helpful: "도움됨",
-  slightly_helpful: "약간 도움됨",
-  not_helpful: "도움 적음",
-  unknown: "기록 없음",
-};
 
 export const compactFormatter = new Intl.NumberFormat("en-US", {
   notation: "compact",

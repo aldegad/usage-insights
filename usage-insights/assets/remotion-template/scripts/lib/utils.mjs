@@ -8,6 +8,7 @@ import path from "node:path";
 import {
   ALLOWED_ENGLISH_KEYWORDS,
   CATEGORY_RULES,
+  CATEGORY_LABELS,
   dateFormatter,
   hourFormatter,
   monthFormatter,
@@ -143,7 +144,7 @@ export const buildDayStreak = (days) => {
 
 export const inferCategory = (title) => {
   const target = title || "";
-  let bestCategory = "기타";
+  let bestCategory = CATEGORY_LABELS.other;
   let bestScore = 0;
 
   for (const category of CATEGORY_RULES) {

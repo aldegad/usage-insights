@@ -1,7 +1,8 @@
 import { scanAntigravityActivity, scanGeminiActivity, scanGeminiProjectLabels } from "./activity.mjs";
 import { buildClaudeRecords, parseClaudeCoverage } from "./claude.mjs";
 import { buildCodexRecords } from "./codex.mjs";
-import { TIMEZONE } from "./config.mjs";
+import { LOCALE, TIMEZONE } from "./config.mjs";
+import { OUTCOME_LABELS } from "./labels.mjs";
 import { buildNarrative, inferProviderRole, labelHelpfulness, labelOutcome } from "./narrative.mjs";
 import {
   buildDayStreak,
@@ -246,6 +247,7 @@ export const buildInsights = () => {
 
   const insights = {
     generatedAt: new Date().toISOString(),
+    locale: LOCALE,
     timezone: TIMEZONE,
     period: {
       from: Number.isFinite(from) && from > 0 ? toIsoDate(from) : "",
@@ -315,7 +317,9 @@ export const buildInsights = () => {
         tokens: record.tokens,
         provider: record.provider,
         outcome:
-          record.provider === "Claude" ? labelOutcome(record.metadata.outcome) : "실행 기록",
+          record.provider === "Claude"
+            ? labelOutcome(record.metadata.outcome)
+            : OUTCOME_LABELS.executionLog,
       })),
     outcomes: [...outcomeMap.values()].sort((a, b) => b.sessions - a.sessions),
     helpfulness: [...helpfulnessMap.values()].sort((a, b) => b.sessions - a.sessions),

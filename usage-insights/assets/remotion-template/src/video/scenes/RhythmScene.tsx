@@ -10,10 +10,12 @@ import {
   RHYTHM_DURATION,
   toneStyles,
 } from "../config";
+import { getVideoCopy } from "../copy";
 import { GlassPanel, SoftChip, Stage } from "../primitives";
 import { formatCompact, localizeWeekday, scaleValue } from "../utils";
 
 export const RhythmScene: React.FC<VideoProps> = ({ data }) => {
+  const copy = getVideoCopy(data.locale);
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const maxHour = Math.max(1, ...data.hourly.map((item) => item.tokens));
@@ -29,7 +31,12 @@ export const RhythmScene: React.FC<VideoProps> = ({ data }) => {
   });
 
   return (
-    <Stage current="tempo" durationInFrames={RHYTHM_DURATION} section="시간대 리듬">
+    <Stage
+      current="tempo"
+      durationInFrames={RHYTHM_DURATION}
+      section={copy.rhythm.section}
+      locale={data.locale}
+    >
       <div
         style={{
           display: "grid",
@@ -48,7 +55,7 @@ export const RhythmScene: React.FC<VideoProps> = ({ data }) => {
               color: "#1f1a16",
             }}
           >
-            시간대별 사용 리듬
+            {copy.rhythm.title}
           </div>
           <div
             style={{
@@ -59,7 +66,7 @@ export const RhythmScene: React.FC<VideoProps> = ({ data }) => {
               color: "#6b5f54",
             }}
           >
-            오전 후반부터 오후 구간이 가장 강하고, 저녁에 다시 한 번 재진입하는 패턴이 보입니다.
+            {copy.rhythm.subtitle}
           </div>
           <div
             style={{
@@ -143,13 +150,13 @@ export const RhythmScene: React.FC<VideoProps> = ({ data }) => {
                   color: "#1f1a16",
                 }}
               >
-                피크 시간대
+                {copy.rhythm.peakTimes}
               </div>
               <div style={{ marginTop: 18, display: "grid", gap: 12 }}>
                 {topHours.map((hour, index) => (
                   <SoftChip
                     key={hour.label}
-                    text={`${hour.label}시 · ${formatCompact(hour.tokens)}`}
+                    text={copy.rhythm.hourChip(hour.label, formatCompact(hour.tokens))}
                     tone={index === 0 ? "peach" : index === 1 ? "mint" : "sky"}
                   />
                 ))}
@@ -165,13 +172,16 @@ export const RhythmScene: React.FC<VideoProps> = ({ data }) => {
                   color: "#1f1a16",
                 }}
               >
-                강한 요일
+                {copy.rhythm.strongDays}
               </div>
               <div style={{ marginTop: 18, display: "grid", gap: 12 }}>
                 {topWeekdays.map((day, index) => (
                   <SoftChip
                     key={day.label}
-                    text={`${localizeWeekday(day.label)}요일 · ${formatCompact(day.tokens)}`}
+                    text={copy.rhythm.weekdayChip(
+                      localizeWeekday(day.label, data.locale),
+                      formatCompact(day.tokens),
+                    )}
                     tone={index === 0 ? "butter" : index === 1 ? "sky" : "mint"}
                   />
                 ))}
@@ -187,7 +197,7 @@ export const RhythmScene: React.FC<VideoProps> = ({ data }) => {
                   color: "#8a7a6c",
                 }}
               >
-                해석
+                {copy.rhythm.interpretation}
               </div>
               <div
                 style={{
@@ -198,8 +208,7 @@ export const RhythmScene: React.FC<VideoProps> = ({ data }) => {
                   color: "#5e5247",
                 }}
               >
-                AI를 배경 채팅처럼 틀어두는 방식은 아닙니다. 필요가 생기면 강하게 들어오고,
-                한 번 들어오면 구조가 잡히고 결과가 날 때까지 깊게 파는 쪽에 가깝습니다.
+                {copy.rhythm.interpretationBody}
               </div>
             </GlassPanel>
           </div>

@@ -1,23 +1,28 @@
-import { HELPFULNESS_LABELS, OUTCOME_LABELS } from "./config.mjs";
+import {
+  CATEGORY_LABELS,
+  HELPFULNESS_LABELS,
+  OUTCOME_LABELS,
+} from "./config.mjs";
+import { PROVIDER_ROLE_LABELS } from "./labels.mjs";
 
 export const inferProviderRole = (category) => {
-  if (category === "구조·리뷰") {
-    return "구조·탐색·리뷰";
+  if (category === CATEGORY_LABELS.structureReview) {
+    return PROVIDER_ROLE_LABELS.structureReview;
   }
 
-  if (category === "구현·수정") {
-    return "구현·수정·검증";
+  if (category === CATEGORY_LABELS.implementation) {
+    return PROVIDER_ROLE_LABELS.implementation;
   }
 
-  if (category === "디자인·프론트") {
-    return "디자인·프론트·모션";
+  if (category === CATEGORY_LABELS.designFront) {
+    return PROVIDER_ROLE_LABELS.designFront;
   }
 
-  if (category === "연동·자동화") {
-    return "연동·자동화·오케스트레이션";
+  if (category === CATEGORY_LABELS.integration) {
+    return PROVIDER_ROLE_LABELS.integration;
   }
 
-  return "문제 해결·실험";
+  return PROVIDER_ROLE_LABELS.other;
 };
 
 export const labelOutcome = (value) => OUTCOME_LABELS[value] || value || OUTCOME_LABELS.unknown;

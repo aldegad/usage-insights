@@ -1,6 +1,7 @@
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { CLAUDE_HOME } from "./config.mjs";
+import { ACTIVITY_COPY } from "./labels.mjs";
 import {
   inferCategory,
   normalizeRepo,
@@ -291,7 +292,9 @@ export const buildClaudeRecords = () => {
           : createdAt;
       const rawTitle =
         facet.underlying_goal || facet.brief_summary || sanitizePrompt(meta.firstPrompt) || "";
-      const title = sanitizePrompt(rawTitle) || `${normalizeRepo(cwd)} 작업 세션`;
+      const title =
+        sanitizePrompt(rawTitle) ||
+        ACTIVITY_COPY.claudeSessionFallback(normalizeRepo(cwd));
 
       return {
         id: `claude:${sessionId}`,

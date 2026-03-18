@@ -31,6 +31,12 @@ Run the entry script to create or reuse a workspace and collect raw usage data:
 python3 ${CLAUDE_SKILL_DIR}/scripts/run_usage_insights.py
 ```
 
+If the user wants the fixed report/video labels in a specific language, set `USAGE_INSIGHTS_LOCALE` before running the pipeline.
+
+```bash
+USAGE_INSIGHTS_LOCALE=en python3 ${CLAUDE_SKILL_DIR}/scripts/run_usage_insights.py
+```
+
 This produces:
 
 - `src/data/insights-data.json` — raw statistics with empty narrative fields
@@ -56,7 +62,9 @@ Do not ask the user to manually assemble those datasets first unless the local s
 
 After Phase 1 completes, read `src/data/insights-data.json` from the workspace. This JSON contains the full usage statistics. Based on this data, **you must write the narrative analysis yourself**.
 
-Write the following fields in the **user's conversation language** (match the language the user is speaking):
+Do not add or require external API calls for this step. This skill is intended for Codex / Claude Code style agents to read the local analysis data and write the narrative directly in the current conversation flow.
+
+Write the following fields in the **user's conversation language** (match the language the user is speaking). The template's short fixed labels already follow `USAGE_INSIGHTS_LOCALE`; your job is to write the longer narrative fields.
 
 | Field | Type | Guidelines |
 |-------|------|------------|
@@ -84,10 +92,8 @@ Write the following fields in the **user's conversation language** (match the la
    - Find the empty `"cautions": []` array and replace with your cautions array.
    - Find the empty `"persona"` object and replace with your archetype, summary, and worksBestAs.
 4. Edit `INSIGHTS.md`:
-   - Under `## 내 해석`, fill in archetype, summary, and worksBestAs.
-   - Under `## 대표 작업 성향`, add habits as bullet points.
-   - Under `## 잘한 점`, add strengths as bullet points.
-   - Under `## 조심할 점`, add cautions as bullet points.
+   - Fill the existing interpretation/persona sections in the generated report.
+   - Keep the report language aligned with the selected locale and the user's requested output language.
 
 ### Phase 3. Render outputs
 

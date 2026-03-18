@@ -100,7 +100,19 @@ def run_npm_script(path: Path, script: str) -> None:
 
 
 def build_steps_for_mode(mode: str) -> list[str]:
-    return ["analyze"]
+    if mode == "report":
+        return ["analyze"]
+
+    if mode == "poster":
+        return ["analyze", "render:poster"]
+
+    if mode == "video":
+        return ["analyze", "render:video"]
+
+    if mode == "dev":
+        return ["analyze", "dev"]
+
+    return ["analyze", "render:poster", "render:video"]
 
 
 def print_summary(path: Path, *, created: bool, installed: bool, mode: str) -> None:

@@ -54,6 +54,7 @@ npm run build:all
 ## Outputs
 
 - `INSIGHTS.md`: narrative report with metrics and interpretive takeaways
+- `src/data/insights-data.json`: aggregated analysis data before rendering
 - `out/usage-insights-poster.jpg`: cover frame
 - `out/usage-insights-profile.mp4`: final animation
 

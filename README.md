@@ -117,6 +117,7 @@ The generated workspace produces:
 
 - `INSIGHTS.md`
 - `src/data/usage-insights.generated.ts`
+- `src/data/insights-data.json`
 - optional poster and MP4 exports under `out/`
 
 ## Data Coverage

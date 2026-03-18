@@ -2,18 +2,20 @@ import React from "react";
 import { Easing, interpolate, useCurrentFrame } from "remotion";
 import type { VideoProps } from "../config";
 import { OPENING_DURATION, bodyFont, DISPLAY_WEIGHT, displayFont } from "../config";
+import { getVideoCopy } from "../copy";
 import { MetricCard, GlassPanel, SoftChip, Stage } from "../primitives";
 import { PersonaBubble } from "../persona-panels";
 import { formatCompact, formatNumber, formatPercent, useRise } from "../utils";
 
 export const OpeningScene: React.FC<VideoProps> = ({ data }) => {
+  const copy = getVideoCopy(data.locale);
   const heroRise = useRise(2, 28);
   const activeRate = formatPercent(data.period.activeDays / data.period.totalDays);
   const providerLine = data.providers
     .slice(0, 2)
     .map((provider) => `${provider.label} ${formatPercent(provider.share)}`)
     .join(" · ");
-  const openingSummary = `${data.period.from}부터 ${data.period.to}까지의 로컬 기록을 보면, AI를 하나의 비서보다 역할이 다른 팀처럼 운영합니다. 구조와 탐색은 Claude가 받치고, 구현과 실행은 Codex가 밀어 올립니다.`;
+  const openingSummary = copy.opening.summary(data);
   const openingFrame = useCurrentFrame();
   const summaryChars = Math.floor(
     interpolate(openingFrame, [16, 62], [0, openingSummary.length], {
@@ -35,7 +37,8 @@ export const OpeningScene: React.FC<VideoProps> = ({ data }) => {
     <Stage
       current="overview"
       durationInFrames={OPENING_DURATION}
-      section="AI 크리에이터 프로필"
+      section={copy.opening.section}
+      locale={data.locale}
     >
       <div
         style={{
@@ -63,10 +66,12 @@ export const OpeningScene: React.FC<VideoProps> = ({ data }) => {
               }}
             >
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap", maxWidth: 720 }}>
-                <SoftChip text="토큰 집계: Codex + Claude" tone="sky" />
+                <SoftChip text={copy.opening.tokenChip} tone="sky" />
                 {data.activityTraces.length > 0 ? (
                   <SoftChip
-                    text={`활동 흔적: ${data.activityTraces.map((trace) => trace.label).join(" + ")}`}
+                    text={copy.opening.activityChip(
+                      data.activityTraces.map((trace) => trace.label),
+                    )}
                     tone="mint"
                   />
                 ) : null}
@@ -96,9 +101,9 @@ export const OpeningScene: React.FC<VideoProps> = ({ data }) => {
                     maxWidth: 760,
                   }}
                 >
-                  로컬 AI 작업 기록을
+                  {copy.opening.titleLines[0]}
                   <br />
-                  역할, 리듬, 프로젝트로 읽었습니다.
+                  {copy.opening.titleLines[1]}
                 </div>
                 <div
                   style={{
@@ -130,27 +135,27 @@ export const OpeningScene: React.FC<VideoProps> = ({ data }) => {
               }}
             >
               <MetricCard
-                title="총 토큰"
+                title={copy.opening.metricTitles.totalTokens}
                 value={formatCompact(data.totals.tokens)}
                 tone="peach"
                 size="compact"
               />
               <MetricCard
-                title="활성 일수"
+                title={copy.opening.metricTitles.activeDays}
                 value={`${data.period.activeDays}/${data.period.totalDays} · ${activeRate}`}
                 tone="sky"
                 delay={4}
                 size="compact"
               />
               <MetricCard
-                title="최장 연속"
+                title={copy.opening.metricTitles.longestStreak}
                 value={`${data.period.longestStreak}d`}
                 tone="mint"
                 delay={8}
                 size="compact"
               />
               <MetricCard
-                title="스레드 수"
+                title={copy.opening.metricTitles.threads}
                 value={formatNumber(data.totals.threads)}
                 tone="butter"
                 delay={12}

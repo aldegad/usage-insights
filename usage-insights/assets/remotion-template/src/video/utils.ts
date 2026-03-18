@@ -1,14 +1,26 @@
 import { Easing, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import type { UsageInsightsData } from "../data/usage-insights.generated";
+import { resolveVideoLocale } from "./copy";
 
-const weekdayLabels: Record<string, string> = {
-  Mon: "월",
-  Tue: "화",
-  Wed: "수",
-  Thu: "목",
-  Fri: "금",
-  Sat: "토",
-  Sun: "일",
+const weekdayLabels: Record<"ko" | "en", Record<string, string>> = {
+  ko: {
+    Mon: "월",
+    Tue: "화",
+    Wed: "수",
+    Thu: "목",
+    Fri: "금",
+    Sat: "토",
+    Sun: "일",
+  },
+  en: {
+    Mon: "Mon",
+    Tue: "Tue",
+    Wed: "Wed",
+    Thu: "Thu",
+    Fri: "Fri",
+    Sat: "Sat",
+    Sun: "Sun",
+  },
 };
 
 export const formatCompact = (value: number) => {
@@ -40,16 +52,26 @@ export const scaleValue = (value: number, max: number, size: number) => {
   return (value / max) * size;
 };
 
-export const localizeWeekday = (label: string) => weekdayLabels[label] ?? label;
+export const localizeWeekday = (label: string, locale?: string) => {
+  const resolvedLocale = resolveVideoLocale(locale);
+  return weekdayLabels[resolvedLocale][label] ?? label;
+};
 
 export const formatActivityTraceEvidence = (
   trace: UsageInsightsData["activityTraces"][number],
+  locale?: string,
 ) => {
+  const resolvedLocale = resolveVideoLocale(locale);
+
   if (trace.label === "Gemini") {
-    return `저장 대화 ${formatNumber(trace.conversationCount || 0)}개`;
+    return resolvedLocale === "en"
+      ? `${formatNumber(trace.conversationCount || 0)} saved conversations`
+      : `저장 대화 ${formatNumber(trace.conversationCount || 0)}개`;
   }
 
-  return `앱 세션 ${formatNumber(trace.appSessionCount || 0)}개`;
+  return resolvedLocale === "en"
+    ? `${formatNumber(trace.appSessionCount || 0)} app sessions`
+    : `앱 세션 ${formatNumber(trace.appSessionCount || 0)}개`;
 };
 
 export const projectProviderTone = (provider: string) => {

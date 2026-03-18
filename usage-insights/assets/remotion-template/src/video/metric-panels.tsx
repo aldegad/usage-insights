@@ -11,6 +11,7 @@ import {
   type Tone,
   toneStyles,
 } from "./config";
+import { getVideoCopy } from "./copy";
 import { formatCompact, formatPercent, scaleValue } from "./utils";
 import { GlassPanel, SoftChip } from "./primitives";
 
@@ -152,6 +153,7 @@ export const MonthlyProviderBoard: React.FC<{
   data: UsageInsightsData;
   subtitle: string;
 }> = ({ data, subtitle }) => {
+  const copy = getVideoCopy(data.locale);
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const items = data.monthlyByProvider.slice(-4);
@@ -168,7 +170,7 @@ export const MonthlyProviderBoard: React.FC<{
           color: "#1f1a16",
         }}
       >
-        월별 토큰 흐름
+        {copy.system.monthlyTitle}
       </div>
       <div
         style={{
@@ -183,9 +185,9 @@ export const MonthlyProviderBoard: React.FC<{
         {subtitle}
       </div>
       <div style={{ marginTop: 16, display: "flex", gap: 10, flexWrap: "wrap" }}>
-        <SoftChip text="막대 전체 = 월별 총 토큰" tone="butter" />
-        <SoftChip text="Codex = 피치" tone="peach" />
-        <SoftChip text="Claude = 스카이" tone="sky" />
+        <SoftChip text={copy.system.monthlyChips.total} tone="butter" />
+        <SoftChip text={copy.system.monthlyChips.codex} tone="peach" />
+        <SoftChip text={copy.system.monthlyChips.claude} tone="sky" />
       </div>
       <div
         style={{
@@ -283,7 +285,7 @@ export const MonthlyProviderBoard: React.FC<{
                   color: "#1f1a16",
                 }}
               >
-                {formatCompact(item.totalTokens)} 토큰
+                {copy.system.monthlyTotalTokens(formatCompact(item.totalTokens))}
               </div>
               <div style={{ display: "grid", gap: 6 }}>
                 <div
@@ -336,6 +338,7 @@ export const MonthlyProviderBoard: React.FC<{
 };
 
 export const ProviderSplitCard: React.FC<{ data: UsageInsightsData }> = ({ data }) => {
+  const copy = getVideoCopy(data.locale);
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const providers = data.providers.slice(0, 2);
@@ -345,8 +348,8 @@ export const ProviderSplitCard: React.FC<{ data: UsageInsightsData }> = ({ data 
     .find((item) => item.codexTokens > item.claudeTokens);
   const note =
     claudeLead && codexLead
-      ? `${claudeLead.label}엔 Claude 비중이 컸고, ${codexLead.label}엔 Codex가 구현 볼륨을 끌어올렸습니다.`
-      : "두 도구를 함께 쓰되, 최근엔 Codex 비중이 더 큰 운영 구조입니다.";
+      ? copy.system.providerMixNoteDual(claudeLead.label, codexLead.label)
+      : copy.system.providerMixNoteSingle;
 
   return (
     <GlassPanel style={{ padding: 24, height: "100%" }}>
@@ -359,7 +362,7 @@ export const ProviderSplitCard: React.FC<{ data: UsageInsightsData }> = ({ data 
           color: "#7c6e61",
         }}
       >
-        AI 도구 믹스
+        {copy.system.providerMixTitle}
       </div>
       <div style={{ marginTop: 18, display: "grid", gap: 18 }}>
         {providers.map((provider, index) => {
@@ -437,7 +440,7 @@ export const ProviderSplitCard: React.FC<{ data: UsageInsightsData }> = ({ data 
                   color: "#63574b",
                 }}
               >
-                {provider.role} · {formatCompact(provider.tokens)} 토큰
+                {copy.system.providerTokens(provider.role, formatCompact(provider.tokens))}
               </div>
             </div>
           );

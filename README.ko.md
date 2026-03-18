@@ -109,6 +109,7 @@ npm run render:video
 
 - `INSIGHTS.md`
 - `src/data/usage-insights.generated.ts`
+- `src/data/insights-data.json`
 - `out/` 아래의 포스터와 MP4
 
 ## 데이터 커버리지

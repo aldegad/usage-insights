@@ -4,6 +4,7 @@ import {
   ANTIGRAVITY_APP_HOME,
   GEMINI_ANTIGRAVITY_HOME,
 } from "./config.mjs";
+import { ACTIVITY_COPY } from "./labels.mjs";
 import {
   maxDate,
   minDate,
@@ -47,7 +48,7 @@ export const scanGeminiActivity = () => {
     conversationCount: conversationFiles.length,
     browserRecordingCount: browserRecordingFiles.length,
     taskArtifactCount: taskMetadataFiles.length,
-    note: "저장 대화와 활동 아티팩트는 남아 있지만, 로컬 토큰 원장은 확인되지 않았습니다.",
+    note: ACTIVITY_COPY.geminiNote,
   };
 };
 
@@ -96,6 +97,6 @@ export const scanAntigravityActivity = () => {
     from: firstSession !== null ? toIsoDate(firstSession) : "",
     to: lastSession !== null ? toIsoDate(lastSession) : "",
     appSessionCount: sessions.length,
-    note: "앱 로그 세션 기준으로 IDE 사용 흔적이 확인됩니다. 토큰 합계는 별도로 남아 있지 않습니다.",
+    note: ACTIVITY_COPY.antigravityNote,
   };
 };

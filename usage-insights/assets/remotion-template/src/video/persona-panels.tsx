@@ -12,136 +12,141 @@ import {
   type Tone,
   toneStyles,
 } from "./config";
+import { getVideoCopy } from "./copy";
 import { formatActivityTraceEvidence } from "./utils";
 import { GlassPanel, SoftChip } from "./primitives";
 
-export const PersonaBubble: React.FC<{ data: UsageInsightsData }> = ({ data }) => (
-  <GlassPanel
-    style={{
-      position: "relative",
-      padding: "26px 24px 24px",
-      height: "100%",
-      background:
-        "linear-gradient(180deg, rgba(255,255,255,0.97), rgba(247, 250, 253, 0.94))",
-      overflow: "hidden",
-      display: "flex",
-      flexDirection: "column",
-    }}
-  >
-    <div
+export const PersonaBubble: React.FC<{ data: UsageInsightsData }> = ({ data }) => {
+  const copy = getVideoCopy(data.locale);
+
+  return (
+    <GlassPanel
       style={{
-        position: "absolute",
-        width: 180,
-        height: 180,
-        right: -48,
-        top: -64,
-        borderRadius: "50%",
+        position: "relative",
+        padding: "26px 24px 24px",
+        height: "100%",
         background:
-          "radial-gradient(circle at 30% 30%, rgba(13, 148, 136, 0.12), rgba(59, 130, 246, 0.06) 68%, transparent 80%)",
-      }}
-    />
-    <div
-      style={{
-        fontFamily: labelFont,
-        fontSize: 11,
-        letterSpacing: "0.18em",
-        fontWeight: LABEL_WEIGHT,
-        color: colors.muted,
+          "linear-gradient(180deg, rgba(255,255,255,0.97), rgba(247, 250, 253, 0.94))",
+        overflow: "hidden",
+        display: "flex",
+        flexDirection: "column",
       }}
     >
-      작업 성향
-    </div>
-    <div
-      style={{
-        marginTop: 16,
-        fontFamily: displayFont,
-        fontWeight: DISPLAY_WEIGHT,
-        fontSize: 40,
-        lineHeight: 1,
-        maxWidth: 320,
-        letterSpacing: "-0.05em",
-        color: colors.heading,
-      }}
-    >
-      {data.persona.archetype}
-    </div>
-    <div
-      style={{
-        marginTop: 16,
-        width: 36,
-        height: 2,
-        background: colors.heading,
-      }}
-    />
-    <div
-      style={{
-        marginTop: 14,
-        fontFamily: bodyFont,
-        fontSize: 16,
-        lineHeight: 1.64,
-        color: colors.body,
-      }}
-    >
-      {data.persona.worksBestAs}
-    </div>
-    {data.activityTraces.length > 0 ? (
       <div
         style={{
-          marginTop: 18,
-          paddingTop: 16,
-          borderTop: `1px solid ${colors.faint}`,
-          display: "grid",
-          gap: 8,
+          position: "absolute",
+          width: 180,
+          height: 180,
+          right: -48,
+          top: -64,
+          borderRadius: "50%",
+          background:
+            "radial-gradient(circle at 30% 30%, rgba(13, 148, 136, 0.12), rgba(59, 130, 246, 0.06) 68%, transparent 80%)",
+        }}
+      />
+      <div
+        style={{
+          fontFamily: labelFont,
+          fontSize: 11,
+          letterSpacing: "0.18em",
+          fontWeight: LABEL_WEIGHT,
+          color: colors.muted,
         }}
       >
-        <div
-          style={{
-            fontFamily: labelFont,
-            fontSize: 10,
-            letterSpacing: "0.16em",
-            fontWeight: LABEL_WEIGHT,
-            color: colors.label,
-          }}
-        >
-          추가 활동 흔적
-        </div>
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-          {data.activityTraces.map((trace, index) => (
-            <SoftChip
-              key={trace.label}
-              text={`${trace.label} ${formatActivityTraceEvidence(trace)}`}
-              tone={index === 0 ? "mint" : "sky"}
-            />
-          ))}
-        </div>
-        <div
-          style={{
-            fontFamily: bodyFont,
-            fontSize: 14,
-            lineHeight: 1.6,
-            color: colors.muted,
-          }}
-        >
-          {data.activityTraces
-            .map((trace) => `${trace.label} ${trace.from} ~ ${trace.to}`)
-            .join(" · ")}
-        </div>
-        <div
-          style={{
-            fontFamily: bodyFont,
-            fontSize: 12,
-            lineHeight: 1.5,
-            color: colors.label,
-            borderTop: `1px solid ${colors.faint}`,
-            paddingTop: 12,
-          }}
-        >
-          Codex/Claude는 토큰 기준으로, Gemini/Antigravity는 로컬 활동 흔적으로만 반영했습니다.
-        </div>
+        {copy.persona.tendency}
       </div>
-    ) : null}
-  </GlassPanel>
-);
+      <div
+        style={{
+          marginTop: 16,
+          fontFamily: displayFont,
+          fontWeight: DISPLAY_WEIGHT,
+          fontSize: 40,
+          lineHeight: 1,
+          maxWidth: 320,
+          letterSpacing: "-0.05em",
+          color: colors.heading,
+        }}
+      >
+        {data.persona.archetype}
+      </div>
+      <div
+        style={{
+          marginTop: 16,
+          width: 36,
+          height: 2,
+          background: colors.heading,
+        }}
+      />
+      <div
+        style={{
+          marginTop: 14,
+          fontFamily: bodyFont,
+          fontSize: 16,
+          lineHeight: 1.64,
+          color: colors.body,
+        }}
+      >
+        {data.persona.worksBestAs}
+      </div>
+      {data.activityTraces.length > 0 ? (
+        <div
+          style={{
+            marginTop: 18,
+            paddingTop: 16,
+            borderTop: `1px solid ${colors.faint}`,
+            display: "grid",
+            gap: 8,
+          }}
+        >
+          <div
+            style={{
+              fontFamily: labelFont,
+              fontSize: 10,
+              letterSpacing: "0.16em",
+              fontWeight: LABEL_WEIGHT,
+              color: colors.label,
+            }}
+          >
+            {copy.persona.extraActivity}
+          </div>
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            {data.activityTraces.map((trace, index) => (
+              <SoftChip
+                key={trace.label}
+                text={`${trace.label} ${formatActivityTraceEvidence(trace, data.locale)}`}
+                tone={index === 0 ? "mint" : "sky"}
+              />
+            ))}
+          </div>
+          <div
+            style={{
+              fontFamily: bodyFont,
+              fontSize: 14,
+              lineHeight: 1.6,
+              color: colors.muted,
+            }}
+          >
+            {data.activityTraces
+              .map((trace) => `${trace.label} ${trace.from} ~ ${trace.to}`)
+              .join(" · ")}
+          </div>
+          <div
+            style={{
+              fontFamily: bodyFont,
+              fontSize: 12,
+              lineHeight: 1.5,
+              color: colors.label,
+              borderTop: `1px solid ${colors.faint}`,
+              paddingTop: 12,
+            }}
+          >
+            {copy.persona.activityFootnote}
+          </div>
+        </div>
+      ) : null}
+    </GlassPanel>
+  );
+};
 
 export const InsightColumn: React.FC<{
   title: string;

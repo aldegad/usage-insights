@@ -2,6 +2,7 @@ import { execFileSync } from "node:child_process";
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import path from "node:path";
 import { CODEX_HOME } from "./config.mjs";
+import { ACTIVITY_COPY } from "./labels.mjs";
 import {
   inferCategory,
   normalizeRepo,
@@ -145,7 +146,7 @@ export const buildCodexRecords = () => {
       rawId: thread.id,
       provider: "Codex",
       kind: "thread",
-      title: sanitizePrompt(thread.title) || "Codex 작업",
+      title: sanitizePrompt(thread.title) || ACTIVITY_COPY.codexThreadFallback,
       cwd: thread.cwd || session?.cwd || "",
       repo: normalizeRepo(thread.cwd || session?.cwd || ""),
       createdAt,

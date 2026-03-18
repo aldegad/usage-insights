@@ -4,17 +4,18 @@ import type { VideoProps } from "../config";
 import {
   bodyFont,
   DISPLAY_WEIGHT,
-  DISPLAY_WEIGHT_MEDIUM,
   displayFont,
   LABEL_WEIGHT,
   labelFont,
   colors,
   PERSONA_DURATION,
 } from "../config";
+import { getVideoCopy } from "../copy";
 import { GlassPanel, Stage } from "../primitives";
 import { InsightColumn } from "../persona-panels";
 
 export const PersonaScene: React.FC<VideoProps> = ({ data }) => {
+  const copy = getVideoCopy(data.locale);
   const frame = useCurrentFrame();
 
   const maxItemsPerCol = Math.max(
@@ -40,7 +41,12 @@ export const PersonaScene: React.FC<VideoProps> = ({ data }) => {
   );
 
   return (
-    <Stage current="read" durationInFrames={PERSONA_DURATION} section="해석 레이어">
+    <Stage
+      current="read"
+      durationInFrames={PERSONA_DURATION}
+      section={copy.persona.section}
+      locale={data.locale}
+    >
       <div style={{ display: "grid", gap: 18, height: "100%" }}>
         <GlassPanel
           style={{
@@ -64,7 +70,7 @@ export const PersonaScene: React.FC<VideoProps> = ({ data }) => {
               color: colors.muted,
             }}
           >
-            내 해석
+            {copy.persona.badge}
           </div>
           <div
             style={{
@@ -108,9 +114,17 @@ export const PersonaScene: React.FC<VideoProps> = ({ data }) => {
               transform: `translateY(-${scrollY}px)`,
             }}
           >
-            <InsightColumn title="습관" items={data.habits} tone="peach" />
-            <InsightColumn title="잘하는 점" items={data.strengths} tone="mint" />
-            <InsightColumn title="주의할 점" items={data.cautions} tone="butter" />
+            <InsightColumn title={copy.persona.habits} items={data.habits} tone="peach" />
+            <InsightColumn
+              title={copy.persona.strengths}
+              items={data.strengths}
+              tone="mint"
+            />
+            <InsightColumn
+              title={copy.persona.cautions}
+              items={data.cautions}
+              tone="butter"
+            />
           </div>
         </div>
       </div>

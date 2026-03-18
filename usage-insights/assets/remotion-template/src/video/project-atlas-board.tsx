@@ -16,6 +16,7 @@ import {
   PROJECTS_DURATION,
   toneStyles,
 } from "./config";
+import { getVideoCopy } from "./copy";
 import {
   projectProviderTone,
   formatCompact,
@@ -26,6 +27,7 @@ import {
 export const ProjectAtlasBoard: React.FC<{ data: UsageInsightsData }> = ({
   data,
 }) => {
+  const copy = getVideoCopy(data.locale);
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const viewportRef = React.useRef<HTMLDivElement>(null);
@@ -126,12 +128,15 @@ export const ProjectAtlasBoard: React.FC<{ data: UsageInsightsData }> = ({
     >
       <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
         {[
-          { label: `전체 ${projects.length}개`, tone: "sky" as const },
+          { label: copy.projects.totalProjects(projects.length), tone: "sky" as const },
           {
-            label: `1위 ${spotlight.label} ${formatCompact(spotlight.tokens)}`,
+            label: copy.projects.topProject(
+              spotlight.label,
+              formatCompact(spotlight.tokens),
+            ),
             tone: "peach" as const,
           },
-          { label: `멀티 툴 ${sharedProjects}개`, tone: "mint" as const },
+          { label: copy.projects.multiTool(sharedProjects), tone: "mint" as const },
         ].map((item) => (
           <div
             key={item.label}
@@ -349,7 +354,7 @@ export const ProjectAtlasBoard: React.FC<{ data: UsageInsightsData }> = ({
                                   color: "#74675a",
                                 }}
                               >
-                                {project.workspaces} WS
+                                {project.workspaces} {copy.projects.workspaceSuffix}
                               </div>
                             </div>
                             <div
@@ -397,7 +402,7 @@ export const ProjectAtlasBoard: React.FC<{ data: UsageInsightsData }> = ({
                                 color: "#64584c",
                               }}
                             >
-                              {project.threads}개 기록
+                              {copy.projects.records(project.threads)}
                             </div>
                             <div
                               style={{
@@ -408,7 +413,7 @@ export const ProjectAtlasBoard: React.FC<{ data: UsageInsightsData }> = ({
                                 color: "#8a7b6f",
                               }}
                             >
-                              비중 {formatPercent(share)}
+                              {copy.projects.share(formatPercent(share))}
                             </div>
                           </div>
                         </div>

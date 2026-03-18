@@ -15,6 +15,7 @@ import {
   type Tone,
   toneStyles,
 } from "./config";
+import { getVideoCopy } from "./copy";
 import { sceneOpacity, useRise } from "./utils";
 
 const sectionIndexByCurrent: Record<string, string> = {
@@ -24,14 +25,12 @@ const sectionIndexByCurrent: Record<string, string> = {
   read: "04",
 };
 
-const Masthead: React.FC<{ current: string }> = ({ current }) => {
+const Masthead: React.FC<{ current: string; locale?: string }> = ({
+  current,
+  locale,
+}) => {
+  const copy = getVideoCopy(locale);
   const navItems = ["overview", "tempo", "projects", "read"];
-  const navLabels: Record<string, string> = {
-    overview: "개요",
-    tempo: "리듬",
-    projects: "프로젝트",
-    read: "해석",
-  };
 
   return (
     <div
@@ -65,7 +64,7 @@ const Masthead: React.FC<{ current: string }> = ({ current }) => {
             color: colors.heading,
           }}
         >
-          로컬 AI 작업 아카이브
+          {copy.masthead.title}
         </div>
       </div>
       <div style={{ display: "flex", gap: 18, alignItems: "center" }}>
@@ -87,7 +86,7 @@ const Masthead: React.FC<{ current: string }> = ({ current }) => {
                   : "2px solid transparent",
               }}
             >
-              {navLabels[item]}
+              {copy.masthead.navLabels[item]}
             </div>
           );
         })}
@@ -118,7 +117,7 @@ const Masthead: React.FC<{ current: string }> = ({ current }) => {
             color: colors.muted,
           }}
         >
-          LOCAL LOGS SYNCED
+          {copy.masthead.synced}
         </div>
       </div>
     </div>
@@ -175,8 +174,9 @@ export const Stage: React.FC<{
   current: string;
   durationInFrames: number;
   section: string;
+  locale?: string;
   children: React.ReactNode;
-}> = ({ current, durationInFrames, section, children }) => {
+}> = ({ current, durationInFrames, section, locale, children }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const opacity = sceneOpacity(frame, durationInFrames);
@@ -250,7 +250,7 @@ export const Stage: React.FC<{
               pointerEvents: "none",
             }}
           />
-          <Masthead current={current} />
+          <Masthead current={current} locale={locale} />
           <div
             style={{
               padding: "18px 24px 22px",

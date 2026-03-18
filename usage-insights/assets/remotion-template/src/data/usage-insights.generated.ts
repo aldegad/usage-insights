@@ -1,5 +1,6 @@
 export const usageInsights = {
   "generatedAt": "2026-03-16T09:19:51.556Z",
+  "locale": "ko",
   "timezone": "Asia/Seoul",
   "period": {
     "from": "2025-12-09",
